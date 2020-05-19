@@ -681,7 +681,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 }
                 if (key === "ACRES") {
                     if (data.ACRES) {
-                        contentType += "<span class='bold' title='Acres'><b>Acres: </b></span>" + data.ACRES + "<br/>";
+                        var acresShort = data.ACRES.toFixed(2); 
+                        contentType += "<span class='bold' title='Acres'><b>Acres: </b></span>" + acresShort + "<br/>";
                     }
                 }
                 if (key === "System") {
