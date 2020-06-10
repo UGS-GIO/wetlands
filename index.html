@@ -666,6 +666,46 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 return contentPro;
             }
 
+            contentRipMeta = function(value, key, data) {
+                console.log("Rip Meta");
+                var contentPro = "";
+
+                if (key === "IMAGE_YR") {
+                    if (data.IMAGE_YR) {
+                        contentPro += "<span class='bold' title='Image Year'><b>Image Year: </b></span>" + data.IMAGE_YR + "<br/>";
+                    }
+                }
+                if (key === "IMAGE_DATE") {
+                    if (data.IMAGE_DATE) {
+                        contentPro += "<span class='bold' title='Image Year'><b>Image Date: </b></span>" + data.IMAGE_DATE + "<br/>";
+                    }
+                }
+                if (key === "Decade") {
+                    if (data.Decade) {
+                        contentPro += "<span class='bold' title='Image Year'><b>Decade: </b></span>" + data.Decade + "<br/>";
+                    }
+                }
+                if (key === "IMAGE_SCALE") {
+                    if (data.IMAGE_SCALE) {
+                        contentPro += "<span class='bold' title='Image Year'><b>Image Scale: </b></span>" + data.IMAGE_SCALE + "<br/>";
+                    }
+                }
+                if (key === "DATA_SOURCE") {
+                    if (data.DATA_SOURCE) {
+                        contentPro += "<span class='bold' title='Image Year'><b>Data Source: </b></span>" + data.DATA_SOURCE + "<br/>";
+                    }
+                }
+
+                if (key === "SUPPMAPINFO") {
+                    if (data.SUPPMAPINFO) {
+                        contentPro += "<span class='bold'><b>Supplemental Map Info: </b></span>" + "<a href='" + data.SUPPMAPINFO + "' target='_blank'>Opens in new tab</a>";
+                    } else if (data.SUPPMAPINFO == null) {
+                        contentPro += "<span class='bold'><b>Supplemental Map Info: </b></span>Supplemental Map Info not currently available.";
+                    }
+                }
+                return contentPro;
+            }
+
             contentType = function(value, key, data) {
                 var contentType = "";
 
@@ -705,6 +745,51 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         contentType += "<span class='bold' title='Utah Use'><b>Modifier: </b></span>" + data.Modifier + "<br/>";
                     }
                 }
+                return contentType;
+
+            }
+
+            contentRipType = function(value, key, data) {
+                console.log("Rip type");
+                var contentType = "";
+
+                if (key === "ATTRIBUTE") {
+                    if (data.ATTRIBUTE) {
+                        contentType += "<span class='bold' title='NWI Code'><b>Attribute: </b></span>" + data.ATTRIBUTE + "<br/>";
+                    }
+                }
+                if (key === "WETLAND_TYPE") {
+                    if (data.WETLAND_TYPE) {
+                        contentType += "<span class='bold' title='Utah Type'><b>Riparian Type: </b></span>" + data.WETLAND_TYPE + "<br/>";
+                    }
+                }
+                if (key === "ACRES") {
+                    if (data.ACRES) {
+                        var acresShort = data.ACRES.toFixed(2); 
+                        contentType += "<span class='bold' title='Acres'><b>Acres: </b></span>" + acresShort + "<br/>";
+                    }
+                }
+                if (key === "Description") {
+                    if (data.Description) {
+                        contentType += "<span class='bold' title='Utah Modification'><b>Description: </b></span>" + data.Description + "<br/>";
+                    }
+                }
+                if (key === "System") {
+                    if (data.System) {
+                        contentType += "<span class='bold' title='Utah Use'><b>System: </b></span>" + data.System + "<br/>";
+                    }
+                }
+                if (key === "Class") {
+                    if (data.Class) {
+                        contentType += "<span class='bold' title='Utah Use'><b>Class: </b></span>" + data.Class + "<br/>";
+                    }
+                }
+                if (key === "DominanceType") {
+                    if (data.DominanceType) {
+                        contentType += "<span class='bold' title='Utah Use'><b>Dominance Type: </b></span>" + data.DominanceType + "<br/>";
+                    }
+                }
+
                 return contentType;
 
             }
@@ -961,10 +1046,27 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 visible: false
             })
 
-            var riparianMetadata = new ImageryLayer ({
-                url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Riparian/MapServer/0",
-                title: "Riparian Metadata",
-                visible: false
+            var riparianData = new MapImageLayer ({
+                url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Riparian/MapServer",
+                title: "Riparian Data",
+                //visible: false,
+                sublayers: [{
+                        id: 0,
+                        title: "Riparian Metadata",
+                        popupTemplate: {
+                            title: "Riparian Metadata",
+                            content: "{IMAGE_YR:contentRipMeta}{IMAGE_DATE:contentRipMeta}{Decade:contentRipMeta}{IMAGE_SCALE:contentRipMeta}{DATA_SOURCE:contentRipMeta}{SUPPMAPINFO:contentRipMeta}"
+                        },
+                    },
+                    {
+                        id: 1,
+                        title: "Riparian",
+                        popupTemplate: {
+                            title: "Riparian Areas",
+                            content: "{ATTRIBUTE:contentRipType}{WETLAND_TYPE:contentRipType}{ACRES:contentRipType}{Description:contentRipType}{System:contentRipType}{Class:contentRipType}{DominanceType:contentRipType}"
+                        },
+                    },
+                    ]
             })
 
 
@@ -974,6 +1076,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             mapView.map.add(speciesLayer);
             mapView.map.add(conditionsLayer);
             mapView.map.add(hydricSoils);
+            mapView.map.add(riparianData);
             mapView.map.add(wetlandLayer);
             mapView.map.add(boundaryLayer);
             
