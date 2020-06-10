@@ -506,6 +506,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             "esri/widgets/Search",
             "esri/widgets/Legend",
             "esri/widgets/BasemapToggle",
+            "esri/layers/GroupLayer",
             "esri/widgets/Sketch/SketchViewModel",
             "esri/tasks/Geoprocessor",
             "esri/geometry/support/jsonUtils",
@@ -536,7 +537,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             "calcite-maps/calcitemaps-arcgis-support-v0.7",
             "dojo/query",
             "dojo/domReady!"
-        ], function(Map, SceneView, Home, Zoom, Compass, Search, Legend, BasemapToggle, SketchViewModel, Geoprocessor, geometryJsonUtils, rendererJsonUtils, FeatureSet, JobInfo, ScaleBar, Locate, Attribution, FeatureLayer, MapImageLayer, ImageryLayer, GraphicsLayer, SimpleFillSymbol, Graphic, QueryTask, Query, RelationshipQuery,
+        ], function(Map, SceneView, Home, Zoom, Compass, Search, Legend, BasemapToggle, GroupLayer, SketchViewModel, Geoprocessor, geometryJsonUtils, rendererJsonUtils, FeatureSet, JobInfo, ScaleBar, Locate, Attribution, FeatureLayer, MapImageLayer, ImageryLayer, GraphicsLayer, SimpleFillSymbol, Graphic, QueryTask, Query, RelationshipQuery,
             LayerList, NavigationToggle, watchUtils, Collapse, Dropdown, CalciteMaps, CalciteMapArcGISSupport, query) {
 
 
@@ -945,7 +946,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
             var wetlandLayer = new MapImageLayer({
                 url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Mapping/MapServer",
-				title: "Wetland and Riparian Mapping",
+				title: "Wetland Mapping",
                 sublayers: [{
                         id: 4,
                         title: "Wetlands Outline",
@@ -977,10 +978,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     },
                     {
                         id: 1,
-                        title: "Metadata",
+                        title: "Wetland Metadata",
                         visible: false,
                         popupTemplate: {
-                            title: "Metadata",
+                            title: "Wetland Metadata",
                             content: "{IMAGE_YR:contentPro}{IMAGE_DATE:contentPro}{Decade:contentPro}{IMAGE_SCALE:contentPro}{DATA_CAT:contentPro}{SUPPMAPINFO:contentPro}"
                         },
                         popupEnabled: true
@@ -1048,7 +1049,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
             var riparianData = new MapImageLayer ({
                 url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Riparian/MapServer",
-                title: "Riparian Data",
+                title: "Riparian Mapping",
                 visible: false,
                 sublayers: [{
                         id: 0,
@@ -1069,15 +1070,21 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     ]
             })
 
+            var wetlandGroup = new GroupLayer ({
+                title: "Wetland and Riparian Mapping",
+                visible: true,
+                layers: [riparianData, wetlandLayer]
+            })
 
+            
 
 
             mapView.map.add(ownershipLayer);
             mapView.map.add(speciesLayer);
             mapView.map.add(conditionsLayer);
             mapView.map.add(hydricSoils);
-            mapView.map.add(riparianData);
-            mapView.map.add(wetlandLayer);
+            mapView.map.add(wetlandGroup);
+            //mapView.map.add(wetlandLayer);
             mapView.map.add(boundaryLayer);
             
 
