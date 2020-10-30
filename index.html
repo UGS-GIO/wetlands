@@ -28,15 +28,15 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <title>Utah Wetlands</title>
 
     <!-- Calcite Maps Bootstrap -->
-    <link rel="stylesheet" href="https://esri.github.io/calcite-maps/dist/css/calcite-maps-bootstrap.min-v0.8.css">
+    <link rel="stylesheet" href="https://esri.github.io/calcite-maps/dist/css/calcite-maps-bootstrap.min-v0.10.css">
 
     <!-- Calcite Maps -->
-    <link rel="stylesheet" href="https://esri.github.io/calcite-maps/dist/css/calcite-maps-arcgis-4.x.min-v0.8.css">
+    <link rel="stylesheet" href="https://esri.github.io/calcite-maps/dist/css/calcite-maps-arcgis-4.x.min-v0.10.css">
 
     <!-- ArcGIS JS 4 -->
-    <link rel="stylesheet" href="https://js.arcgis.com/4.8/esri/css/main.css">
+    <link rel="stylesheet" href="https://js.arcgis.com/4.17/esri/css/main.css">
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 
     <style>
         html,
@@ -46,6 +46,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             height: 100%;
             width: 100%;
         }
+
+
+
+
 
         .uppercase {
             text-transform: uppercase;
@@ -76,7 +80,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             background-color: #515151 !important;
         }
 
-        .esri-layer-list__item {
+        /* .esri-layer-list__item {
             background-color: #323232;
             border-bottom: 1px solid rgba(50, 50, 50, 0.25);
             color: #fff;
@@ -90,7 +94,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         .esri-layer-list__item-actions-menu-item--active {
             background-color: #323232;
 
-        }
+        } */
 
         /* Tooltip container */
 
@@ -439,18 +443,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             </div>
             <div id="collapseBasemaps" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingBasemaps">
                 <div class="panel-body">
-                    <select id="selectBasemapPanel" class="form-control">
-                        <option value="streets" data-vector="streets-vector">Streets</option>
-                        <option value="satellite" data-vector="satellite" selected="">Satellite</option>
-                        <option value="hybrid" data-vector="hybrid">Hybrid</option>
-                        <option value="national-geographic" data-vector="national-geographic">National Geographic</option>
-                        <option value="topo" data-vector="topo-vector">Topographic</option>
-                        <option value="gray" data-vector="gray-vector">Gray</option>
-                        <option value="dark-gray" data-vector="dark-gray-vector">Dark Gray</option>
-                        <option value="osm" data-vector="osm">Open Street Map</option>
-                        <option value="dark-gray" data-vector="streets-night-vector">Streets Night</option>
-                        <option value="streets" data-vector="streets-navigation-vector">Streets Mobile</option>
-                    </select>
+                    <div id="baseList"></div>
+                   
                 </div>
             </div>
         </div>
@@ -492,7 +486,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </script>
 
     <!-- ArcGIS JS 4 -->
-    <script src="https://js.arcgis.com/4.8/"></script>
+    <script src="https://js.arcgis.com/4.17/"></script>
 
     <script>
         require([
@@ -528,6 +522,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             "esri/widgets/LayerList",
             "esri/widgets/NavigationToggle",
             "esri/core/watchUtils",
+            "esri/widgets/BasemapGallery",
+            "esri/widgets/BasemapGallery/support/LocalBasemapsSource",
+            "esri/layers/ImageryLayer",
+    "esri/layers/support/RasterFunction",
+    "esri/Basemap",
             // Bootstrap
             "bootstrap/Collapse",
             "bootstrap/Dropdown",
@@ -538,7 +537,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             "dojo/query",
             "dojo/domReady!"
         ], function(Map, SceneView, Home, Zoom, Compass, Search, Legend, BasemapToggle, GroupLayer, SketchViewModel, Geoprocessor, geometryJsonUtils, rendererJsonUtils, FeatureSet, JobInfo, ScaleBar, Locate, Attribution, FeatureLayer, MapImageLayer, ImageryLayer, GraphicsLayer, SimpleFillSymbol, Graphic, QueryTask, Query, RelationshipQuery,
-            LayerList, NavigationToggle, watchUtils, Collapse, Dropdown, CalciteMaps, CalciteMapArcGISSupport, query) {
+            LayerList, NavigationToggle, watchUtils, BasemapGallery, LocalBasemapsSource, ImageryLayer, RasterFunction, Basemap, Collapse, Dropdown, CalciteMaps, CalciteMapArcGISSupport, query) {
 
 
 
@@ -603,10 +602,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             });
             mapView.ui.add(compass, "top-left");
 
-            var basemapToggle = new BasemapToggle({
-                view: mapView,
-                secondBasemap: "satellite"
-            });
+            // var basemapToggle = new BasemapToggle({
+            //     view: mapView,
+            //     secondBasemap: "satellite"
+            // });
             // geolocate user position
             var locate = new Locate({
                 view: mapView
@@ -618,6 +617,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             //   view: mapView
             // });
 
+
+
             var navigationToggle = new NavigationToggle({
                 view: mapView
             });
@@ -626,192 +627,223 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             mapView.map.add(tempGraphicsLayer);
 
 
+            //--------custom basemap--------
+
+            var serviceRFT = new RasterFunction({
+        functionName: "FalseColorComposite",
+        variableName: "Raster"
+      });
+
+      var IRlayer = new ImageryLayer({
+        url: "https://utility.arcgis.com/usrsvcs/servers/0d7e1a9daec346eb9315cba948467b46/rest/services/NAIP/ImageServer",
+        renderingRule: serviceRFT
+      });
+
+      var irBase = new Basemap({
+        baseLayers: [IRlayer],
+        title: "False Color Comp from NAIP",
+        id: "irBase",
+        thumbnailUrl: "https://geology.utah.gov/apps/jay/irThumb.PNG"
+      });
+
+      let baseSource = new LocalBasemapsSource({
+          basemaps: [Basemap.fromId("hybrid"), Basemap.fromId("streets"), Basemap.fromId("gray"), irBase]
+      });
+
+
+      var basemapGallery = new BasemapGallery({
+        view: mapView,
+        container: baseList,
+        source: baseSource
+      });
+
 
 
             //Create popup content
-            contentPro = function(value, key, data) {
+            contentPro = function(feature) {
+                console.log(feature);
                 var contentPro = "";
 
-                if (key === "IMAGE_YR") {
-                    if (data.IMAGE_YR) {
-                        contentPro += "<span class='bold' title='Image Year'><b>Image Year: </b></span>" + data.IMAGE_YR + "<br/>";
+                
+                    if (feature.graphic.attributes.IMAGE_YR) {
+                        contentPro += "<span class='bold' title='Image Year'><b>Image Year: </b></span>{IMAGE_YR}<br/>";
                     }
-                }
-                if (key === "IMAGE_DATE") {
-                    if (data.IMAGE_DATE) {
-                        contentPro += "<span class='bold' title='Image Year'><b>Image Date: </b></span>" + data.IMAGE_DATE + "<br/>";
+                
+            
+                    if (feature.graphic.attributes.IMAGE_DATE) {
+                        contentPro += "<span class='bold' title='Image Year'><b>Image Date: </b></span>{IMAGE_DATE}<br/>";
                     }
-                }
-                if (key === "Decade") {
-                    if (data.Decade) {
-                        contentPro += "<span class='bold' title='Image Year'><b>Decade: </b></span>" + data.Decade + "<br/>";
+                
+                
+                    if (feature.graphic.attributes.Decade) {
+                        contentPro += "<span class='bold' title='Image Year'><b>Decade: </b></span>{Decade}<br/>";
                     }
-                }
-                if (key === "IMAGE_SCALE") {
-                    if (data.IMAGE_SCALE) {
-                        contentPro += "<span class='bold' title='Image Year'><b>Image Scale: </b></span>" + data.IMAGE_SCALE + "<br/>";
+            
+              
+                    if (feature.graphic.attributes.IMAGE_SCALE) {
+                        contentPro += "<span class='bold' title='Image Year'><b>Image Scale: </b></span>{IMAGE_SCALE}<br/>";
                     }
-                }
-                if (key === "DATA_CAT") {
-                    if (data.Modifier) {
-                        contentPro += "<span class='bold' title='Image Year'><b>Data Category: </b></span>" + data.DATA_CAT + "<br/>";
+            
+                
+                    if (feature.graphic.attributes.Modifier) {
+                        contentPro += "<span class='bold' title='Image Year'><b>Data Category: </b></span>{DATA_CAT}<br/>";
                     }
-                }
-                if (key === "SUPPMAPINFO") {
-                    if (data.SUPPMAPINFO) {
-                        contentPro += "<span class='bold'><b>Supplemental Map Info: </b></span>" + "<a href='" + data.SUPPMAPINFO + "' target='_blank'>Opens in new tab</a>";
-                    } else if (data.SUPPMAPINFO == null) {
+                
+                
+                    if (feature.graphic.attributes.SUPPMAPINFO) {
+                        contentPro += "<span class='bold'><b>Supplemental Map Info: </b></span>" + "<a href='{SUPPMAPINFO}' target='_blank'>Opens in new tab</a>";
+                    } else  {
                         contentPro += "<span class='bold'><b>Supplemental Map Info: </b></span>Supplemental Map Info not currently available.";
                     }
-                }
+                
                 return contentPro;
             }
 
-            contentRipMeta = function(value, key, data) {
+            contentRipMeta = function(feature) {
                 console.log("Rip Meta");
                 var contentPro = "";
 
-                if (key === "IMAGE_YR") {
-                    if (data.IMAGE_YR) {
-                        contentPro += "<span class='bold' title='Image Year'><b>Image Year: </b></span>" + data.IMAGE_YR + "<br/>";
+                
+                    if (feature.graphic.attributes.IMAGE_YR) {
+                        contentPro += "<span class='bold' title='Image Year'><b>Image Year: </b></span>{IMAGE_YR}<br/>";
                     }
-                }
-                if (key === "IMAGE_DATE") {
-                    if (data.IMAGE_DATE) {
-                        contentPro += "<span class='bold' title='Image Year'><b>Image Date: </b></span>" + data.IMAGE_DATE + "<br/>";
+                
+               
+                    if (feature.graphic.attributes.IMAGE_DATE) {
+                        contentPro += "<span class='bold' title='Image Year'><b>Image Date: </b></span>{IMAGE_DATE}<br/>";
                     }
-                }
-                if (key === "Decade") {
-                    if (data.Decade) {
-                        contentPro += "<span class='bold' title='Image Year'><b>Decade: </b></span>" + data.Decade + "<br/>";
+                
+                
+                    if (feature.graphic.attributes.Decade) {
+                        contentPro += "<span class='bold' title='Image Year'><b>Decade: </b></span>{Decade}<br/>";
                     }
-                }
-                if (key === "IMAGE_SCALE") {
-                    if (data.IMAGE_SCALE) {
-                        contentPro += "<span class='bold' title='Image Year'><b>Image Scale: </b></span>" + data.IMAGE_SCALE + "<br/>";
+                
+                
+                    if (feature.graphic.attributes.IMAGE_SCALE) {
+                        contentPro += "<span class='bold' title='Image Year'><b>Image Scale: </b></span>{IMAGE_SCALE}<br/>";
                     }
-                }
-                if (key === "DATA_SOURCE") {
-                    if (data.DATA_SOURCE) {
-                        contentPro += "<span class='bold' title='Image Year'><b>Data Source: </b></span>" + data.DATA_SOURCE + "<br/>";
+                
+                
+                    if (feature.graphic.attributes.DATA_SOURCE) {
+                        contentPro += "<span class='bold' title='Image Year'><b>Data Source: </b></span>{DATA_SOURCE}<br/>";
                     }
-                }
+                
 
-                if (key === "SUPPMAPINFO") {
-                    if (data.SUPPMAPINFO) {
-                        contentPro += "<span class='bold'><b>Supplemental Map Info: </b></span>" + "<a href='" + data.SUPPMAPINFO + "' target='_blank'>Opens in new tab</a>";
-                    } else if (data.SUPPMAPINFO == null) {
+                
+                    if (feature.graphic.attributes.SUPPMAPINFO) {
+                        contentPro += "<span class='bold'><b>Supplemental Map Info: </b></span>" + "<a href='{SUPPMAPINFO}' target='_blank'>Opens in new tab</a>";
+                    } else {
                         contentPro += "<span class='bold'><b>Supplemental Map Info: </b></span>Supplemental Map Info not currently available.";
                     }
-                }
+                
                 return contentPro;
             }
 
-            contentType = function(value, key, data) {
+            contentType = function(feature) {
                 var contentType = "";
 
-                if (key === "ATTRIBUTE") {
-                    if (data.ATTRIBUTE) {
-                        contentType += "<span class='bold' title='NWI Code'><b>Attribute: </b></span>" + data.ATTRIBUTE + "<br/>";
+                
+                    if (feature.graphic.attributes.ATTRIBUTE) {
+                        contentType += "<span class='bold' title='NWI Code'><b>Attribute: </b></span>{ATTRIBUTE}<br/>";
                     }
-                }
-                if (key === "WETLAND_TYPE") {
-                    if (data.WETLAND_TYPE) {
-                        contentType += "<span class='bold' title='Utah Type'><b>Wetland Type: </b></span>" + data.WETLAND_TYPE + "<br/>";
+                
+                
+                    if (feature.graphic.attributes.WETLAND_TYPE) {
+                        contentType += "<span class='bold' title='Utah Type'><b>Wetland Type: </b></span>{WETLAND_TYPE}<br/>";
                     }
-                }
-                if (key === "ACRES") {
-                    if (data.ACRES) {
-                        var acresShort = data.ACRES.toFixed(2); 
+                
+                
+                    if (feature.graphic.attributes.ACRES) {
+                        var acresShort = feature.graphic.attributes.ACRES.toFixed(2); 
                         contentType += "<span class='bold' title='Acres'><b>Acres: </b></span>" + acresShort + "<br/>";
                     }
-                }
-                if (key === "System") {
-                    if (data.System) {
-                        contentType += "<span class='bold' title='Utah Modification'><b>System: </b></span>" + data.System + "<br/>";
+                
+               
+                    if (feature.graphic.attributes.System) {
+                        contentType += "<span class='bold' title='Utah Modification'><b>System: </b></span>{System}<br/>";
                     }
-                }
-                if (key === "Class") {
-                    if (data.Class) {
-                        contentType += "<span class='bold' title='Utah Use'><b>Class: </b></span>" + data.Class + "<br/>";
+                
+                
+                    if (feature.graphic.attributes.Class) {
+                        contentType += "<span class='bold' title='Utah Use'><b>Class: </b></span>{Class}<br/>";
                     }
-                }
-                if (key === "Regime") {
-                    if (data.Regime) {
-                        contentType += "<span class='bold' title='Utah Use'><b>Regime: </b></span>" + data.Regime + "<br/>";
+                
+                
+                    if (feature.graphic.attributes.Regime) {
+                        contentType += "<span class='bold' title='Utah Use'><b>Regime: </b></span>{Regime}<br/>";
                     }
-                }
-                if (key === "Modifier") {
-                    if (data.Modifier) {
-                        contentType += "<span class='bold' title='Utah Use'><b>Modifier: </b></span>" + data.Modifier + "<br/>";
+                
+                
+                    if (feature.graphic.attributes.Modifier) {
+                        contentType += "<span class='bold' title='Utah Use'><b>Modifier: </b></span>{Modifier}<br/>";
                     }
-                }
+                
                 return contentType;
 
             }
 
-            contentRipType = function(value, key, data) {
-                console.log("Rip type");
+            contentRipType = function(feature) {
+                console.log(feature);
                 var contentType = "";
 
-                if (key === "ATTRIBUTE") {
-                    if (data.ATTRIBUTE) {
-                        contentType += "<span class='bold' title='NWI Code'><b>Attribute: </b></span>" + data.ATTRIBUTE + "<br/>";
+                
+                    if (feature.graphic.attributes.ATTRIBUTE) {
+                        contentType += "<span class='bold' title='NWI Code'><b>Attribute: </b></span>{ATTRIBUTE}<br/>";
                     }
-                }
-                if (key === "WETLAND_TYPE") {
-                    if (data.WETLAND_TYPE) {
-                        contentType += "<span class='bold' title='Utah Type'><b>Riparian Type: </b></span>" + data.WETLAND_TYPE + "<br/>";
+                
+                
+                    if (feature.graphic.attributes.WETLAND_TYPE) {
+                        contentType += "<span class='bold' title='Utah Type'><b>Riparian Type: </b></span>{WETLAND_TYPE}<br/>";
                     }
-                }
-                if (key === "ACRES") {
-                    if (data.ACRES) {
-                        var acresShort = data.ACRES.toFixed(2); 
+                
+                
+                    if (feature.graphic.attributes.ACRES) {
+                        var acresShort = feature.graphic.attributes.ACRES.toFixed(2); 
                         contentType += "<span class='bold' title='Acres'><b>Acres: </b></span>" + acresShort + "<br/>";
                     }
-                }
-                if (key === "Description") {
-                    if (data.Description) {
-                        contentType += "<span class='bold' title='Utah Modification'><b>Description: </b></span>" + data.Description + "<br/>";
+                
+                
+                    if (feature.graphic.attributes.Description) {
+                        contentType += "<span class='bold' title='Utah Modification'><b>Description: </b></span>{Description}<br/>";
                     }
-                }
-                if (key === "System") {
-                    if (data.System) {
-                        contentType += "<span class='bold' title='Utah Use'><b>System: </b></span>" + data.System + "<br/>";
+                
+               
+                    if (feature.graphic.attributes.System) {
+                        contentType += "<span class='bold' title='Utah Use'><b>System: </b></span>{System}<br/>";
                     }
-                }
-                if (key === "Class") {
-                    if (data.Class) {
-                        contentType += "<span class='bold' title='Utah Use'><b>Class: </b></span>" + data.Class + "<br/>";
+                
+               
+                    if (feature.graphic.attributes.Class) {
+                        contentType += "<span class='bold' title='Utah Use'><b>Class: </b></span>{Class}<br/>";
                     }
-                }
-                if (key === "DominanceType") {
-                    if (data.DominanceType) {
-                        contentType += "<span class='bold' title='Utah Use'><b>Dominance Type: </b></span>" + data.DominanceType + "<br/>";
+                
+                
+                    if (feature.graphic.attributes.DominanceType) {
+                        contentType += "<span class='bold' title='Utah Use'><b>Dominance Type: </b></span>{DominanceType}<br/>";
                     }
-                }
+                
 
                 return contentType;
 
             }
 
 
-            contentStudyArea = function(value, key, data) {
+            contentStudyArea = function(feature) {
                 var contentStudyArea = "";
 
-                if (key === "region") {
-                    contentStudyArea += "<span class='bold' title='Region'><b>Region: </b></span>" + data.region + "<br/>";
+                if (feature.graphic.attributes.region) {
+                    contentStudyArea += "<span class='bold' title='Region'><b>Region: </b></span>{region}<br/>";
                 }
-                if (key === "years") {
-                    contentStudyArea += "<span class='bold' title='Years'><b>Years: </b></span>" + data.years + "<br/>";
+                if (feature.graphic.attributes.years) {
+                    contentStudyArea += "<span class='bold' title='Years'><b>Years: </b></span>{years}<br/>";
                 }
-                if (key === "ProjectReport") {
-                    if (data.ProjectReport){
-                    contentStudyArea += "<span class='bold'><b>Project Report: </b></span>" + "<a href='" + data.ProjectReport + "' target='_blank'>Opens in new tab</a>";
+                
+                    if (feature.graphic.attributes.ProjectReport){
+                    contentStudyArea += "<span class='bold'><b>Project Report: </b></span>" + "<a href='{ProjectReport}' target='_blank'>Opens in new tab</a>";
                     } else  {
                     contentStudyArea += "<span class='bold'><b>Project Report: </b></span>Currently not available.";
                 }
-                }
+                
 
                 return contentStudyArea;
 
@@ -821,14 +853,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             //     var contentOwnership = "";
 
             //     if (key === "STATE_LGD") {
-            //         contentOwnership += "<span class='bold' title='Owner'><b>Owner: </b></span>" + data.STATE_LGD + "<br/>";
+            //         contentOwnership += "<span class='bold' title='Owner'><b>Owner: </b></span>{STATE_LGD}<br/>";
             //     }
             //     // if (key === "TRIBE") {
-            //     //     contentOwnership += "<span class='bold' title='TRIBE'><b>Tribe: </b></span>" + data.TRIBE + "<br/>";
+            //     //     contentOwnership += "<span class='bold' title='TRIBE'><b>Tribe: </b></span>{TRIBE}<br/>";
             //     // }
             //     // if (key === "ProjectReport") {
             //     //     if (data.ProjectReport){
-            //     //         contentOwnership += "<span class='bold'><b>Project Report: </b></span>" + "<a href='" + data.ProjectReport + "' target='_blank'>Opens in new tab</a>";
+            //     //         contentOwnership += "<span class='bold'><b>Project Report: </b></span>" + "<a href='{ProjectReport}' target='_blank'>Opens in new tab</a>";
             //     //     } else  {
             //     //         contentOwnership += "<span class='bold'><b>Project Report: </b></span>Currently not available.";
             //     // }
@@ -839,10 +871,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             // }
 
 
-            contentSpecies = function(value, key, data) {
+            contentSpecies = function(feature) {
+                console.log(feature);
                 var contentSpecies = "";
 
-                objectID = data.OBJECTID;
+                objectID = feature.graphic.attributes.OBJECTID;
 
                 var queryTask = new QueryTask({
                     url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Dependent_Species/MapServer/1"
@@ -882,11 +915,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         console.log(contentSpecies);
 
 
-                        var thetitle = contentTitle(value, key, data);
+                        var thetitle = contentTitle(feature);
 
                         mapView.popup.open({
                             title: "Sensitive Amphibian Species " + thetitle,
-                            content: contentSpecies
+                            content: contentSpecies,
+                            outFields: ["*"]
                         });
                         //});
 
@@ -897,9 +931,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             }
 
 
-            contentTitle = function(value, key, data) {
+            contentTitle = function(feature) {
+                console.log(feature);
                 var contentTitle = "";
-                contentTitle += " for " + data.NAME + " County";
+                var titleName = feature.graphic.attributes.NAME;
+                contentTitle += "for " + titleName + " County";
                 return contentTitle
             }
 
@@ -953,7 +989,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         visible: false,
                         popupTemplate: {
                             title: "Wetland Outlines",
-                            content: "{ATTRIBUTE:contentType}{WETLAND_TYPE:contentType}{ACRES:contentType}{System:contentType}{Class:contentType}{Regime:contentType}{Modifier:contentType}"
+                            content: contentType,
+                            outFields: ["*"]
                         },
                     },
                     {
@@ -962,7 +999,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         visible: false,
                         popupTemplate: {
                             title: "Riverine",
-                            content: "{ATTRIBUTE:contentType}{WETLAND_TYPE:contentType}{ACRES:contentType}{System:contentType}{Class:contentType}{Regime:contentType}{Modifier:contentType}"
+                            content: contentType,
+                            outFields: ["*"]
                         },
 
                     },
@@ -972,7 +1010,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         visible: true,
                         popupTemplate: {
                             title: "Wetlands (non-riverine)",
-                            content: "{ATTRIBUTE:contentType}{WETLAND_TYPE:contentType}{ACRES:contentType}{System:contentType}{Class:contentType}{Regime:contentType}{Modifier:contentType}"
+                            content: contentType,
+                            outFields: ["*"]
                         },
                         popupEnabled: true
                     },
@@ -982,7 +1021,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         visible: false,
                         popupTemplate: {
                             title: "Wetland Metadata",
-                            content: "{IMAGE_DATE:contentPro}{Decade:contentPro}{DATA_CAT:contentPro}{SUPPMAPINFO:contentPro}"
+                            content: contentPro,
+                            outFields: ["*"]
                         },
                         popupEnabled: true
                     },
@@ -999,7 +1039,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         //visible: false,
                         popupTemplate: {
                             title: "Sensitive Amphibian Species {NAME:contentTitle}",
-                            content: "{OBJECTID:contentSpecies}"
+                            content: contentSpecies,
+                            outFields: ["*"]
 
                         },
                     }
@@ -1023,7 +1064,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         opacity: 0.6,
                         popupTemplate: {
                             title: "Wetland Assessment Projects",
-                            content: "{region:contentStudyArea}{years:contentStudyArea}{ProjectReport:contentStudyArea}"
+                            content: contentStudyArea,
+                            outFields: ["*"]
                         },
                         //visible: false
                     },
@@ -1036,7 +1078,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 title: "Land Ownership",
                 popupTemplate: {
                             title: "Land Ownership",
-                            content: "{STAE_LGD:contentOwnership}"
+                           // content: contentOwnership
                         },
                 //opacity: 0.6,
             });
@@ -1056,7 +1098,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         title: "Riparian Metadata",
                         popupTemplate: {
                             title: "Riparian Metadata",
-                            content: "{IMAGE_DATE:contentRipMeta}{Decade:contentRipMeta}{DATA_SOURCE:contentRipMeta}{SUPPMAPINFO:contentRipMeta}"
+                            content: contentRipMeta,
+                            outFields: ["*"]
                         },
                     },
                     {
@@ -1064,7 +1107,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         title: "Riparian",
                         popupTemplate: {
                             title: "Riparian Areas",
-                            content: "{ATTRIBUTE:contentRipType}{WETLAND_TYPE:contentRipType}{ACRES:contentRipType}{Description:contentRipType}{System:contentRipType}{Class:contentRipType}{DominanceType:contentRipType}"
+                            content: contentRipType,
+                            outFields: ["*"]
                         },
                     },
                     ]
@@ -1073,6 +1117,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             var wetlandGroup = new GroupLayer ({
                 title: "Wetland and Riparian Mapping",
                 visible: true,
+                visibiltyMode: "independent",
                 layers: [riparianData, wetlandLayer]
             })
 
@@ -1099,14 +1144,23 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
                 if (g) {
 
-                    var symbol = new SimpleFillSymbol({
+                    // var symbol = new SimpleFillSymbol({
+                    //     type: "simple-fill",
+                    //     style: "none",
+                    //     outline: { // autocasts as new SimpleLineSymbol()
+                    //         color: "cyan",
+                    //         width: 3
+                    //     }
+                    // });
+
+                    var symbol = {
                         type: "simple-fill",
                         style: "none",
                         outline: { // autocasts as new SimpleLineSymbol()
                             color: "cyan",
                             width: 3
                         }
-                    });
+                    };
 
                     tempGraphic = new Graphic({
                         geometry: g.geometry,
@@ -1389,16 +1443,20 @@ function setActiveButton(selectedButton) {
 
             // Basemap events
             query("#selectBasemapPanel").on("change", function(e) {
-                if (e.target.value == "ustopo") {
-                    // setup the ustopo basemap global variable.
-                    var ustopo = new Basemap({
-                        baseLayers: new TileLayer({
-                            url: "https://server.arcgisonline.com/ArcGIS/rest/services/USA_Topo_Maps/MapServer"
-                        }),
-                        title: "usTopographic",
-                        id: "ustopo"
-                    });
-                    mapView.map.basemap = ustopo;
+                // if (e.target.value == "ustopo") {
+                //     // setup the ustopo basemap global variable.
+                //     var ustopo = new Basemap({
+                //         baseLayers: new TileLayer({
+                //             url: "https://server.arcgisonline.com/ArcGIS/rest/services/USA_Topo_Maps/MapServer"
+                //         }),
+                //         title: "usTopographic",
+                //         id: "ustopo"
+                //     });
+                //     mapView.map.basemap = ustopo;
+                // } else 
+                if (e.target.value == "Infrared") {
+
+mapView.map.basemap = irBase;
                     // if mapview use basemaps defined in the value-vector=, but if mapview use value=
                 } else if (map.mview == "map") {
                     mapView.map.basemap = e.target.options[e.target.selectedIndex].dataset.vector;
@@ -1406,6 +1464,9 @@ function setActiveButton(selectedButton) {
                     mapView.map.basemap = e.target.value;
                 }
             });
+
+            
+
 
         });
     </script>
