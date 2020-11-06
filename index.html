@@ -531,9 +531,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             "bootstrap/Collapse",
             "bootstrap/Dropdown",
             // Calcite Maps
-            "calcite-maps/calcitemaps-v0.7",
+            "calcite-maps/calcitemaps-v0.10",
             // Calcite Maps ArcGIS Support
-            "calcite-maps/calcitemaps-arcgis-support-v0.7",
+            "calcite-maps/calcitemaps-arcgis-support-v0.10",
             "dojo/query",
             "dojo/domReady!"
         ], function(Map, SceneView, Home, Zoom, Compass, Search, Legend, BasemapToggle, GroupLayer, SketchViewModel, Geoprocessor, geometryJsonUtils, rendererJsonUtils, FeatureSet, JobInfo, ScaleBar, Locate, Attribution, FeatureLayer, MapImageLayer, ImageryLayer, GraphicsLayer, SimpleFillSymbol, Graphic, QueryTask, Query, RelationshipQuery,
@@ -549,7 +549,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
              var gpUrl =
              "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/WetlandsDownload/GPServer/ExtractWetlandsData";
-                //"https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/WetlandExtractTask/GPServer/ExtractWetlands";
 
 
             var tempGraphic = null;          
@@ -849,26 +848,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
             }
 
-            //             contentOwnership = function(value, key, data) {
-            //     var contentOwnership = "";
-
-            //     if (key === "STATE_LGD") {
-            //         contentOwnership += "<span class='bold' title='Owner'><b>Owner: </b></span>{STATE_LGD}<br/>";
-            //     }
-            //     // if (key === "TRIBE") {
-            //     //     contentOwnership += "<span class='bold' title='TRIBE'><b>Tribe: </b></span>{TRIBE}<br/>";
-            //     // }
-            //     // if (key === "ProjectReport") {
-            //     //     if (data.ProjectReport){
-            //     //         contentOwnership += "<span class='bold'><b>Project Report: </b></span>" + "<a href='{ProjectReport}' target='_blank'>Opens in new tab</a>";
-            //     //     } else  {
-            //     //         contentOwnership += "<span class='bold'><b>Project Report: </b></span>Currently not available.";
-            //     // }
-            //     // }
-
-            //     return contentOwnership;
-
-            // }
 
 
             contentSpecies = function(feature) {

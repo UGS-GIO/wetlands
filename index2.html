@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-11759067-12"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-11759067-12');
+</script>
+
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-M7CNXDK');</script>
+<!-- End Google Tag Manager -->
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+  <meta name="description" content="Wetland Plant Application">
+ 
+  <title>Wetland Plant Application</title>
+
+  <!-- Calcite Maps Bootstrap -->
+  <link rel="stylesheet" href="https://esri.github.io/calcite-maps/dist/css/calcite-maps-bootstrap.min-v0.10.css">
+  <!--link rel="stylesheet" href="http://localhost/GitHub/calcite-maps/dist/css/calcite-maps-bootstrap.min-v0.9.css"-->
+  
+  <!-- Calcite Maps -->
+  <link rel="stylesheet" href="https://esri.github.io/calcite-maps/dist/css/calcite-maps-arcgis-4.x.min-v0.10.css">
+  <!--link rel="stylesheet" href="http://localhost/GitHub/calcite-maps/dist/css/calcite-maps-arcgis-4.x.min-v0.9.css"-->
+
+  <!-- ArcGIS JS 4 -->
+  <link rel="stylesheet" href="https://js.arcgis.com/4.13/esri/css/main.css">
+
+  <!-- dgrid styling-->
+  <!-- <link rel="stylesheet" type="text/css" href="https://github.com/SitePen/dgrid/blob/master/css/dgrid.css" /> -->
+  <link rel="stylesheet" href="awesomplete.css" />
+
+  <style>
+    html,
+    body,
+    #mapViewDiv {
+      padding: 0;
+      margin: 0;
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .calcite-title:before {
+      content: url('https://geology.utah.gov/apps/_ugsmaptemplate/logo_main.png');
+      padding: 6px 12px 0 2px;
+      cursor: pointer;
+    }
+
+    .calcite-panels .panel-body a {
+      color: blue
+    }
+
+
+ /* Tooltip container */
+
+ .tooltip {
+            position: relative;
+            display: inline-block;
+            border-bottom: 1px dotted #323232;
+            /* If you want dots under the hoverable text */
+        }
+
+        /* Tooltip text */
+
+        .dropdown-toggle .tooltiptext {
+            visibility: hidden;
+            width: 120px;
+            margin-left: 25px;
+            background-color: #636363;
+            color: #fff;
+            text-align: center;
+            padding: 5px 0;
+            border-radius: 6px;
+
+            /* Position the tooltip text  */
+            position: absolute;
+            z-index: 1;
+        }
+
+        /* Show the tooltip text when you mouse over the tooltip container */
+
+        .dropdown-toggle:hover .tooltiptext {
+            visibility: visible;
+        }
+
+
+/* unvisited link */
+a:link {
+  color: blue;
+}
+
+/* visited link */
+a:visited {
+  color: orange;
+}
+
+/* mouse over link */
+a:hover {
+  color: hotpink;
+}
+
+/* selected link */
+a:active {
+  color: blue;
+}
+
+
+
+    .esri-feature__content-element {
+        padding: 0 0 0 0;
+    }
+
+    .esri-popup__inline-actions-container>.esri-popup__action, .esri-popup__inline-actions-container>.esri-popup__action-toggle {
+    margin: 0 7px;
+    max-width: 100%;
+}
+
+.esri-popup__inline-actions-container:only-child>.esri-popup__action, .esri-popup__inline-actions-container:only-child>.esri-popup__action-toggle {
+    max-width: 100%;
+}
+
+    /* .dds {
+      position: absolute;
+      display: inline-block;
+    } */
+
+  .button2 {
+
+    /* top: 21%;
+    left: 1%;
+    position: absolute; */
+      display: inline-block;
+  }
+
+  .dgrid {
+      height: var(--gridHeight, 250px);
+  }
+
+
+
+  /* .calcite-panels .panel-body {
+      overflow-x: visible;
+  } */
+
+
+  #mapViewDiv.withGrid {
+      height: 65%;
+    }  
+
+
+
+#drag {
+    position: absolute;
+    left: 0;
+    top: -4px;
+    right: 0;
+    height: 8px;
+    cursor: n-resize;
+}
+
+    #gridDisplay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: auto;
+      background-color: white;
+      border-color: grey;
+      width: 100%;
+      font-family: "Avenir Next W00", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      display: none;
+    }
+
+    .esri-layer-list__item-actions-menu-item--active, .esri-layer-list__item-actions-menu-item--active:hover {
+    background-color: #ffffff;
+}
+
+    #gridDisplay {
+      z-index: 80;
+    }
+
+    .info {
+        line-height: 20px;
+      padding-left: 5px ! important;
+      z-index: 90;
+      font-size: 16px;
+      padding-left: 20px;
+    }
+
+    /* #info * {
+      padding-right: 20px;
+    } */
+
+    #collapseQuerySpecies .panel-body {
+      overflow-x: visible;
+    }
+
+    .dgrid-header,
+    .dgrid-header-row {
+      background-color: #eee;
+      color: #57585A;
+    }
+
+    .dgrid-row-even {
+      background-color: #F7F8F8;
+    }
+
+    .dgrid-row-odd {
+      background-color: #EFEFEF;
+    }
+
+    .dgrid-selected {
+      background: #B4DAF5;
+    }
+
+    .dgrid-row {
+      border: none
+    }
+
+
+
+  </style>
+
+</head>
+
+<body class="calcite-maps calcite-nav-top">
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M7CNXDK"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  <a class="ugs-watermark " href="https://geology.utah.gov"></a>
+  <!-- Navbar -->
+
+  <nav class="navbar calcite-navbar navbar-fixed-top calcite-text-light calcite-bg-dark">
+    <!-- Menu -->
+    <div class="dropdown calcite-dropdown calcite-text-dark calcite-bg-light" role="presentation">
+      <a class="dropdown-toggle" role="menubutton" aria-haspopup="true" aria-expanded="false" tabindex="0">
+        <div id="toolNote" class="tooltiptext">
+          Click for more map tools.
+      </div>
+        <div class="calcite-dropdown-toggle">
+          <span class="sr-only">Toggle dropdown menu</span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </a>
+      <ul class="dropdown-menu" role="menu">
+        <li><a role="menuitem" tabindex="0" data-target="#panelInfo" aria-haspopup="true"><span class="glyphicon glyphicon-info-sign"></span> About</a></li>
+        <li><a role="menuitem" tabindex="0" href="#" data-target="#panelBasemaps" aria-haspopup="true"><span class="esri-icon-basemap"></span> Basemaps</a></li>
+        <!-- <li><a role="menuitem" tabindex="0" href="#" data-target="#panelLegend" aria-haspopup="true"><span class="glyphicon glyphicon-list-alt"></span> Legend</a></li> -->
+        <li><a role="menuitem" tabindex="0" href="#" data-target="#panelQuery" aria-haspopup="true"><span class="esri-icon-filter"></span> Search Sites by Attributes</a></li>
+        <li><a role="menuitem" tabindex="0" href="#" data-target="#panelQuerySpecies" aria-haspopup="true"><span class="esri-icon-filter"></span> Search Sites by Species</a></li>
+        <li><a role="menuitem" tabindex="0" href="#" data-target="#panelGlossary" aria-haspopup="true"><span class="glyphicon glyphicon-list"></span> Explanation</a></li>
+        <li><a role="menuitem" tabindex="0" href="#" id="calciteToggleNavbar" aria-haspopup="true"><span class="glyphicon glyphicon-fullscreen"></span> Full Map</a></li>
+      </ul>
+    </div>
+    <!-- Title -->
+    <div class="calcite-title calcite-overflow-hidden">
+      <span class="calcite-title-main">Wetland Plant Application</span>
+      <span class="calcite-title-divider hidden-xs"></span>
+      <span class="calcite-title-sub hidden-xs">Utah Geological Survey</span>
+    </div>
+    <!-- Nav -->
+    <ul class="nav navbar-nav calcite-nav">
+      <li>
+        <div class="calcite-navbar-search calcite-search-expander">
+          <div id="searchWidgetDiv"></div>
+        </div>
+      </li>
+    </ul>
+  </nav>
+
+  <!--/.calcite-navbar -->
+
+  <!-- Map  -->
+
+  <div class="calcite-map calcite-map-absolute" id="cont">
+    <div id="mapViewDiv">  
+    
+
+        <div id="gridDisplay">
+          <div id="drag"></div>
+          
+            <span class="info" id="featureCount"></span>
+            <div id="downloadX"></div>
+            <!-- <span class="downloadX" id ="downloadCSV"></span> -->
+            <div id='removeX'></div>
+            <div id="grid"></div>
+          </div>
+        </div>
+        <div
+        id="select-by-polygon"
+        class="esri-widget esri-widget--button esri-widget esri-interactive"
+        title="Select features by polygon"
+      >
+        <span class="esri-icon-checkbox-unchecked"></span>
+      </div>
+    
+  </div>
+
+
+
+  <!-- /.calcite-map -->
+  
+
+
+  <!-- Panels -->
+
+  <div class="calcite-panels calcite-panels-right calcite-text-light calcite-bg-dark panel-group">
+
+    <!-- Panel - Info -->
+
+    <div id="panelInfo" class="panel collapse in">
+      <div id="headingInfo" class="panel-heading" role="tab">
+        <div class="panel-title">
+          <a class="panel-toggle" role="button" data-toggle="collapse" href="#collapseInfo"  aria-expanded="false" aria-controls="collapseInfo"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span><span class="panel-label">About</span></a> 
+          <a class="panel-close" role="button" data-toggle="collapse" tabindex="0" href="#panelInfo"><span class="esri-icon esri-icon-close" aria-hidden="true"></span></a>  
+        </div>
+      </div>
+      <div id="collapseInfo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingInfo">
+        <div class="panel-body">
+          <p><p style="text-align: justify;"><span style="font-weight: 400;">The Wetland Plant Application is a tool that allows users to query, view, and download plant community composition data from Utah&rsquo;s wetlands. Some potential uses of the data include evaluating threats posed by noxious weed species, developing watershed-based species lists to ensure that regionally appropriate species are used in restoration activities, and identifying reference sites to use when setting mitigation standards. Data can also be used to support research on Utah&rsquo;s wetlands to better understand these systems.</span></p>
+          <p style="text-align: justify;"><span style="font-weight: 400;">Each site is linked to a list of plant species observed at the site and their associated percent cover, using scientific and common names from </span><a href="https://plants.sc.egov.usda.gov" target="_blank"><span style="font-weight: 400;">USDA Plants</span></a><span style="font-weight: 400;">. Plant data were collected by multiple organizations using a variety of methods. Wetlands for the sake of this application include any system considered to be wetland by the contributing organizations and include features such as aquatic beds and unvegetated mudflats and playas that may not meet regulatory definitions of wetland. Some privately owned sites are only discoverable through queries. These sites are not visible on the map, but do show up in query results. If you click on one of these sites in the table, you will be taken to a random location within the vicinity of the actual site. Though only data from reputable sources was included in this application, we make no guarantees about the accuracy of plant identification.</span></p>
+          <p style="text-align: justify;"><span style="font-weight: 400;">Data can be queried in four main ways. First, you can click on individual sites to see site attributes and associated plant species. Second, you can query by species to see a list of sites where a particular species was found. Third, you can query by site attributes to either obtain a list of sites having those attributes or a summary list of all species found at sites having those attributes. Data can be queried by major ecoregion, </span><a id="wetlandClassLink" href="https://docs.google.com/document/d/1M1BZ4K61fVmA9pe_NB7IEg-J8TWVSC86x0PnlNFYAic/edit#heading=h.m83qorel3w3l" target="_blank"><span style="font-weight: 400;">wetland class</span></a><span style="font-weight: 400;">, watershed, and </span><a id="conditionClassLink" href="https://docs.google.com/document/d/1M1BZ4K61fVmA9pe_NB7IEg-J8TWVSC86x0PnlNFYAic/edit#heading=h.1vtndqsngase" target="_blank"><span style="font-weight: 400;">condition class</span></a><span style="font-weight: 400;">. For example, you could obtain a list of all playa wetlands in the Jordan watershed that were considered reference condition or you could obtain a list of all species known from wet meadows in montane valleys. Last, you can use the Select features by polygon tool (upper left under the compass) to generate a list of sites that fall within a polygon you draw on the map.</span></p>
+          
+          <span style="font-weight: 400;">Click on the three horizontal bars on the upper left to start exploring Utah&rsquo;s wetlands.</span></li>
+          <p></p><span style="font-weight: 400;">Please contact </span><a href="mailto:dmenuz@utah.gov"><span style="font-weight: 400;">Diane Menuz</span></a><span style="font-weight: 400;"> (801-538-7436) with questions or if you are interested in contributing data.</span></li>
+      </p>
+          <!-- <p><span style="font-weight: 400;">The Wetland Plant Application is a tool that allows users to query, view, and download plant community composition data from Utah&rsquo;s wetlands. Some potential uses of the data include evaluating threats posed by noxious weed species, developing watershed-based species lists to ensure that regionally appropriate species are used in restoration activities, and identifying reference sites to use when setting mitigation standards. Data can also be used to support research on Utah&rsquo;s wetlands to better understand these systems.</span></p>
+<p><span style="font-weight: 400;">Each site is linked to a list of plant species observed at the site and their associated percent cover, using scientific and common names from </span><a href="https://plants.sc.egov.usda.gov" target="_blank"><span style="font-weight: 400;">USDA Plants</span></a><span style="font-weight: 400;">. Plant data were collected by multiple organizations using a variety of methods. Wetlands for the sake of this application include any system considered to be wetland by the contributing organizations and include features such as aquatic beds and unvegetated mudflats and playas that would not meet the U.S. Army Corps of Engineers definition of wetland. Some privately owned sites are only discoverable through queries. These sites are not visible on the map, but do show up in query results. If you click on one of these sites in the table, you will be taken to a random location within the vicinity of the actual site. Though only data from reputable sources was included in this application, we make no guarantees about the accuracy of plant identification.</span></p>
+<p><span style="font-weight: 400;">Data can be queried in three main ways. First, you can click on individual sites to see site attributes and associated plant species. Second, you can query by species to see a list of sites where a particular species was found. Last, you can query by site attributes to either obtain a list of sites having those attributes or a summary list of all species found at sites having those attributes. Data can be queried by major ecoregion, </span><a id="wetlandClassLink" href="https://docs.google.com/document/d/1M1BZ4K61fVmA9pe_NB7IEg-J8TWVSC86x0PnlNFYAic/edit#heading=h.m83qorel3w3l" target="_blank"><span style="font-weight: 400;">wetland class</span></a><span style="font-weight: 400;">, watershed, and </span><a id="conditionClassLink" href="https://docs.google.com/document/d/1M1BZ4K61fVmA9pe_NB7IEg-J8TWVSC86x0PnlNFYAic/edit#heading=h.1vtndqsngase" target="_blank"><span style="font-weight: 400;">condition class</span></a><span style="font-weight: 400;">. You could obtain a list of all playa wetlands in the Jordan watershed that were considered reference condition or you could obtain a list of all species known from wet meadows in montane valleys.</span></p>
+<p><span style="font-weight: 400;">Contact </span><a href="mailto:dmenuz@utah.gov"><span style="font-weight: 400;">Diane Menuz</span></a><span style="font-weight: 400;"> (801-538-7436) with questions or if you are interested in contributing data.</span></p> -->
+        </div>
+     </div>
+    </div>
+
+        <!-- Panel - Glossary -->
+
+        <div id="panelGlossary" class="panel collapse">
+          <div id="headingGlossary" class="panel-heading" role="tab">
+            <div class="panel-title">
+              <a class="panel-toggle" role="button" data-toggle="collapse" href="#collapseGlossary"  aria-expanded="false" aria-controls="collapseGlossary"><span class="glyphicon glyphicon-list" aria-hidden="true"></span><span class="panel-label">Explanation</span></a> 
+              <a class="panel-close" role="button" data-toggle="collapse" tabindex="0" href="#panelGlossary"><span class="esri-icon esri-icon-close" aria-hidden="true"></span></a>  
+            </div>
+          </div>
+          <div id="collapseGlossary" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingGlossary">
+            <div class="panel-body">
+              <h4><strong>WETLAND CLASSIFICATION</strong></h4>
+    
+              <p><span style="font-weight: 400;">Wetland types are presented by </span><a href="https://www.epa.gov/eco-research/ecoregions" target="_blank"><span style="font-weight: 400;">ecoregion</span></a><span style="font-weight: 400;">, areas where ecosystems are generally similar based on patterns in geology, landforms, soils, vegetation, climate, land use, wildlife, and hydrology. Ecoregions are hierarchically arranged at four levels with 2 level I ecoregions, 3 level II ecoregions, 7 level III ecoregions, and 36 level IV ecoregions in Utah. Three level III ecoregions make up more than 95% of Utah, including the Central Basin and Range, the Wasatch and Uinta Mountains, and the Colorado Plateau. The majority of wetland survey data contributed to this application to date have been from the Central Basin and Range and Wasatch and Uinta Mountains ecoregions, so wetland classes for now focus on those two ecoregions only. Within each ecoregion, wetland sites were further classified based on factors such as dominant overstory life form (herbaceous, shrub, tree), water regime, and landscape position. For the Wasatch and Uinta Mountains, we also use level IV ecoregions as a factor in the classification. Sites with substantial mixing of two wetland types are assigned both a primary and secondary wetland type.</span></p>
+              <p>&nbsp;</p>
+<h4><strong>Central Basin and Range</strong></h4>
+
+<p>Data were used from 204 sites surveyed in the Central Basin and Range by the UGS between 2013 and 2018 to develop seven initial wetland classes that take into account dominant overstory life form, water regime, salinity tolerance, and landscape position. More information about the development of the Central Basin and Range classes can be found <a href="https://geodata.geology.utah.gov/pages/view.php?ref=63232" target="_blank">here</a>. It is anticipated that these wetland classes will be modified in 2020 at the conclusion of a two-year study of wetlands in the Central Basin and Range of Utah.</p>
+<table border="1">
+<tbody>
+<tr>
+<td>
+<p><strong>Wetland Class</strong></p>
+</td>
+<td>
+<p><strong>Description</strong></p>
+</td>
+</tr>
+<tr>
+<td>
+<p>shallow water</p>
+</td>
+<td>
+<p>Wetland consistently flooded with shallow water &lt;1-m deep and very sparsely vegetated (&le;2% cover).</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>aquatic bed</p>
+</td>
+<td>
+<p>Wetland dominated by submergent or floating aquatic vegetation, typically with &le;10% cover of emergents.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>emergent marsh</p>
+</td>
+<td>
+<p>Wetland dominated by emergent forbs and graminoids and frequently inundated with water &ge;15 cm in depth, and typically saturated when not inundated, though water depths may vary throughout the year depending on climate conditions and management.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>mudflat</p>
+</td>
+<td>
+<p>Wetland dominated by emergent forbs and graminoids and characterized by cycles of inundation and drying from adjacent lakes or artificial impoundments.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>meadow</p>
+</td>
+<td>
+<p>Wetland dominated by emergent forbs and graminoids. Sites frequently supported by high groundwater or shallow inundation of a few centimeters.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>woody wetland</p>
+</td>
+<td>
+<p>Wetland dominated by woody species, typically with &ge;20% woody species cover, and frequently found along streams and rivers.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>playa</p>
+</td>
+<td>
+<p>Wetland with saline soils frequently either sparsely vegetated, dominated by annual species, or dominated by saline-tolerant woody perennials such as <em>Allenrolfea occidentalis</em> (iodinebush).</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h4><strong>Wasatch and Uinta Mountains (including Wyoming Basin)</strong></h4>
+<p><span style="font-weight: 400;">We classified wetlands sites in the Wasatch and Uinta Mountains into ten classes based on dominant overstory life form, water regime, and location within level IV ecoregion. In some cases, a site that falls in one level IV ecoregion may be more similar floristically to sites in a different level IV ecoregion, as was found by UGS&rsquo; analysis of wetland data in the </span><a href="https://geodata.geology.utah.gov/pages/view.php?ref=23769" target="_blank"><span style="font-weight: 400;">Weber watershed</span></a><span style="font-weight: 400;">. These sites will be reclassified to the wetland class that best matches their vegetation communities whenever possible. We included the only site we had from the Wyoming Basin </span><span style="font-weight: 400;">level III ecoregion</span><span style="font-weight: 400;"> in the Wasatch and Uinta Mountains group because it had similar species composition to other sites in the ecoregion.</span></p>
+<p>&nbsp;</p>
+<table border="1">
+<tbody>
+<tr>
+<td>
+<p><strong>Wetland Class</strong></p>
+</td>
+<td>
+<p><strong>Description</strong></p>
+</td>
+<td>
+<p><strong>Level IV Ecoregion(s)</strong></p>
+</td>
+</tr>
+<tr>
+<td>
+<p>aquatic bed</p>
+</td>
+<td>
+<p>Wetland dominated by submergent or floating aquatic vegetation, typically with &le;10% cover of emergents.</p>
+</td>
+<td>
+<p>All ecoregions</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>emergent marsh</p>
+</td>
+<td>
+<p>Wetland dominated by emergent forbs and graminoids and frequently inundated with water &ge;15 cm in depth.</p>
+</td>
+<td>
+<p>All ecoregions</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>wet meadow (mountain valley)</p>
+</td>
+<td rowspan="4">
+<p>Wetland dominated by emergent forbs and graminoids, typically with &le;10% cover of woody species. Sites frequently supported by high groundwater or shallow inundation of a few centimeters.</p>
+</td>
+<td>
+<p>Mountain Valleys</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>wet meadow (foothill)</p>
+</td>
+<td>
+<p>Semiarid Foothills, Foothill Shrublands and Low Mountains</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>wet meadow (montane)</p>
+</td>
+<td>
+<p>Wasatch Montane Zone</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>wet meadow (subalpine)</p>
+</td>
+<td>
+<p>Mid-Elevation Uinta Mountains, Uinta Subalpine Forests, Alpine Zone</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>shrubland (foothills)</p>
+</td>
+<td rowspan="3">
+<p>Wetland dominated by shrubs, typically with &ge;25% cover of shrubs and higher shrub cover than tree cover.</p>
+</td>
+<td>
+<p>Mountain Valleys, Semiarid Foothills</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>shrubland (montane)</p>
+</td>
+<td>
+<p>Wasatch Montane Zone</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>shrubland (subalpine)</p>
+</td>
+<td>
+<p>Mid-Elevation Uinta Mountains, Uinta Subalpine Forests, Alpine Zone</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>woodland</p>
+</td>
+<td>
+<p>Wetland dominated by tree species, typically with &ge;30% cover of trees.</p>
+</td>
+<td>
+<p>All ecoregions</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h4><strong>VEGETATION CONDITION</strong></h4>
+<p>Sites were assigned vegetation condition classes based solely on plant community composition data. &ldquo;High quality reference&rdquo; sites are sites with the most intact plant communities for a particular wetland class, regardless of the degree of landscape disturbance adjacent to these sites or whether other stressors are present. Plant community intactness was evaluated using species-specific conservatism values (C-values). C-values between 1 and 10 are assigned to species based on their association with disturbance through a combination of best professional judgment, literature review, and/or field observations. Low values indicate that species are usually found at disturbed sites, high values indicate that species are associated with pristine sites, and values in the middle indicate that species may be found equally at either type of site. All non-native species are assigned a C-value of 0. We used C-values to calculate cover-weighted mean C for each site, which is the average C-value for all species at a site, weighted by the cover of each species.</p>
+<p>&ldquo;High quality reference&rdquo; sites are those sites with a cover-weighted mean C (CW Mean C) value within the top 25% of sites for the wetland class, using all data available in May 2020. Sites with >25% cover by species lacking C-values were classified as “not enough data”. We did not classify any sites as reference for aquatic bed wetlands, sites with no vegetation, or wetland classes having &lt;10 sites; these sites were all classified as “not enough data.” Sites with two wetland types were considered reference if they met or exceeded the cover-weighted mean C thresholds for both types.</p>
+            </div>
+         </div>
+        </div>
+
+            <!-- Basemaps Panel -->
+            <div id="panelBasemaps" class="panel collapse">
+                <div id="headingBasemaps" class="panel-heading" role="tab">
+                    <div class="panel-title">
+                        <a class="panel-toggle collapsed" role="button" data-toggle="collapse" href="#collapseBasemaps" aria-expanded="false" aria-controls="collapseBasemaps"><span class="glyphicon glyphicon-th-large" aria-hidden="true"></span><span class="panel-label">Basemaps</span></a>
+                        <a class="panel-close" role="button" data-toggle="collapse" data-target="#panelBasemaps"><span class="esri-icon esri-icon-close" aria-hidden="true"></span></a>
+                    </div>
+                </div>
+                <div id="collapseBasemaps" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingBasemaps">
+                    <div class="panel-body">
+                      <div id="baseList"></div>
+                        <!-- <select id="selectBasemapPanel" class="form-control">
+                            <option value="irBase">Infrared</option>
+                            <option value="satellite" data-vector="satellite" selected="">Satellite</option>
+                            <option value="hybrid" data-vector="hybrid">Hybrid</option>
+                            <option value="topo" data-vector="topo-vector">Topographic</option>
+                            <option value="dark-gray" data-vector="dark-gray-vector">Dark Gray</option>
+                            <option value="osm" data-vector="osm">Open Street Map</option>
+
+                        </select> -->
+                    </div>
+                </div>
+            </div>
+
+
+
+        <!-- Panel - Query Sites -->
+
+        <div id="panelQuery" class="panel collapse">
+          <div id="headingQuery" class="panel-heading" role="tab">
+            <div class="panel-title">
+              <a class="panel-toggle collapsed" role="button" data-toggle="collapse" href="#collapseQuery"  aria-expanded="false" aria-controls="collapseQuery"><span class="esri-icon esri-icon-filter" aria-hidden="true"></span><span class="panel-label">Search Sites by Attributes</span></a> 
+              <a class="panel-close" role="button" data-toggle="collapse" tabindex="0" href="#panelQuery"><span class="esri-icon esri-icon-close" aria-hidden="true"></span></a>  
+            </div>
+          </div>
+          <div id="collapseQuery" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingQuery">
+            <div class="panel-body">
+              <!-- <div class="dds"> -->
+                Select Ecoregional Group
+                <br><select id="ecoLevel"></select>
+                <br>Select Wetland Type
+                <br><select id="wetlandType"><option selected>All</option></select>
+                <br>Select Watershed (HUC8)
+                <br><select id="waterShed"><option selected>All</option></select>
+                <!-- <br>Select HGM Class
+                <br><select id="hgmClass"><option selected>All</option></select> -->
+                <br>Select Wetland Condition
+                <br><select id="wetlandCondition"><option selected>All</option></select>
+                <!-- </div> -->
+                <br>
+                <br><span class="info2" id="featureCount2"></span>
+                <br><button class="button2" id="queryFunction">Open Table</button>
+                <button class="button2" id="clrButton">Clear</button>
+                <button class="button2" id="speciesSummary">Summary of Species</button>
+
+
+            </div>
+         </div>
+        </div>
+
+
+     <!-- Panel - Query Species -->
+
+     <div id="panelQuerySpecies" class="panel collapse">
+        <div id="headingQuerySpecies" class="panel-heading" role="tab">
+          <div class="panel-title">
+            <a class="panel-toggle collapsed" role="button" data-toggle="collapse" href="#collapseQuerySpecies"  aria-expanded="false" aria-controls="collapseQuerySpecies"><span class="esri-icon esri-icon-filter" aria-hidden="true"></span><span class="panel-label">Search Sites by Species</span></a> 
+            <a class="panel-close" role="button" data-toggle="collapse" tabindex="0" href="#panelQuerySpecies"><span class="esri-icon esri-icon-close" aria-hidden="true"></span></a>  
+          </div>
+        </div>
+        <div id="collapseQuerySpecies" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingQuery">
+          <div class="panel-body">
+            <!-- <div class="dds"> -->
+              <!-- <br><select id="speciesName"></select> -->
+              <br>Species Scientific Name: <input class="awesomplete" type="text" id="speciesText">
+              <br>
+              <br><button class="button2" id="querySpeciesFunction">Show Sites</button>
+              <button class="button2" id="clrSpeciesButton">Clear</button>
+              <br>
+
+          </div>
+       </div>
+      </div>   
+
+
+    <!-- Panel - Legend -->
+
+    <div id="panelLegend" class="panel collapse">
+      <div id="headingLegend" class="panel-heading" role="tab">
+        <div class="panel-title">
+          <a class="panel-toggle" role="button" data-toggle="collapse" href="#collapseLegend" aria-expanded="false" aria-controls="collapseLegend"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span><span class="panel-label">Legend</span></a> 
+          <a class="panel-close" role="button" data-toggle="collapse" tabindex="0" href="#panelLegend"><span class="esri-icon esri-icon-close" aria-hidden="true"></span></a> 
+        </div>
+      </div>
+      <div id="collapseLegend" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingLegend">
+        <div class="panel-body">            
+          <div id="legendDiv"></div>
+        </div>
+      </div>
+    </div>
+
+    
+
+  </div>
+
+  <!-- /.calcite-panels -->
+
+
+
+  <script type="text/javascript">
+    var dojoConfig = {
+      packages: [{
+        name: "bootstrap",
+        location: "https://esri.github.io/calcite-maps/dist/vendor/dojo-bootstrap"
+      },
+      {
+        name: "calcite-maps",
+        location: "https://esri.github.io/calcite-maps/dist/js/dojo"
+        
+      }]
+    };
+  </script>
+
+  <!-- ArcGIS JS 4 -->
+  <script src="https://js.arcgis.com/4.17/"></script>
+
+  <script src="map2.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+</body>
+</html>
