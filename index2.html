@@ -264,18 +264,21 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <li><a role="menuitem" tabindex="0" data-target="#panelInfo" aria-haspopup="true"><span class="glyphicon glyphicon-info-sign"></span> About</a></li>
         <li><a role="menuitem" tabindex="0" href="#" data-target="#panelBasemaps" aria-haspopup="true"><span class="esri-icon-basemap"></span> Basemaps</a></li>
         <!-- <li><a role="menuitem" tabindex="0" href="#" data-target="#panelLegend" aria-haspopup="true"><span class="glyphicon glyphicon-list-alt"></span> Legend</a></li> -->
-        <li><a role="menuitem" tabindex="0" href="#" data-target="#panelQuery" aria-haspopup="true"><span class="esri-icon-filter"></span> Search Sites by Attributes</a></li>
-        <li><a role="menuitem" tabindex="0" href="#" data-target="#panelQuerySpecies" aria-haspopup="true"><span class="esri-icon-filter"></span> Search Sites by Species</a></li>
-        <li><a role="menuitem" tabindex="0" href="#" data-target="#panelGlossary" aria-haspopup="true"><span class="glyphicon glyphicon-list"></span> Explanation</a></li>
+        <li><a role="menuitem" tabindex="0" href="#" data-target="#calciteLocate" aria-haspopup="true"><span class="glyphicon glyphicon-map-marker"></span> Locate</a></li>
+        <li><a role="menuitem" tabindex="0" data-target="#panelData" aria-haspopup="true"><span class="esri-icon-table"></span> Database Contents</a></li>
+        <li><a role="menuitem" tabindex="0" data-target="#panelDownload" aria-haspopup="true"><span class="esri-icon-download"></span> Download Data</a></li>
+        <li><a role="menuitem" tabindex="0" data-target="#panelDisc" aria-haspopup="true"><span class="esri-icon-error2"></span> Disclaimer</a></li>
+        <li><a role="menuitem" tabindex="0" data-target="#panelRef" aria-haspopup="true"><span class="esri-icon-group"></span> References</a></li>
+
         <li><a role="menuitem" tabindex="0" href="#" id="calciteToggleNavbar" aria-haspopup="true"><span class="glyphicon glyphicon-fullscreen"></span> Full Map</a></li>
       </ul>
     </div>
     <!-- Title -->
     <div class="calcite-title calcite-overflow-hidden">
-      <span class="calcite-title-main">Wetland Plant Application</span>
+      <span class="calcite-title-main">Utah Geological Survey</span>
       <span class="calcite-title-divider hidden-xs"></span>
-      <span class="calcite-title-sub hidden-xs">Utah Geological Survey</span>
-    </div>
+      <span class="calcite-title-sub hidden-xs">Utah Wetlands</span>
+  </div>
     <!-- Nav -->
     <ul class="nav navbar-nav calcite-nav">
       <li>
@@ -640,26 +643,30 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
        </div>
       </div>   
 
+<!-- Panel - Download -->
 
-    <!-- Panel - Legend -->
-
-    <div id="panelLegend" class="panel collapse">
-      <div id="headingLegend" class="panel-heading" role="tab">
-        <div class="panel-title">
-          <a class="panel-toggle" role="button" data-toggle="collapse" href="#collapseLegend" aria-expanded="false" aria-controls="collapseLegend"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span><span class="panel-label">Legend</span></a> 
-          <a class="panel-close" role="button" data-toggle="collapse" tabindex="0" href="#panelLegend"><span class="esri-icon esri-icon-close" aria-hidden="true"></span></a> 
-        </div>
+<div id="panelDownload" class="panel collapse">
+  <div id="headingDownload" class="panel-heading" role="tab">
+      <div class="panel-title">
+          <a class="panel-toggle" role="button" data-toggle="collapse" href="#collapseDownload" aria-expanded="true" aria-controls="collapseDownload"><span class="esri-icon-download" aria-hidden="true"></span><span class="panel-label">Download Data</span></a>
+          <a class="panel-close" role="button" data-toggle="collapse" tabindex="0" href="#panelDownload"><span class="esri-icon esri-icon-close" aria-hidden="true"></span></a>
       </div>
-      <div id="collapseLegend" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingLegend">
-        <div class="panel-body">            
-          <div id="legendDiv"></div>
-        </div>
-      </div>
-    </div>
-
-    
-
   </div>
+  <div id="collapseData" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingData">
+      <div class="panel-body">
+          <div id="topbar">
+              <p>Turn on the layers you wish to download. (Only the Wetland Mapping Layers are downloadable)</p>
+              <p><button class="action-button esri-icon-polygon" id="polygonButton" type="button"
+                title="Draw polygon"></button> Click to draw a polygon over the area you would like to download.</p>
+              <p><button class="action-button esri-icon-down-arrow-circled" id="DownloadButton" type="button"
+                title="Download"></button> Click to start the download of the area.</p>
+              <!-- <button class="action-button esri-icon-radio-unchecked" id="circleButton" type="button"
+                title="Draw circle"></button> -->
+              <p><button class="action-button esri-icon-trash" id="resetBtn" type="button" title="Clear graphics"></button> Reset the selected polygon area.</p>
+            </div>
+      </div>
+  </div>
+</div>
 
   <!-- /.calcite-panels -->
 
