@@ -71,7 +71,7 @@ require([
 
     var gpUrl ="https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/WetlandsDownload/GPServer/ExtractWetlandsData";
 
-
+    //let graphic = {};
             var tempGraphic = null;          
             let editGraphic;
             // GraphicsLayer to hold graphics created via sketch view model
@@ -765,52 +765,54 @@ require([
 
     // SketchView functions
     mapView.when(function() {
-        console.log("Sketching");
         // create a new sketch view model
         const sketchViewModel = new SketchViewModel({
             view: mapView,
             layer: tempGraphicsLayer,
             polygonSymbol: {
-                type: "simple-fill", // autocasts as new SimpleFillSymbol()
-                color: "rgba(138,43,226, 0.8)",
-                style: "solid",
+                type: "simple-fill",
+                color: [52, 229, 235, 0.8],
                 outline: {
-                    color: "white",
-                    width: 1
+                  color: "gray",
+                  width: 0
                 }
-            }
+              }
         });
 
         setUpClickHandler();
 
-        // Listen to create-complete event to add a newly created graphic to view
+        // Listen to create event to add a newly created graphic to view
         sketchViewModel.on("create", addGraphic);
 
         // Listen the sketchViewModel's update-complete and update-cancel events
-        sketchViewModel.on("update-complete", updateGraphic);
-        sketchViewModel.on("update-cancel", updateGraphic);
+        sketchViewModel.on("update", updateGraphic);
 
         //*************************************************************
         // called when sketchViewModel's create-complete event is fired.
         //*************************************************************
         function addGraphic(event) {
             console.log("Add Graphic");
+            console.log(sketchViewModel);
+            console.log(event);
+            if (event.state === "complete") {
+                
+              
             // Create a new graphic and set its geometry to
             // `create-complete` event geometry.
             graphic = new Graphic({
-                geometry: event.geometry,
+                geometry: event.graphic.geometry,
                 symbol: {
-                    type: "simple-fill", // autocasts as new SimpleFillSymbol()
-                    color: "rgba(138,43,226, 0.8)",
-                    style: "solid",
+                    type: "simple-fill",
+                    color: [52, 229, 235, 0.8],
                     outline: {
-                        color: "white",
-                        width: 1
+                      color: "gray",
+                      width: 0
                     }
-                }
+                  }
             });
             console.log(graphic);
             tempGraphicsLayer.add(graphic);
+        }
         }
 
         //***************************************************************
@@ -832,6 +834,7 @@ require([
         // ************************************************************************************
         function setUpClickHandler() {
             mapView.on("click", function(event) {
+                console.log("Click Handler" + event);
                 mapView.hitTest(event).then(function(response) {
                     var results = response.results;
                     // Found a valid graphic
@@ -879,6 +882,7 @@ require([
             var params = {
                 "Area_of_Interest": featureSet,
             };
+            console.log(params);
 
             gp.submitJob(params).then(poop);
 
