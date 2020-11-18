@@ -791,9 +791,7 @@ require([
         // called when sketchViewModel's create-complete event is fired.
         //*************************************************************
         function addGraphic(event) {
-            console.log("Add Graphic");
-            console.log(sketchViewModel);
-            console.log(event);
+
             if (event.state === "complete") {
                 
               
@@ -810,7 +808,8 @@ require([
                     }
                   }
             });
-            console.log(graphic);
+            console.log("1228", graphic);
+            console.log("1229", sketchViewModel);
             tempGraphicsLayer.add(graphic);
         }
         }
@@ -834,7 +833,7 @@ require([
         // ************************************************************************************
         function setUpClickHandler() {
             mapView.on("click", function(event) {
-                console.log("Click Handler" + event);
+                console.log("Click Handler", event);
                 mapView.hitTest(event).then(function(response) {
                     var results = response.results;
                     // Found a valid graphic
@@ -870,33 +869,74 @@ require([
         // activate the GP Download
         //***************************************
         var downloadButton = document.getElementById("DownloadButton");
+        var modal = document.getElementById("myModal");
+        var span = document.getElementsByClassName("close")[0];
         downloadButton.onclick = function() {
+            modal.style.display = "block";
             // set the sketch to create a polygon geometry
             var inputGraphicContainer = [];
             inputGraphicContainer.push(graphic);
             var featureSet = new FeatureSet();
             featureSet.features = inputGraphicContainer;
-            console.log(inputGraphicContainer);
-            console.log(featureSet);
-            console.log(graphic);
+            console.log("1294", inputGraphicContainer);
+            console.log("1295", featureSet);
+            console.log("1296", graphic);
             var params = {
                 "Area_of_Interest": featureSet,
             };
-            console.log(params);
+            console.log("1301", params);
 
-            gp.submitJob(params).then(poop);
+            gp.submitJob(params).then(function(jobInfo){
 
-            function poop(rslt) {
-                console.log(rslt);
-                var test1 = "https://webmaps.geology.utah.gov/arcgis/rest/directories/arcgisjobs/wetlands/wetlandsdownload_gpserver/" + rslt.jobId + "/scratch/wetlands_download.zip";
-                var downloadFrame = document.createElement("iframe");
-                console.log(downloadFrame);
-                downloadFrame.setAttribute('src', test1);
-                downloadFrame.setAttribute('class', "screenReaderText");
-                document.body.appendChild(downloadFrame);
-                console.log(test1);
-            }
+
+                var jobid = jobInfo.jobId;
+
+                    var options = {
+                        interval: 1500,
+                        statusCallback: function(j) {
+                        console.log("Job Status: ", j.jobStatus);
+                        var waiting = j.jobStatus;
+                        document.getElementsByClassName("modal-content")[0].innerHTML = '<b>Please wait while we process your file.</b> <br>';
+                        }
+                    };
+
+                    gp.waitForJobCompletion(jobid, options).then(function(rslt) {
+
+                        //function downloadFile(rslt) {
+                            console.log("1306", rslt);
+                            console.log(rslt.jobStatus);
+                            var test1 = "https://webmaps.geology.utah.gov/arcgis/rest/directories/arcgisjobs/wetlands/wetlandsdownload_gpserver/" + rslt.jobId + "/scratch/wetlands_download.zip";
+
+                            console.log("1319", test1);
+                
+                            document.getElementsByClassName("modal-content")[0].innerHTML = '<b><a href="' + test1 + '">Click to download your file.</a></b> <br>';
+                
+                
+                            //modal.style.display = "block";
+                        ///}
+                        
+                    });
+                    modal.style.display = "block";     
+             });
+
         };
+
+    
+
+
+
+
+        // When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+    modal.style.display = "none";
+  }
+  
+  // When the user clicks anywhere outside of the modal, close it
+  window.onclick = function(event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  }
 
 
 
@@ -905,7 +945,8 @@ require([
         // reset button
         //**************
         document.getElementById("resetBtn").onclick = function() {
-            sketchViewModel.reset();
+            //sketchViewModel.reset();
+            tempGraphic = null;
             tempGraphicsLayer.removeAll();
             setActiveButton();
         };
