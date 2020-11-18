@@ -302,7 +302,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <li><a role="menuitem" tabindex="0" data-target="#panelInfo" aria-haspopup="true"><span class="glyphicon glyphicon-info-sign"></span> About</a></li>
         <li><a role="menuitem" tabindex="0" href="#" data-target="#panelBasemaps" aria-haspopup="true"><span class="esri-icon-basemap"></span> Basemaps</a></li>
         <!-- <li><a role="menuitem" tabindex="0" href="#" data-target="#panelLegend" aria-haspopup="true"><span class="glyphicon glyphicon-list-alt"></span> Legend</a></li> -->
-        <li><a role="menuitem" tabindex="0" href="#" data-target="#calciteLocate" aria-haspopup="true"><span class="glyphicon glyphicon-map-marker"></span> Locate</a></li>
+        <!-- <li><a role="menuitem" tabindex="0" href="#" data-target="#calciteLocate" aria-haspopup="true"><span class="glyphicon glyphicon-map-marker"></span> Locate</a></li> -->
         <li><a role="menuitem" tabindex="0" data-target="#panelData" aria-haspopup="true"><span class="esri-icon-table"></span> Database Contents</a></li>
         <li><a role="menuitem" tabindex="0" data-target="#panelDownload" aria-haspopup="true"><span class="esri-icon-download"></span> Download Data</a></li>
         <li><a role="menuitem" tabindex="0" data-target="#panelDisc" aria-haspopup="true"><span class="esri-icon-error2"></span> Disclaimer</a></li>
@@ -335,15 +335,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div id="mapViewDiv">  
     
 
-        <div id="gridDisplay">
-          <div id="drag"></div>
-          
-            <span class="info" id="featureCount"></span>
-            <div id="downloadX"></div>
-            <!-- <span class="downloadX" id ="downloadCSV"></span> -->
-            <div id='removeX'></div>
-            <div id="grid"></div>
-          </div>
+
         </div>
         <div
         id="select-by-polygon"
@@ -376,226 +368,59 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
       <div id="collapseInfo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingInfo">
         <div class="panel-body">
-          <p><p style="text-align: justify;"><span style="font-weight: 400;">The Wetland Plant Application is a tool that allows users to query, view, and download plant community composition data from Utah&rsquo;s wetlands. Some potential uses of the data include evaluating threats posed by noxious weed species, developing watershed-based species lists to ensure that regionally appropriate species are used in restoration activities, and identifying reference sites to use when setting mitigation standards. Data can also be used to support research on Utah&rsquo;s wetlands to better understand these systems.</span></p>
-          <p style="text-align: justify;"><span style="font-weight: 400;">Each site is linked to a list of plant species observed at the site and their associated percent cover, using scientific and common names from </span><a href="https://plants.sc.egov.usda.gov" target="_blank"><span style="font-weight: 400;">USDA Plants</span></a><span style="font-weight: 400;">. Plant data were collected by multiple organizations using a variety of methods. Wetlands for the sake of this application include any system considered to be wetland by the contributing organizations and include features such as aquatic beds and unvegetated mudflats and playas that may not meet regulatory definitions of wetland. Some privately owned sites are only discoverable through queries. These sites are not visible on the map, but do show up in query results. If you click on one of these sites in the table, you will be taken to a random location within the vicinity of the actual site. Though only data from reputable sources was included in this application, we make no guarantees about the accuracy of plant identification.</span></p>
-          <p style="text-align: justify;"><span style="font-weight: 400;">Data can be queried in four main ways. First, you can click on individual sites to see site attributes and associated plant species. Second, you can query by species to see a list of sites where a particular species was found. Third, you can query by site attributes to either obtain a list of sites having those attributes or a summary list of all species found at sites having those attributes. Data can be queried by major ecoregion, </span><a id="wetlandClassLink" href="https://docs.google.com/document/d/1M1BZ4K61fVmA9pe_NB7IEg-J8TWVSC86x0PnlNFYAic/edit#heading=h.m83qorel3w3l" target="_blank"><span style="font-weight: 400;">wetland class</span></a><span style="font-weight: 400;">, watershed, and </span><a id="conditionClassLink" href="https://docs.google.com/document/d/1M1BZ4K61fVmA9pe_NB7IEg-J8TWVSC86x0PnlNFYAic/edit#heading=h.1vtndqsngase" target="_blank"><span style="font-weight: 400;">condition class</span></a><span style="font-weight: 400;">. For example, you could obtain a list of all playa wetlands in the Jordan watershed that were considered reference condition or you could obtain a list of all species known from wet meadows in montane valleys. Last, you can use the Select features by polygon tool (upper left under the compass) to generate a list of sites that fall within a polygon you draw on the map.</span></p>
-          
-          <span style="font-weight: 400;">Click on the three horizontal bars on the upper left to start exploring Utah&rsquo;s wetlands.</span></li>
-          <p></p><span style="font-weight: 400;">Please contact </span><a href="mailto:dmenuz@utah.gov"><span style="font-weight: 400;">Diane Menuz</span></a><span style="font-weight: 400;"> (801-538-7436) with questions or if you are interested in contributing data.</span></li>
-      </p>
-          <!-- <p><span style="font-weight: 400;">The Wetland Plant Application is a tool that allows users to query, view, and download plant community composition data from Utah&rsquo;s wetlands. Some potential uses of the data include evaluating threats posed by noxious weed species, developing watershed-based species lists to ensure that regionally appropriate species are used in restoration activities, and identifying reference sites to use when setting mitigation standards. Data can also be used to support research on Utah&rsquo;s wetlands to better understand these systems.</span></p>
-<p><span style="font-weight: 400;">Each site is linked to a list of plant species observed at the site and their associated percent cover, using scientific and common names from </span><a href="https://plants.sc.egov.usda.gov" target="_blank"><span style="font-weight: 400;">USDA Plants</span></a><span style="font-weight: 400;">. Plant data were collected by multiple organizations using a variety of methods. Wetlands for the sake of this application include any system considered to be wetland by the contributing organizations and include features such as aquatic beds and unvegetated mudflats and playas that would not meet the U.S. Army Corps of Engineers definition of wetland. Some privately owned sites are only discoverable through queries. These sites are not visible on the map, but do show up in query results. If you click on one of these sites in the table, you will be taken to a random location within the vicinity of the actual site. Though only data from reputable sources was included in this application, we make no guarantees about the accuracy of plant identification.</span></p>
-<p><span style="font-weight: 400;">Data can be queried in three main ways. First, you can click on individual sites to see site attributes and associated plant species. Second, you can query by species to see a list of sites where a particular species was found. Last, you can query by site attributes to either obtain a list of sites having those attributes or a summary list of all species found at sites having those attributes. Data can be queried by major ecoregion, </span><a id="wetlandClassLink" href="https://docs.google.com/document/d/1M1BZ4K61fVmA9pe_NB7IEg-J8TWVSC86x0PnlNFYAic/edit#heading=h.m83qorel3w3l" target="_blank"><span style="font-weight: 400;">wetland class</span></a><span style="font-weight: 400;">, watershed, and </span><a id="conditionClassLink" href="https://docs.google.com/document/d/1M1BZ4K61fVmA9pe_NB7IEg-J8TWVSC86x0PnlNFYAic/edit#heading=h.1vtndqsngase" target="_blank"><span style="font-weight: 400;">condition class</span></a><span style="font-weight: 400;">. You could obtain a list of all playa wetlands in the Jordan watershed that were considered reference condition or you could obtain a list of all species known from wet meadows in montane valleys.</span></p>
-<p><span style="font-weight: 400;">Contact </span><a href="mailto:dmenuz@utah.gov"><span style="font-weight: 400;">Diane Menuz</span></a><span style="font-weight: 400;"> (801-538-7436) with questions or if you are interested in contributing data.</span></p> -->
-        </div>
+          <p><strong>UTAH WETLANDS</strong></p>
+          <p align="justify"> The Utah Geological Survey (UGS) is part of an ongoing effort to develop a comprehensive, statewide wetland mapping program with the goal of updating spatial data for wetland resources across the state. All Utah wetlands are mapped to National Wetland Inventory (NWI) standards developed by the U.S. Fish and Wildlife Service; however, mapping is not meant to be used as the basis for a jurisdictional wetland delineation. Riparian spatial data are also available for parts of the state where integrated riparian-wetland mapping has occurred. This map contains the most up-to-date NWI data for the state as well as additional information on wetland resources in the state, including links to reports from wetland field assessment studies and distributional data for sensitive amphibian species. See Database Contents for more information on the data in this map.
+          </p>
+          <br>
+          <p><strong>Contact</strong>
+          <p><ul>
+              <li><a href="mailto:dmenuz@utah.gov">Diane Menuz </a>- 801.538.7436</li>
+              </ul></p>
+          <br>
+          <p><strong>Links to Related Information</strong></p>
+          <p><ul>
+              <li><a href="https://geology.utah.gov/resources/wetlands/"><span>Utah Wetland Information Center</span></a><span> for information on wetlands and UGS wetland research</span></li>
+              <li><span><a href="https://www.fws.gov/wetlands/Data/Data-Download.html">National Wetlands Inventory</a> for downloads of the original NWI data</span></li>
+              <li><span><a href="http://www.spk.usace.army.mil/Missions/Regulatory/Contacts/Contact-Your-Local-Office/">U.S. Army Corps of Engineers District Offices</a> for information about wetland regulations and jurisdictional wetland delineations</span></li>
+              </ul></p>
+      </div>
      </div>
     </div>
 
-        <!-- Panel - Glossary -->
+<!-- Panel - Database -->
 
-        <div id="panelGlossary" class="panel collapse">
-          <div id="headingGlossary" class="panel-heading" role="tab">
-            <div class="panel-title">
-              <a class="panel-toggle" role="button" data-toggle="collapse" href="#collapseGlossary"  aria-expanded="false" aria-controls="collapseGlossary"><span class="glyphicon glyphicon-list" aria-hidden="true"></span><span class="panel-label">Explanation</span></a> 
-              <a class="panel-close" role="button" data-toggle="collapse" tabindex="0" href="#panelGlossary"><span class="esri-icon esri-icon-close" aria-hidden="true"></span></a>  
-            </div>
-          </div>
-          <div id="collapseGlossary" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingGlossary">
-            <div class="panel-body">
-              <h4><strong>WETLAND CLASSIFICATION</strong></h4>
-    
-              <p><span style="font-weight: 400;">Wetland types are presented by </span><a href="https://www.epa.gov/eco-research/ecoregions" target="_blank"><span style="font-weight: 400;">ecoregion</span></a><span style="font-weight: 400;">, areas where ecosystems are generally similar based on patterns in geology, landforms, soils, vegetation, climate, land use, wildlife, and hydrology. Ecoregions are hierarchically arranged at four levels with 2 level I ecoregions, 3 level II ecoregions, 7 level III ecoregions, and 36 level IV ecoregions in Utah. Three level III ecoregions make up more than 95% of Utah, including the Central Basin and Range, the Wasatch and Uinta Mountains, and the Colorado Plateau. The majority of wetland survey data contributed to this application to date have been from the Central Basin and Range and Wasatch and Uinta Mountains ecoregions, so wetland classes for now focus on those two ecoregions only. Within each ecoregion, wetland sites were further classified based on factors such as dominant overstory life form (herbaceous, shrub, tree), water regime, and landscape position. For the Wasatch and Uinta Mountains, we also use level IV ecoregions as a factor in the classification. Sites with substantial mixing of two wetland types are assigned both a primary and secondary wetland type.</span></p>
-              <p>&nbsp;</p>
-<h4><strong>Central Basin and Range</strong></h4>
-
-<p>Data were used from 204 sites surveyed in the Central Basin and Range by the UGS between 2013 and 2018 to develop seven initial wetland classes that take into account dominant overstory life form, water regime, salinity tolerance, and landscape position. More information about the development of the Central Basin and Range classes can be found <a href="https://geodata.geology.utah.gov/pages/view.php?ref=63232" target="_blank">here</a>. It is anticipated that these wetland classes will be modified in 2020 at the conclusion of a two-year study of wetlands in the Central Basin and Range of Utah.</p>
-<table border="1">
-<tbody>
-<tr>
-<td>
-<p><strong>Wetland Class</strong></p>
-</td>
-<td>
-<p><strong>Description</strong></p>
-</td>
-</tr>
-<tr>
-<td>
-<p>shallow water</p>
-</td>
-<td>
-<p>Wetland consistently flooded with shallow water &lt;1-m deep and very sparsely vegetated (&le;2% cover).</p>
-</td>
-</tr>
-<tr>
-<td>
-<p>aquatic bed</p>
-</td>
-<td>
-<p>Wetland dominated by submergent or floating aquatic vegetation, typically with &le;10% cover of emergents.</p>
-</td>
-</tr>
-<tr>
-<td>
-<p>emergent marsh</p>
-</td>
-<td>
-<p>Wetland dominated by emergent forbs and graminoids and frequently inundated with water &ge;15 cm in depth, and typically saturated when not inundated, though water depths may vary throughout the year depending on climate conditions and management.</p>
-</td>
-</tr>
-<tr>
-<td>
-<p>mudflat</p>
-</td>
-<td>
-<p>Wetland dominated by emergent forbs and graminoids and characterized by cycles of inundation and drying from adjacent lakes or artificial impoundments.</p>
-</td>
-</tr>
-<tr>
-<td>
-<p>meadow</p>
-</td>
-<td>
-<p>Wetland dominated by emergent forbs and graminoids. Sites frequently supported by high groundwater or shallow inundation of a few centimeters.</p>
-</td>
-</tr>
-<tr>
-<td>
-<p>woody wetland</p>
-</td>
-<td>
-<p>Wetland dominated by woody species, typically with &ge;20% woody species cover, and frequently found along streams and rivers.</p>
-</td>
-</tr>
-<tr>
-<td>
-<p>playa</p>
-</td>
-<td>
-<p>Wetland with saline soils frequently either sparsely vegetated, dominated by annual species, or dominated by saline-tolerant woody perennials such as <em>Allenrolfea occidentalis</em> (iodinebush).</p>
-</td>
-</tr>
-</tbody>
-</table>
-<h4><strong>Wasatch and Uinta Mountains (including Wyoming Basin)</strong></h4>
-<p><span style="font-weight: 400;">We classified wetlands sites in the Wasatch and Uinta Mountains into ten classes based on dominant overstory life form, water regime, and location within level IV ecoregion. In some cases, a site that falls in one level IV ecoregion may be more similar floristically to sites in a different level IV ecoregion, as was found by UGS&rsquo; analysis of wetland data in the </span><a href="https://geodata.geology.utah.gov/pages/view.php?ref=23769" target="_blank"><span style="font-weight: 400;">Weber watershed</span></a><span style="font-weight: 400;">. These sites will be reclassified to the wetland class that best matches their vegetation communities whenever possible. We included the only site we had from the Wyoming Basin </span><span style="font-weight: 400;">level III ecoregion</span><span style="font-weight: 400;"> in the Wasatch and Uinta Mountains group because it had similar species composition to other sites in the ecoregion.</span></p>
-<p>&nbsp;</p>
-<table border="1">
-<tbody>
-<tr>
-<td>
-<p><strong>Wetland Class</strong></p>
-</td>
-<td>
-<p><strong>Description</strong></p>
-</td>
-<td>
-<p><strong>Level IV Ecoregion(s)</strong></p>
-</td>
-</tr>
-<tr>
-<td>
-<p>aquatic bed</p>
-</td>
-<td>
-<p>Wetland dominated by submergent or floating aquatic vegetation, typically with &le;10% cover of emergents.</p>
-</td>
-<td>
-<p>All ecoregions</p>
-</td>
-</tr>
-<tr>
-<td>
-<p>emergent marsh</p>
-</td>
-<td>
-<p>Wetland dominated by emergent forbs and graminoids and frequently inundated with water &ge;15 cm in depth.</p>
-</td>
-<td>
-<p>All ecoregions</p>
-</td>
-</tr>
-<tr>
-<td>
-<p>wet meadow (mountain valley)</p>
-</td>
-<td rowspan="4">
-<p>Wetland dominated by emergent forbs and graminoids, typically with &le;10% cover of woody species. Sites frequently supported by high groundwater or shallow inundation of a few centimeters.</p>
-</td>
-<td>
-<p>Mountain Valleys</p>
-</td>
-</tr>
-<tr>
-<td>
-<p>wet meadow (foothill)</p>
-</td>
-<td>
-<p>Semiarid Foothills, Foothill Shrublands and Low Mountains</p>
-</td>
-</tr>
-<tr>
-<td>
-<p>wet meadow (montane)</p>
-</td>
-<td>
-<p>Wasatch Montane Zone</p>
-</td>
-</tr>
-<tr>
-<td>
-<p>wet meadow (subalpine)</p>
-</td>
-<td>
-<p>Mid-Elevation Uinta Mountains, Uinta Subalpine Forests, Alpine Zone</p>
-</td>
-</tr>
-<tr>
-<td>
-<p>shrubland (foothills)</p>
-</td>
-<td rowspan="3">
-<p>Wetland dominated by shrubs, typically with &ge;25% cover of shrubs and higher shrub cover than tree cover.</p>
-</td>
-<td>
-<p>Mountain Valleys, Semiarid Foothills</p>
-</td>
-</tr>
-<tr>
-<td>
-<p>shrubland (montane)</p>
-</td>
-<td>
-<p>Wasatch Montane Zone</p>
-</td>
-</tr>
-<tr>
-<td>
-<p>shrubland (subalpine)</p>
-</td>
-<td>
-<p>Mid-Elevation Uinta Mountains, Uinta Subalpine Forests, Alpine Zone</p>
-</td>
-</tr>
-<tr>
-<td>
-<p>woodland</p>
-</td>
-<td>
-<p>Wetland dominated by tree species, typically with &ge;30% cover of trees.</p>
-</td>
-<td>
-<p>All ecoregions</p>
-</td>
-</tr>
-</tbody>
-</table>
-<h4><strong>VEGETATION CONDITION</strong></h4>
-<p>Sites were assigned vegetation condition classes based solely on plant community composition data. &ldquo;High quality reference&rdquo; sites are sites with the most intact plant communities for a particular wetland class, regardless of the degree of landscape disturbance adjacent to these sites or whether other stressors are present. Plant community intactness was evaluated using species-specific conservatism values (C-values). C-values between 1 and 10 are assigned to species based on their association with disturbance through a combination of best professional judgment, literature review, and/or field observations. Low values indicate that species are usually found at disturbed sites, high values indicate that species are associated with pristine sites, and values in the middle indicate that species may be found equally at either type of site. All non-native species are assigned a C-value of 0. We used C-values to calculate cover-weighted mean C for each site, which is the average C-value for all species at a site, weighted by the cover of each species.</p>
-<p>&ldquo;High quality reference&rdquo; sites are those sites with a cover-weighted mean C (CW Mean C) value within the top 25% of sites for the wetland class, using all data available in May 2020. Sites with >25% cover by species lacking C-values were classified as “not enough data”. We did not classify any sites as reference for aquatic bed wetlands, sites with no vegetation, or wetland classes having &lt;10 sites; these sites were all classified as “not enough data.” Sites with two wetland types were considered reference if they met or exceeded the cover-weighted mean C thresholds for both types.</p>
-            </div>
-         </div>
-        </div>
+<div id="panelData" class="panel collapse">
+  <div id="headingData" class="panel-heading" role="tab">
+      <div class="panel-title">
+          <a class="panel-toggle" role="button" data-toggle="collapse" href="#collapseData" aria-expanded="true" aria-controls="collapseData"><span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span><span class="panel-label">Database Contents</span></a>
+          <a class="panel-close" role="button" data-toggle="collapse" tabindex="0" href="#panelData"><span class="esri-icon esri-icon-close" aria-hidden="true"></span></a>
+      </div>
+  </div>
+  <div id="collapseData" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingData">
+      <div class="panel-body">
+          <p><strong>BOUNDARIES</strong></p>
+          <p style="padding-left: 30px; text-align: left;"><strong>River basins and subbasins</strong></p>
+          <p style="padding-left: 30px; text-align: left;"><span style="font-weight: 400;">Basins and subbasin watershed boundaries were obtained from the U.S. Geological Survey’s (USGS) 6-digit and 8-digit Hydrologic Unit Code (HUC) boundaries and clipped to the Utah state boundary. </span></p>
+          <p><strong>WETLAND AND RIPARIAN MAPPING</strong></p>
+          <p style="padding-left: 30px; text-align: left;"><strong>Wetland and riparian polygons, wetland outlines, and riverine features</strong></p>
+          <p style="padding-left: 30px; text-align: left;"><i><span style="font-weight: 400;">Wetlands and riparian spatial data were produced from a combination of aerial imagery examination and on-the-ground assessment and are not meant to be used as the basis for a jurisdictional wetland delineation. </span></i><span style="font-weight: 400;">Data are derived from the U.S. Fish and Wildlife Service&rsquo;s </span><a href="https://www.fws.gov/wetlands/"><span style="font-weight: 400;">National Wetlands Inventory</span></a><span style="font-weight: 400;"> (NWI) and are up-to-date as of May 3, 2020. NWI attributes wetlands with codes from the Cowardin Classification System; codes can be interpreted </span><a href="https://www.fws.gov/wetlands/data/wetland-codes.html"><span style="font-weight: 400;">online</span></a><span style="font-weight: 400;">. Polygons mapped as riverine are in a separate layer from other wetland features because of the large size of the data. Riverine features depict predominantly unvegetated habitat contained within a natural or artificial channel. Riparian data depict non-wetland areas along streams, rivers, and lakes that have distinct or distinctly more vigorous vegetation compared to adjacent areas. Mapping follows standards laid out in U.S. Fish and Wildlife Service (2009). Riparian features were mapped in conjuction with wetland features to produce a seamless dataset in the project areas where they were mapped.</span></p>
+          <p style="padding-left: 30px; text-align: left;"><strong>Mapping metadata</strong></p>
+          <p style="padding-left: 30px; text-align: left;"><span style="font-weight: 400;">Metadata are a description of wetland and riparian mapping projects, including the scale at which mapping was conducted and the imagery year used for the mapping. Some mapping projects include supplemental map information that describes the projects in more detail. The riparian metadata also depicts the project boundaries where riparian mapping has occurred. Other wetland mapping projects do not include riparian data.</span></p>
+          <p><strong>HYDRIC SOIL CLASSES</strong></p>
+          <p style="padding-left: 30px; text-align: left;"><span style="font-weight: 400;"></span>The hydric soil classes data were produced by the Natural Resources Consevation Service and depict soils that are saturated for periods of time long enough to create wetland conditions. This data layer is maintained by <a href="https://www.arcgis.com/home/item.html?id=2be45af986af4624839cedae883faf47"><span style="font-weight: 400;">ESRI.</span></a></span></p>
+          <p><strong>WETLAND CONDITION</strong></p>
+          <p style="padding-left: 30px; text-align: left;"><strong>Wetland stressors</strong></p>
+          <p style="padding-left: 30px; text-align: left;"><span style="font-weight: 400;">UGS created a landscape stress model for the state of Utah, focused on stressors likely to impact wetlands, including agriculture, development, hydrologic manipulations, and linear disturbances such as roads and pipelines. See Menuz (2015) for more information on the development of the landscape stress model.</span></p>
+          <p style="padding-left: 30px; text-align: left;"><strong>Wetland assessment projects</strong></p>
+          <p style="padding-left: 30px; text-align: left;"><span style="font-weight: 400;">UGS has conducted field studies to evaluate the condition and potential function of Utah&rsquo;s wetlands. These studies provide baseline information such as the types of wetlands, abundance and severity of common stressors, and rare and common wetland plants in each study area. The wetland assessments project layer shows the boundaries where assessment projects have taken place, with a link to the associated reports when available.</span></p>
+          <p><strong>WETLAND-DEPENDENT SPECIES</strong></p>
+          <p style="padding-left: 30px;"><strong>Sensitive amphibian ranges and habitat</strong></p>
+          <p style="padding-left: 30px;"><span style="font-weight: 400;">County-level data on species&rsquo; ranges were compiled from the Utah Conservation Data Center (2017) and the National Amphibian Atlas (U.S. Geological Survey, 2014). Final presence/absence designations for each county where the two sources disagreed were based on a combination of literature review and best professional judgment. Elevation range and habitat descriptions were developed through consultation with three primary sources (Green and others, 2014; IUCN, 2017; AmphibiaWeb, 2018) and additional literature review.</span></p>
+          <p><strong>LAND OWNERSHIP</strong></p>
+          <p style="padding-left: 30px;"><span style="font-weight: 400;">Land ownership data are maintained by the Bureau of Land Management and the State of Utah School and Institutional Trust Lands Administration and are described in more detail <a href="https://gis.utah.gov/data/cadastre/land-ownership/"><span style="font-weight: 400;">here.</span></a></span></p>
+      </div>
+  </div>
+</div>
 
             <!-- Basemaps Panel -->
             <div id="panelBasemaps" class="panel collapse">
@@ -623,63 +448,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
 
-        <!-- Panel - Query Sites -->
-
-        <div id="panelQuery" class="panel collapse">
-          <div id="headingQuery" class="panel-heading" role="tab">
-            <div class="panel-title">
-              <a class="panel-toggle collapsed" role="button" data-toggle="collapse" href="#collapseQuery"  aria-expanded="false" aria-controls="collapseQuery"><span class="esri-icon esri-icon-filter" aria-hidden="true"></span><span class="panel-label">Search Sites by Attributes</span></a> 
-              <a class="panel-close" role="button" data-toggle="collapse" tabindex="0" href="#panelQuery"><span class="esri-icon esri-icon-close" aria-hidden="true"></span></a>  
-            </div>
-          </div>
-          <div id="collapseQuery" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingQuery">
-            <div class="panel-body">
-              <!-- <div class="dds"> -->
-                Select Ecoregional Group
-                <br><select id="ecoLevel"></select>
-                <br>Select Wetland Type
-                <br><select id="wetlandType"><option selected>All</option></select>
-                <br>Select Watershed (HUC8)
-                <br><select id="waterShed"><option selected>All</option></select>
-                <!-- <br>Select HGM Class
-                <br><select id="hgmClass"><option selected>All</option></select> -->
-                <br>Select Wetland Condition
-                <br><select id="wetlandCondition"><option selected>All</option></select>
-                <!-- </div> -->
-                <br>
-                <br><span class="info2" id="featureCount2"></span>
-                <br><button class="button2" id="queryFunction">Open Table</button>
-                <button class="button2" id="clrButton">Clear</button>
-                <button class="button2" id="speciesSummary">Summary of Species</button>
-
-
-            </div>
-         </div>
-        </div>
-
-
-     <!-- Panel - Query Species -->
-
-     <div id="panelQuerySpecies" class="panel collapse">
-        <div id="headingQuerySpecies" class="panel-heading" role="tab">
-          <div class="panel-title">
-            <a class="panel-toggle collapsed" role="button" data-toggle="collapse" href="#collapseQuerySpecies"  aria-expanded="false" aria-controls="collapseQuerySpecies"><span class="esri-icon esri-icon-filter" aria-hidden="true"></span><span class="panel-label">Search Sites by Species</span></a> 
-            <a class="panel-close" role="button" data-toggle="collapse" tabindex="0" href="#panelQuerySpecies"><span class="esri-icon esri-icon-close" aria-hidden="true"></span></a>  
-          </div>
-        </div>
-        <div id="collapseQuerySpecies" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingQuery">
-          <div class="panel-body">
-            <!-- <div class="dds"> -->
-              <!-- <br><select id="speciesName"></select> -->
-              <br>Species Scientific Name: <input class="awesomplete" type="text" id="speciesText">
-              <br>
-              <br><button class="button2" id="querySpeciesFunction">Show Sites</button>
-              <button class="button2" id="clrSpeciesButton">Clear</button>
-              <br>
-
-          </div>
-       </div>
-      </div>   
+       
 
 <!-- Panel - Download -->
 
@@ -702,6 +471,67 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 title="Draw circle"></button> -->
               <p><button class="action-button esri-icon-trash" id="resetBtn" type="button" title="Clear graphics"></button> Reset the selected polygon area.</p>
             </div>
+      </div>
+  </div>
+</div>
+
+ <!-- Panel - Disclaimer -->
+
+ <div id="panelDisc" class="panel collapse">
+  <div id="headingDisc" class="panel-heading" role="tab">
+      <div class="panel-title">
+          <a class="panel-toggle" role="button" data-toggle="collapse" href="#collapseDisc" aria-expanded="true" aria-controls="collapseDisc"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span><span class="panel-label">Disclaimer</span></a>
+          <a class="panel-close" role="button" data-toggle="collapse" tabindex="0" href="#panelDisc"><span class="esri-icon esri-icon-close" aria-hidden="true"></span></a>
+      </div>
+  </div>
+  <div id="collapseDisc" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingDisc">
+      <div class="panel-body">
+          <p><strong>Disclaimer</strong></p>
+          <p><span>This product represents a compilation of information from both the Utah Geological Survey and external sources. The Utah Department of Natural Resources, Utah Geological Survey, makes no warranty, expressed or implied, regarding its suitability for a particular use. The Utah Department of Natural Resources, Utah Geological Survey, shall not be liable under any circumstances for any direct, indirect, special, incidental, or consequential damages with respect to claims by users of this product.</span></p>
+<p><span>Wetlands spatial data were produced from a combination of aerial imagery examination and on-the-ground assessment and are not meant to be used as the basis for a jurisdictional wetland delineation. Wetlands across much of the state were mapped in the 1980s at a coarse resolution; some wetlands may have been inadvertently omitted and other wetlands may no longer exist or may not be considered jurisdictional. Please contact your local U.S. Army Corps of Engineers office if you are unsure of the status of a wetland on your property.</span></p>
+<p><span>County-level data on species&rsquo; ranges were compiled from the Utah Conservation Data Center (2017) and the National Amphibian Atlas (U.S. Geological Survey, 2014); however, species may be found outside of the listed counties, elevation ranges, and habitat types.</span></p>
+      </div>
+  </div>
+</div>
+
+
+<!-- Panel - References -->
+
+<div id="panelRef" class="panel collapse">
+  <div id="headingRef" class="panel-heading" role="tab">
+      <div class="panel-title">
+          <a class="panel-toggle" role="button" data-toggle="collapse" href="#collapseRef" aria-expanded="true" aria-controls="collapseRef"><span class="esri-icon-group" aria-hidden="true"></span><span class="panel-label">References</span></a>
+          <a class="panel-close" role="button" data-toggle="collapse" tabindex="0" href="#panelRef"><span class="esri-icon esri-icon-close" aria-hidden="true"></span></a>
+      </div>
+  </div>
+  <div id="collapseRef" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingRef">
+      <div class="panel-body">
+          <p><strong>References</strong></p>
+          <p><span>AmphibiaWeb, 2018, AmphibiaWeb: Berkeley, California, University of California, online,</span><a href="https://amphibiaweb.org/"><span>https://amphibiaweb.org/</span></a><span>, accessed January 2018.</span></p>
+<p><span>Green, D.M., Weir, L.A., Casper, G.S., and Lannoo, M., 2014, North American amphibians&minus; distribution and diversity: Berkeley, University of California Press, 600 p.</span></p>
+<p><span>IUCN, 2017, The IUCN Red List of Threatened Species&minus;version 2017-3: online,</span><a href="http://www.iucnredlist.org"><span> http://www.iucnredlist.org</span></a><span>, accessed March 2018.</span></p>
+<p><span>Menuz, 2015, Landscape integrity model for Utah&rsquo;s wetlands: Salt Lake City, Utah Geological Survey, 50 p., available </span><a href="https://geodata.geology.utah.gov/pages/search.php?search=!list15236&amp;order_by=date&amp;sort=DESC&amp;offset=0&amp;archive=0&amp;sort=DESC&amp;k="><span>online</span></a><span>. </span></p>
+<p><span>Utah Conservation Data Center, 2017, Utah&rsquo;s state listed species by county: Online,</span><a href="https://dwrcdc.nr.utah.gov/ucdc/ViewReports/sslist.htm"><span>https://dwrcdc.nr.utah.gov/ucdc/ViewReports/sslist.htm</span></a><span>, accessed March 2018.</span></p>
+<p><span>U.S. Fish and Wildlife Service (2009), A system for mapping riparian areas in the western United States: Arlington, 43 p.</span></p>
+<p><span>U.S. Geological Survey, 2014, National amphibian atlas&minus;version number 3.0: Laurel, Maryland, Patuxent Wildlife Research Center: Online,</span><a href="http://www.pwrc.usgs.gov/naa"><span>www.pwrc.usgs.gov/naa</span></a><span>, accessed March 2018.</span></p>
+      </div>
+  </div>
+</div>
+
+
+<!-- Inventory Details panel -->
+<div id="panelInventory" class="panel collapse">
+  <div id="headingInfo" class="panel-heading" role="tab">
+      <div class="panel-title">
+          <a class="panel-toggle" role="button" data-toggle="collapse" href="#collapseInventory" aria-expanded="true" aria-controls="collapseInventory"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span><span class="panel-label">Well Inventory</span></a>
+          <a class="panel-close" role="button" data-toggle="collapse" data-target="#panelInventory"><span class="esri-icon esri-icon-close" aria-hidden="true"></span></a>
+      </div>
+  </div>
+  <div id="collapseInventory" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingInventory">
+      <div class="panel-body">
+
+          <div id="attInventory"></div>
+
       </div>
   </div>
 </div>
