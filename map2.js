@@ -250,12 +250,6 @@ require([
             contentPro += "<span class='bold' title='Image Year'><b>Decade: </b></span>{Decade}<br/>";
         }
 
-
-        if (feature.graphic.attributes.IMAGE_SCALE) {
-            contentPro += "<span class='bold' title='Image Year'><b>Image Scale: </b></span>{IMAGE_SCALE}<br/>";
-        }
-
-
         if (feature.graphic.attributes.DATA_SOURCE) {
             contentPro += "<span class='bold' title='Image Year'><b>Data Source: </b></span>{DATA_SOURCE}<br/>";
         }
