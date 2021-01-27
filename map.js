@@ -816,6 +816,10 @@ require([
             console.log("1228", graphic);
             console.log("1229", sketchViewModel);
             tempGraphicsLayer.add(graphic);
+<<<<<<< HEAD
+=======
+            mapView.map.layers.reorder(tempGraphicsLayer, 6);
+>>>>>>> 4-17Upgrade
         }
         }
 
