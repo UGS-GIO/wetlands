@@ -816,6 +816,9 @@ require([
             console.log("1228", graphic);
             console.log("1229", sketchViewModel);
             tempGraphicsLayer.add(graphic);
+            console.log(mapView.map.layers);
+            mapView.map.layers.reorder(tempGraphicsLayer, 6);
+            console.log(mapView.map.layers);
         }
         }
 
