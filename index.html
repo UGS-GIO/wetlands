@@ -365,75 +365,69 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     
   </div>
   <div id="fieldDiv" class="esri-widget">
-    <calcite-dropdown id="field-select">
-      <calcite-button button class="btn btn-large" slot="dropdown-trigger">Select Field</calcite-button>
-      <calcite-dropdown-group id="group-1" selection-mode="single">
-        <calcite-dropdown-item id="utah_percent" active>Area in Utah (%)</calcite-dropdown-item>
-        <calcite-dropdown-item id="outdated_mapping_percent">Outdated Wetland Mapping (%)</calcite-dropdown-item>
-        <calcite-dropdown-item id="hr2000s_mapping_percent">Wetland Mapping 2000-2009 (%)</calcite-dropdown-item>
-        <calcite-dropdown-item id="hr2010s_mapping_percent">Wetland Mapping 2010-2019 (%)</calcite-dropdown-item>
-        <calcite-dropdown-item id="riverine_count">Rivers, Channels, and Bars (#)</calcite-dropdown-item>
-        <calcite-dropdown-item id="lake_count">Lakes (#)</calcite-dropdown-item>
-        <calcite-dropdown-item id="pond_count">Ponds (#)</calcite-dropdown-item>
-        <calcite-dropdown-item id="shore_count">Shores, Salt Flats, and Unvegetated Wetlands (#)</calcite-dropdown-item>
-        <calcite-dropdown-item id="woody_count">Woody Wetlands (#)</calcite-dropdown-item>
-        <calcite-dropdown-item id="emergent_count">Emergent Wetlands (#)</calcite-dropdown-item>
-        <calcite-dropdown-item id="riverine_area">Rivers, Channels, and Bars (ha)</calcite-dropdown-item>
-        <calcite-dropdown-item id="lake_area">Lakes (ha)</calcite-dropdown-item>
-        <calcite-dropdown-item id="pond_area">Ponds (ha)</calcite-dropdown-item>
-        <calcite-dropdown-item id="shore_area">Shores, Salt Flats, and Unvegetated Wetlands (ha)</calcite-dropdown-item>
-        <calcite-dropdown-item id="woody_area">Woody Wetlands (ha)</calcite-dropdown-item>
-        <calcite-dropdown-item id="emergent_area">Emergent Wetlands (ha)</calcite-dropdown-item>
-        <calcite-dropdown-item id="riverine_density">Rivers, Channels, and Bars (ha/km2)</calcite-dropdown-item>
-        <calcite-dropdown-item id="lake_density">Lakes (ha/km2)</calcite-dropdown-item>
-        <calcite-dropdown-item id="pond_density">Ponds (ha/km2)</calcite-dropdown-item>
-        <calcite-dropdown-item id="shore_density">Shores, Salt Flats, and Unvegetated Wetlands (ha/km2)</calcite-dropdown-item>
-        <calcite-dropdown-item id="woody_density">Woody Wetlands (ha/km2)</calcite-dropdown-item>
-        <calcite-dropdown-item id="emergent_density">Emergent Wetlands (ha/km2)</calcite-dropdown-item>
-        <calcite-dropdown-item id="riparian_percent">Riparian Mapping (%)</calcite-dropdown-item>
-        <calcite-dropdown-item id="riparian_woody_area">Woody Riparian Area (ha)</calcite-dropdown-item>
-        <calcite-dropdown-item id="riparian_herbaceous_area">Herbaceous Riparian Area (ha) </calcite-dropdown-item>
-        <calcite-dropdown-item id="federal_percent">Federal Ownership (%)</calcite-dropdown-item>
-        <calcite-dropdown-item id="state_percent">State Ownership (%)</calcite-dropdown-item>
-        <calcite-dropdown-item id="private_percent">Private Ownership (%)</calcite-dropdown-item>
-        <calcite-dropdown-item id="tribal_percent">Tribal Ownership (%)</calcite-dropdown-item>
-        <calcite-dropdown-item id="riverine_federal_percent">Federal Rivers, Channels, and Bars (%)</calcite-dropdown-item>
-        <calcite-dropdown-item id="riverine_state_percent">State Rivers, Channels, and Bars (%)</calcite-dropdown-item>
-        <calcite-dropdown-item id="riverine_private_percent">Private Rivers, Channels, and Bars (%)</calcite-dropdown-item>
-        <calcite-dropdown-item id="riverine_tribal_percent">Tribal Rivers, Channels, and Bars (%)</calcite-dropdown-item>
-        <calcite-dropdown-item id="waterbody_federal_percent">Federal Lakes, Ponds, and Shores (%)</calcite-dropdown-item>
-        <calcite-dropdown-item id="waterbody_state_percent">State Lakes, Ponds, and Shores (%)</calcite-dropdown-item>
-        <calcite-dropdown-item id="waterbody_private_percent">Private Lakes, Ponds, and Shores (%)</calcite-dropdown-item>
-        <calcite-dropdown-item id="waterbody_tribal_percent">Tribal Lakes, Ponds, and Shores (%)</calcite-dropdown-item>
-        <calcite-dropdown-item id="vegetated_federal_percent">Federal Vegetated Wetlands (%)</calcite-dropdown-item>
-        <calcite-dropdown-item id="vegetated_state_percent">State Vegetated Wetlands (%)</calcite-dropdown-item>
-        <calcite-dropdown-item id="vegetated_private_percent">Private Vegetated Wetlands (%)</calcite-dropdown-item>
-        <calcite-dropdown-item id="vegetated_tribal_percent">Tribal Vegetated Wetlands (%)</calcite-dropdown-item>
-        <calcite-dropdown-item id="vegetated_private_ratio">Private Vegetated Wetlands to Private Ownership Ratio</calcite-dropdown-item>
-        <calcite-dropdown-item id="riverine_private_ratio">Private Rivers, Channels, and Bars to Private Ownership Ratio</calcite-dropdown-item>
-        <calcite-dropdown-item id="waterbody_private_ratio">Private Lakes, Ponds, and Shores to Private Ownership Ratio</calcite-dropdown-item>
-        <calcite-dropdown-item id="restorable_wetland_on_ag">Restorable Wetlands on Agricultural Lands (%)</calcite-dropdown-item>
-        <calcite-dropdown-item id="surface_water_trend">Growing Season 30-Year Surface Water Trend</calcite-dropdown-item>
-        <calcite-dropdown-item id="surface_water_slope">Sen's Slope for Surface Water (ha/yr)</calcite-dropdown-item>
-        <!-- <calcite-dropdown-item id="num_wells">Wells In Groundwater Analysis (#)</calcite-dropdown-item>
-        <calcite-dropdown-item id="pct_wells_rising">Rising Groundwater Wells (% of Wells)</calcite-dropdown-item>
-        <calcite-dropdown-item id="pct_wells_falling">Falling Groundwater Wells (% of Wells)</calcite-dropdown-item>
-        <calcite-dropdown-item id="mean_rising_slope">Mean Sen's Slope Rising Wells (ft/yr)</calcite-dropdown-item>
-        <calcite-dropdown-item id="mean_falling_slope">Mean Sen's Slope Falling Wells (ft/yr)</calcite-dropdown-item> -->
-      </calcite-dropdown-group>
-    </calcite-dropdown>
-
+    Select Metric
+    <select id="field-select" class="esri-widget">
+        <option value="utah_percent" active>Area in Utah (%)</option>
+        <option value="outdated_mapping_percent">Outdated Wetland Mapping (%)</option>
+        <option value="hr2000s_mapping_percent">Wetland Mapping 2000-2009 (%)</option>
+        <option value="hr2010s_mapping_percent">Wetland Mapping 2010-2019 (%)</option>
+        <option value="riverine_count">Rivers, Channels, and Bars (#)</option>
+        <option value="lake_count">Lakes (#)</option>
+        <option value="pond_count">Ponds (#)</option>
+        <option value="shore_count">Shores, Salt Flats, and Unvegetated Wetlands (#)</option>
+        <option value="woody_count">Woody Wetlands (#)</option>
+        <option value="emergent_count">Emergent Wetlands (#)</option>
+        <option value="riverine_area">Rivers, Channels, and Bars (ha)</option>
+        <option value="lake_area">Lakes (ha)</option>
+        <option value="pond_area">Ponds (ha)</option>
+        <option value="shore_area">Shores, Salt Flats, and Unvegetated Wetlands (ha)</option>
+        <option value="woody_area">Woody Wetlands (ha)</option>
+        <option value="emergent_area">Emergent Wetlands (ha)</option>
+        <option value="riverine_density">Rivers, Channels, and Bars (ha/km2)</option>
+        <option value="lake_density">Lakes (ha/km2)</option>
+        <option value="pond_density">Ponds (ha/km2)</option>
+        <option value="shore_density">Shores, Salt Flats, and Unvegetated Wetlands (ha/km2)</option>
+        <option value="woody_density">Woody Wetlands (ha/km2)</option>
+        <option value="emergent_density">Emergent Wetlands (ha/km2)</option>
+        <option value="riparian_percent">Riparian Mapping (%)</option>
+        <option value="riparian_woody_area">Woody Riparian Area (ha)</option>
+        <option value="riparian_herbaceous_area">Herbaceous Riparian Area (ha) </option>
+        <option value="federal_percent">Federal Ownership (%)</option>
+        <option value="state_percent">State Ownership (%)</option>
+        <option value="private_percent">Private Ownership (%)</option>
+        <option value="tribal_percent">Tribal Ownership (%)</option>
+        <option value="riverine_federal_percent">Federal Rivers, Channels, and Bars (%)</option>
+        <option value="riverine_state_percent">State Rivers, Channels, and Bars (%)</option>
+        <option value="riverine_private_percent">Private Rivers, Channels, and Bars (%)</option>
+        <option value="riverine_tribal_percent">Tribal Rivers, Channels, and Bars (%)</option>
+        <option value="waterbody_federal_percent">Federal Lakes, Ponds, and Shores (%)</option>
+        <option value="waterbody_state_percent">State Lakes, Ponds, and Shores (%)</option>
+        <option value="waterbody_private_percent">Private Lakes, Ponds, and Shores (%)</option>
+        <option value="waterbody_tribal_percent">Tribal Lakes, Ponds, and Shores (%)</option>
+        <option value="vegetated_federal_percent">Federal Vegetated Wetlands (%)</option>
+        <option value="vegetated_state_percent">State Vegetated Wetlands (%)</option>
+        <option value="vegetated_private_percent">Private Vegetated Wetlands (%)</option>
+        <option value="vegetated_tribal_percent">Tribal Vegetated Wetlands (%)</option>
+        <option value="vegetated_private_ratio">Private Vegetated Wetlands to Private Ownership Ratio</option>
+        <option value="riverine_private_ratio">Private Rivers, Channels, and Bars to Private Ownership Ratio</option>
+        <option value="waterbody_private_ratio">Private Lakes, Ponds, and Shores to Private Ownership Ratio</option>
+        <option value="restorable_wetland_on_ag">Restorable Wetlands on Agricultural Lands (%)</option>
+        <option value="surface_water_trend">Growing Season 30-Year Surface Water Trend</option>
+        <option value="surface_water_slope">Sen's Slope for Surface Water (ha/yr)</option>
+        <!-- <option value="num_wells">Wells In Groundwater Analysis (#)</option>
+        <option value="pct_wells_rising">Rising Groundwater Wells (% of Wells)</option>
+        <option value="pct_wells_falling">Falling Groundwater Wells (% of Wells)</option>
+        <option value="mean_rising_slope">Mean Sen's Slope Rising Wells (ft/yr)</option>
+        <option value="mean_falling_slope">Mean Sen's Slope Falling Wells (ft/yr)</option> -->
+        </select>
     
-    <calcite-dropdown id="classification-select">
-      <calcite-button slot="dropdown-trigger">Classification</calcite-button>
-        <calcite-dropdown-group id="group-3" selection-mode="single">
-          <calcite-dropdown-item id="equal-interval" active>Equal Interval</calcite-dropdown-item>
-          <calcite-dropdown-item id="quantile" >Quantile</calcite-dropdown-item>
-          <calcite-dropdown-item id="natural-breaks" >Natural Breaks</calcite-dropdown-item>
-          <calcite-dropdown-item id="manual" >Manual</calcite-dropdown-item>
+    <select id="classification-select" class="esri-widget">
 
-    </calcite-dropdown-group>
-  </calcite-dropdown>
+          <option value="equal-interval" active>Equal Interval</option>
+          <option value="quantile" >Quantile</option>
+          <option value="natural-breaks" >Natural Breaks</option>
+          <option value="manual" >Manual</option>
+        </select>
 
 
   Breaks:
