@@ -191,6 +191,14 @@ require([
 
     mapView.map.add(tempGraphicsLayer);
 
+    var classExpand = new Expand({
+        view: mapView,
+          content: document.getElementById("fieldDiv"),
+          expanded: true,
+          expandIconClass: "esri-icon-settings2"
+      });
+      mapView.ui.add(classExpand, "bottom-right");
+
     //Create popup content
     contentPro = function(feature) {
         console.log(feature);
@@ -446,6 +454,13 @@ require([
     }
 
     //Add data
+
+var huc12 = new FeatureLayer({
+url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Landscape_Data/MapServer/0",
+title: "HUC 12",
+visible: false
+});
+
     var boundaryLayer = new MapImageLayer({
         url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Boundaries/MapServer",
         sublayers: [{
@@ -634,6 +649,7 @@ require([
     mapView.map.add(wetlandGroup);
     //mapView.map.add(wetlandLayer);
     mapView.map.add(boundaryLayer);
+    mapView.map.add(huc12);
 
 
     ownershipLayer.opacity = .6;
@@ -1078,5 +1094,20 @@ span.onclick = function() {
         mapView.ui.add(toAdd, "top-left");
     }
 
+    
+    watchUtils.watch(huc12, 'visible', function(e) {
+        if (e == true) {
+
+            
+            //div.esri-ui-bottom-right.esri-ui-corner > div
+            document.querySelector("#mapViewDiv > div.esri-view-root > div.esri-ui > div.esri-ui-inner-container.esri-ui-corner-container > div.esri-ui-bottom-right.esri-ui-corner > div").style.display="block";
+            console.log("adding huc12 fields");
+            document.getElementById("fieldDiv").style.display="block"
+        }
+        if (e == false) {
+            document.querySelector("#mapViewDiv > div.esri-view-root > div.esri-ui > div.esri-ui-inner-container.esri-ui-corner-container > div.esri-ui-bottom-right.esri-ui-corner > div").style.display="none";
+            document.getElementById("fieldDiv").style.display="none"
+        };
+    });
 
 });
