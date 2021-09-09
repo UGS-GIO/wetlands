@@ -15,6 +15,9 @@ require([
     "esri/layers/GroupLayer",
     "esri/tasks/Geoprocessor",
     "esri/tasks/support/FeatureSet",
+    "esri/smartMapping/renderers/color",
+    "esri/smartMapping/statistics/histogram",
+    "esri/widgets/smartMapping/ClassedColorSlider",
     //Layers
     "esri/layers/FeatureLayer",
     "esri/layers/MapImageLayer",
@@ -68,7 +71,7 @@ require([
     "dojo/dom-class",
     "dojo/dom-construct",
     "dojo/domReady!"
-], function(Map, MapView, SimpleMarkerSymbol, GraphicsLayer, ImageryLayer, RasterFunction, Basemap, BasemapGallery, LocalBasemapsSource, SketchViewModel, Sketch, Graphic, GroupLayer, Geoprocessor, FeatureSet, FeatureLayer, MapImageLayer, Query, QueryTask, Home, ScaleBar, Zoom, Compass, Search, Locate, Legend, Expand, LayerList, BasemapToggle, watchUtils, RelationshipQuery, AttachmentsContent, Collapse, Dropdown, query, Memory, ObjectStore, ItemFileReadStore, DataGrid, OnDemandGrid, ColumnHider, Selection, StoreAdapter, List, declare, parser, aspect, request, mouse, CalciteMaps, CalciteMapArcGISSupport, on, arrayUtils, dom, domClass, domConstruct) {
+], function(Map, MapView, SimpleMarkerSymbol, GraphicsLayer, ImageryLayer, RasterFunction, Basemap, BasemapGallery, LocalBasemapsSource, SketchViewModel, Sketch, Graphic, GroupLayer, Geoprocessor, FeatureSet, colorRendererCreator, histogram, ClassedColorSlider, FeatureLayer, MapImageLayer, Query, QueryTask, Home, ScaleBar, Zoom, Compass, Search, Locate, Legend, Expand, LayerList, BasemapToggle, watchUtils, RelationshipQuery, AttachmentsContent, Collapse, Dropdown, query, Memory, ObjectStore, ItemFileReadStore, DataGrid, OnDemandGrid, ColumnHider, Selection, StoreAdapter, List, declare, parser, aspect, request, mouse, CalciteMaps, CalciteMapArcGISSupport, on, arrayUtils, dom, domClass, domConstruct) {
 
     var gpUrl ="https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/WetlandsDownload/GPServer/ExtractWetlandsData";
 
@@ -79,8 +82,8 @@ require([
             const tempGraphicsLayer = new GraphicsLayer({
                 listMode: "hide",
             });
-
-
+        //variables for landscape data
+    let layerSelect, fieldSelect, classSelect, numClassesInput, slider;
            
 
     //custom basemap layer of false color IR
@@ -455,11 +458,11 @@ require([
 
     //Add data
 
-var huc12 = new FeatureLayer({
-url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Landscape_Data/MapServer/0",
-title: "HUC 12",
-visible: false
-});
+// var huc12 = new FeatureLayer({
+// url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Landscape_Data/MapServer/0",
+// title: "HUC 12",
+// visible: false
+// });
 
     var boundaryLayer = new MapImageLayer({
         url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Boundaries/MapServer",
@@ -632,11 +635,75 @@ visible: false
         ]
     })
 
+    const huc12 = new FeatureLayer({
+        title: "Utah Wetlands",
+        url:
+          "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Landscape_Data/MapServer/0",
+        popupTemplate: {
+          // autocast as esri/PopupTemplate
+          title: "HUC12",
+          content: [
+            {
+              type: "fields",
+              fieldInfos: [
+                {
+                  fieldName: "utah_percent",
+                  label: "Arear in Utah (%)",
+                  format: {
+                    digitSeparator: true,
+                    places: 0
+                  }
+                },
+                {
+                  fieldName: "outdated_mapping_percent",
+                  label: "Outdated Wetland Mapping (%)",
+                  format: {
+                    digitSeparator: true,
+                    places: 0
+                  }
+                },
+                {
+                  fieldName: "hr2000s_mapping_percent",
+                  label: "Wetland Mapping 2000-2009 (%)",
+                  format: {
+                    digitSeparator: true,
+                    places: 0
+                  }
+                },
+                {
+                  fieldName: "hr2010s_mapping_percent",
+                  label: "Wetland Mapping 2010-2019 (%)",
+                  format: {
+                    digitSeparator: true,
+                    places: 0
+                  }
+                },
+                {
+                  fieldName: "riverine_count",
+                  label: "Rivers, Channels, and Bars (#)",
+                  format: {
+                    digitSeparator: true,
+                    places: 0
+                  }
+                }
+              ]
+            }
+          ]
+        },
+      });
+
     var wetlandGroup = new GroupLayer({
         title: "Wetland and Riparian Mapping",
         visible: true,
         visibiltyMode: "independent",
         layers: [riparianData, wetlandLayer]
+    })
+
+    var landscapeGroup = new GroupLayer({
+        title: "Landscape Data",
+        visible: false,
+        visibiltyMode: "independent",
+        layers: [huc12]
     })
 
 
@@ -649,7 +716,7 @@ visible: false
     mapView.map.add(wetlandGroup);
     //mapView.map.add(wetlandLayer);
     mapView.map.add(boundaryLayer);
-    mapView.map.add(huc12);
+    mapView.map.add(landscapeGroup);
 
 
     ownershipLayer.opacity = .6;
@@ -1095,7 +1162,7 @@ span.onclick = function() {
     }
 
     
-    watchUtils.watch(huc12, 'visible', function(e) {
+    watchUtils.watch(landscapeGroup, 'visible', function(e) {
         if (e == true) {
 
             
@@ -1109,5 +1176,153 @@ span.onclick = function() {
             document.getElementById("fieldDiv").style.display="none"
         };
     });
+
+
+
+
+
+
+//landscape data widget
+
+
+
+    // Generate a new renderer each time the user changes an input parameter
+    mapView.when().then(function () {
+
+      fieldSelect = document.getElementById("field-select");
+      fieldSelect.addEventListener("change", generateRenderer);
+
+      classSelect = document.getElementById("classification-select");
+      classSelect.addEventListener("change", generateRenderer);
+
+      numClassesInput = document.getElementById("num-classes");
+      numClassesInput.addEventListener("change", generateRenderer);
+
+      watchUtils.whenFalseOnce(mapView, "updating", generateRenderer);
+    });
+
+    // Generate rounded arcade expression when user
+    // selects a field name
+    function getValueExpression(field) {
+      console.log("field:", field);
+      return "$feature." + field;
+      //return "Round( ( $feature." + field + " / 100 ) * 100, 1)";
+    }
+
+    
+
+    function generateRenderer() {
+        console.log(fieldSelect);
+      //grab values from element for field choice
+      const fieldLabel =
+      fieldSelect.options[fieldSelect.selectedIndex].text;
+
+
+      
+      // default to natural-breaks when manual is selected for classification method
+      const classificationMethod =
+        classSelect.value === "manual"
+          ? "natural-breaks"
+          : classSelect.value;
+
+      const params = {
+        layer: huc12,
+        //valueExpression: getValueExpression(fieldValue),
+        field: fieldSelect.options[fieldSelect.selectedIndex].value,
+        view: mapView,
+        classificationMethod: classificationMethod,
+        numClasses: parseInt(numClassesInput.value),
+        legendOptions: {
+          title: fieldLabel
+        }
+      };
+
+      // generate the renderer and set it on the layer
+      colorRendererCreator
+        .createClassBreaksRenderer(params)
+        .then(function (rendererResponse) {
+          huc12.renderer = rendererResponse.renderer;
+
+          if (!landscapeGroup.layers.includes(huc12)) {
+            //map.add(huc12);
+            landscapeGroup.layers.push(huc12);
+          }
+
+          if (classSelect.value === "manual") {
+            // if manual is selected, then add or update
+            // a classed color slider to allow the user to
+            // construct manual class breaks
+            updateColorSlider(rendererResponse);
+          } else {
+            destroySlider();
+          }
+        });
+    }
+
+    // If manual classification method is selected, then create
+    // a classed color slider to allow user to manually modify
+    // the class breaks starting with the generated renderer
+
+    function updateColorSlider(rendererResult) {
+      console.log("Custom");
+      const fieldValue =
+        fieldSelect.selectedItems[0].id;
+      histogram({
+        layer: huc12,
+        valueExpression: getValueExpression(fieldValue),
+        field: fieldValue,
+        view: mapView,
+        numBins: 100
+      }).then(function (histogramResult) {
+        console.log(histogramResult);
+        if (!slider) {
+          const sliderContainer = document.createElement("div");
+          const container = document.createElement("div");
+          container.id = "containerDiv";
+          container.appendChild(sliderContainer);
+          mapView.ui.add(container, "top-right");
+
+          slider = ClassedColorSlider.fromRendererResult(
+            rendererResult,
+            histogramResult
+          );
+          slider.container = container;
+          slider.viewModel.precision = 1;
+
+          function changeEventHandler() {
+            const renderer = huc12.renderer.clone();
+            renderer.classBreakInfos = slider.updateClassBreakInfos(
+              renderer.classBreakInfos
+              
+            );
+            console.log(renderer.classBreakInfos);
+            huc12.renderer = renderer;
+          }
+
+          slider.on(
+            ["thumb-change", "thumb-drag", "min-change", "max-change"],
+            changeEventHandler
+          );
+        } else {
+          slider.updateFromRendererResult(rendererResult, histogramResult);
+          console.log(rendererResult);
+          console.log(histogramResult);
+        }
+      });
+    }
+
+    function destroySlider() {
+      if (slider) {
+        let container = document.getElementById("containerDiv");
+        mapView.ui.remove(container);
+        slider.container = null;
+        slider = null;
+        container = null;
+      }
+    }
+
+
+
+
 
 });

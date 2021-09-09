@@ -281,7 +281,7 @@ a:active {
 
 #fieldDiv {
   display: none;
-        padding: 100px;
+        padding: 10px;
       }
 
 
@@ -365,7 +365,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     
   </div>
   <div id="fieldDiv" class="esri-widget">
-    Select Metric
+    Select Metric:
     <select id="field-select" class="esri-widget">
         <option value="utah_percent" active>Area in Utah (%)</option>
         <option value="outdated_mapping_percent">Outdated Wetland Mapping (%)</option>
@@ -420,17 +420,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <option value="mean_rising_slope">Mean Sen's Slope Rising Wells (ft/yr)</option>
         <option value="mean_falling_slope">Mean Sen's Slope Falling Wells (ft/yr)</option> -->
         </select>
-    
+    <b>Classification:</b>
     <select id="classification-select" class="esri-widget">
 
           <option value="equal-interval" active>Equal Interval</option>
           <option value="quantile" >Quantile</option>
           <option value="natural-breaks" >Natural Breaks</option>
           <option value="manual" >Manual</option>
-        </select>
+        </select><br>
 
 
-  Breaks:
+      <b>Breaks:</b>
   <input
     type="number"
     id="num-classes"
