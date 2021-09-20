@@ -202,6 +202,19 @@ require([
       });
       mapView.ui.add(classExpand, "bottom-right");
 
+//hides or shows calcite panel
+      function showHideCalcitePanels(showPanel, showCollapse){
+        // hide all windows
+        query(".panel.in").removeClass("in");   //close any open panels
+        //query(".panel-collapse").removeClass("in");
+
+        // if specified show this calcite panel
+        // if (showPanel){
+        //   query(showCollapse).collapse("show");
+        //   query(showCollapse).parent().collapse('show');
+        // }
+      }
+
     //Create popup content
     contentPro = function(feature) {
         console.log(feature);
@@ -641,51 +654,20 @@ require([
           "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Landscape_Data/MapServer/0",
         popupTemplate: {
           // autocast as esri/PopupTemplate
-          title: "HUC12",
+          title: "HUC 12",
           content: [
             {
               type: "fields",
               fieldInfos: [
                 {
-                  fieldName: "utah_percent",
-                  label: "Arear in Utah (%)",
-                  format: {
-                    digitSeparator: true,
-                    places: 0
-                  }
+                  fieldName: "huc12_name",
+                  label: "Name",
                 },
                 {
-                  fieldName: "outdated_mapping_percent",
-                  label: "Outdated Wetland Mapping (%)",
-                  format: {
-                    digitSeparator: true,
-                    places: 0
-                  }
+                  fieldName: "huc12",
+                  label: "HUC12 #",
                 },
-                {
-                  fieldName: "hr2000s_mapping_percent",
-                  label: "Wetland Mapping 2000-2009 (%)",
-                  format: {
-                    digitSeparator: true,
-                    places: 0
-                  }
-                },
-                {
-                  fieldName: "hr2010s_mapping_percent",
-                  label: "Wetland Mapping 2010-2019 (%)",
-                  format: {
-                    digitSeparator: true,
-                    places: 0
-                  }
-                },
-                {
-                  fieldName: "riverine_count",
-                  label: "Rivers, Channels, and Bars (#)",
-                  format: {
-                    digitSeparator: true,
-                    places: 0
-                  }
-                }
+                
               ]
             }
           ]
@@ -763,9 +745,10 @@ require([
         container: "legendDiv",
         listItemCreatedFunction: function(event) {
             const item = event.item;
+            console.log(item);
             item.panel = {
                 content: "legend",
-                //open: true
+                open: true
             };
             item.actionsSections = [
                 [{
@@ -1170,6 +1153,7 @@ span.onclick = function() {
             document.querySelector("#mapViewDiv > div.esri-view-root > div.esri-ui > div.esri-ui-inner-container.esri-ui-corner-container > div.esri-ui-bottom-right.esri-ui-corner > div").style.display="block";
             console.log("adding huc12 fields");
             document.getElementById("fieldDiv").style.display="block"
+            showHideCalcitePanels("#panelInfo", "#collapseInfo");
         }
         if (e == false) {
             document.querySelector("#mapViewDiv > div.esri-view-root > div.esri-ui > div.esri-ui-inner-container.esri-ui-corner-container > div.esri-ui-bottom-right.esri-ui-corner > div").style.display="none";
@@ -1252,6 +1236,7 @@ span.onclick = function() {
             // if manual is selected, then add or update
             // a classed color slider to allow the user to
             // construct manual class breaks
+            console.log("manual breaks")
             updateColorSlider(rendererResponse);
           } else {
             destroySlider();
@@ -1264,9 +1249,10 @@ span.onclick = function() {
     // the class breaks starting with the generated renderer
 
     function updateColorSlider(rendererResult) {
-      console.log("Custom");
+      console.log("Custom", fieldSelect);
       const fieldValue =
-        fieldSelect.selectedItems[0].id;
+      fieldSelect.options[fieldSelect.selectedIndex].value;
+        //fieldSelect.selectedItems[0].id;
       histogram({
         layer: huc12,
         valueExpression: getValueExpression(fieldValue),
