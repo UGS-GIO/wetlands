@@ -648,31 +648,59 @@ require([
         ]
     })
 
-    const huc12 = new FeatureLayer({
-        title: "Utah Wetlands",
-        url:
-          "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Landscape_Data/MapServer/0",
-        popupTemplate: {
-          // autocast as esri/PopupTemplate
-          title: "HUC 12",
-          content: [
-            {
-              type: "fields",
-              fieldInfos: [
-                {
-                  fieldName: "huc12_name",
-                  label: "Name",
-                },
-                {
-                  fieldName: "huc12",
-                  label: "HUC12 #",
-                },
+    // const huc12 = new FeatureLayer({
+    //     title: "HUC12",
+    //     url:
+    //       "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Landscape_Data/MapServer/0",
+    //     popupTemplate: {
+    //       // autocast as esri/PopupTemplate
+    //       title: "HUC12",
+    //       content: [
+    //         {
+    //           type: "fields",
+    //           fieldInfos: [
+    //             {
+    //               fieldName: "huc12_name",
+    //               label: "Name",
+    //             },
+    //             {
+    //               fieldName: "huc12",
+    //               label: "HUC12 #",
+    //             },
                 
-              ]
-            }
-          ]
-        },
-      });
+    //           ]
+    //         }
+    //       ]
+    //     },
+    //   });
+
+    //   const huc12eco = new FeatureLayer({
+    //     title: "HUC12 by Ecoregion",
+    //     url:
+    //       "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Landscape_Data/MapServer/1",
+    //     popupTemplate: {
+    //       // autocast as esri/PopupTemplate
+    //       title: "HUC 12 by Ecoregion",
+    //       content: [
+    //         {
+    //           type: "fields",
+    //           fieldInfos: [
+    //             {
+    //               fieldName: "huc12_name",
+    //               label: "Name",
+    //             },
+    //             {
+    //               fieldName: "huc12",
+    //               label: "HUC12 #",
+    //             },
+                
+    //           ]
+    //         }
+    //       ]
+    //     },
+    //   });
+
+
 
     var wetlandGroup = new GroupLayer({
         title: "Wetland and Riparian Mapping",
@@ -685,7 +713,7 @@ require([
         title: "Landscape Data",
         visible: false,
         visibiltyMode: "independent",
-        layers: [huc12]
+        layers: []
     })
 
 
@@ -745,7 +773,6 @@ require([
         container: "legendDiv",
         listItemCreatedFunction: function(event) {
             const item = event.item;
-            console.log(item);
             item.panel = {
                 content: "legend",
                 open: true
@@ -1173,6 +1200,9 @@ span.onclick = function() {
     // Generate a new renderer each time the user changes an input parameter
     mapView.when().then(function () {
 
+      layerSelect = document.getElementById("layer-select");
+      layerSelect.addEventListener("change", generateRenderer);
+
       fieldSelect = document.getElementById("field-select");
       fieldSelect.addEventListener("change", generateRenderer);
 
@@ -1196,10 +1226,151 @@ span.onclick = function() {
     
 
     function generateRenderer() {
-        console.log(fieldSelect);
+        //remove existing layers from the landscape data group
+        landscapeGroup.layers.removeAll();
+
       //grab values from element for field choice
-      const fieldLabel =
-      fieldSelect.options[fieldSelect.selectedIndex].text;
+      const selectedLayer = layerSelect.options[layerSelect.selectedIndex].value;
+      const selectedLayerTitle = layerSelect.options[layerSelect.selectedIndex].text;
+      console.log(selectedLayer);
+      const fieldLabel = fieldSelect.options[fieldSelect.selectedIndex].text;
+      if (selectedLayer == '0') {
+        var landscapeLayer = new FeatureLayer({
+            title: selectedLayerTitle,
+          url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Landscape_Data/MapServer/" + selectedLayer,
+              popupTemplate: {
+            // autocast as esri/PopupTemplate
+            title: selectedLayerTitle,
+            content: [
+              {
+                type: "fields",
+                fieldInfos: [
+                  {
+                    fieldName: "huc12_name",
+                    label: "Name:",
+                  },
+                  {
+                    fieldName: "huc12",
+                    label: "Number:",
+                  },
+                  
+                ]
+              }
+            ]
+          },
+        });
+      } else if (selectedLayer == '1') {
+        var landscapeLayer = new FeatureLayer({
+            title: selectedLayerTitle,
+          url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Landscape_Data/MapServer/" + selectedLayer,
+              popupTemplate: {
+            // autocast as esri/PopupTemplate
+            title: selectedLayerTitle,
+            content: [
+              {
+                type: "fields",
+                fieldInfos: [
+                  {
+                    fieldName: "huc12_name",
+                    label: "Name:",
+                  },
+                  {
+                    fieldName: "huc12",
+                    label: "Number:",
+                  },
+                  {
+                    fieldName: "ecoregion",
+                    label: "Ecoregion:",
+                  },
+                  
+                ]
+              }
+            ]
+          },
+        });
+    } else if (selectedLayer == '2') {
+        var landscapeLayer = new FeatureLayer({
+            title: selectedLayerTitle,
+          url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Landscape_Data/MapServer/" + selectedLayer,
+              popupTemplate: {
+            // autocast as esri/PopupTemplate
+            title: selectedLayerTitle,
+            content: [
+              {
+                type: "fields",
+                fieldInfos: [
+                  {
+                    fieldName: "huc8_name",
+                    label: "Name:",
+                  },
+                  {
+                    fieldName: "huc8",
+                    label: "Number:",
+                  },
+                  
+                ]
+              }
+            ]
+          },
+        });
+    } else if (selectedLayer == '3') {
+        var landscapeLayer = new FeatureLayer({
+            title: selectedLayerTitle,
+          url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Landscape_Data/MapServer/" + selectedLayer,
+              popupTemplate: {
+            // autocast as esri/PopupTemplate
+            title: selectedLayerTitle,
+            content: [
+              {
+                type: "fields",
+                fieldInfos: [
+                  {
+                    fieldName: "huc8_name",
+                    label: "Name:",
+                  },
+                  {
+                    fieldName: "huc8",
+                    label: "Number:",
+                  },
+                  {
+                    fieldName: "ecoregion",
+                    label: "Ecoregion:",
+                  },
+                  
+                ]
+              }
+            ]
+          },
+        });
+    } else if (selectedLayer == '4') {
+        var landscapeLayer = new FeatureLayer({
+            title: selectedLayerTitle,
+          url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Landscape_Data/MapServer/" + selectedLayer,
+              popupTemplate: {
+            // autocast as esri/PopupTemplate
+            title: selectedLayerTitle,
+            content: [
+              {
+                type: "fields",
+                fieldInfos: [
+                    {
+                        fieldName: "ecoregion",
+                        label: "Ecoregion:",
+                      },
+                  
+                ]
+              }
+            ]
+          },
+        });
+}
+
+
+    
+        
+
+
+      landscapeGroup.layers.push(landscapeLayer);
 
 
       
@@ -1210,7 +1381,7 @@ span.onclick = function() {
           : classSelect.value;
 
       const params = {
-        layer: huc12,
+        layer: landscapeLayer,
         //valueExpression: getValueExpression(fieldValue),
         field: fieldSelect.options[fieldSelect.selectedIndex].value,
         view: mapView,
@@ -1225,11 +1396,11 @@ span.onclick = function() {
       colorRendererCreator
         .createClassBreaksRenderer(params)
         .then(function (rendererResponse) {
-          huc12.renderer = rendererResponse.renderer;
+            landscapeLayer.renderer = rendererResponse.renderer;
 
-          if (!landscapeGroup.layers.includes(huc12)) {
+          if (!landscapeGroup.layers.includes(landscapeLayer)) {
             //map.add(huc12);
-            landscapeGroup.layers.push(huc12);
+            landscapeGroup.layers.push(landscapeLayer);
           }
 
           if (classSelect.value === "manual") {
@@ -1254,7 +1425,7 @@ span.onclick = function() {
       fieldSelect.options[fieldSelect.selectedIndex].value;
         //fieldSelect.selectedItems[0].id;
       histogram({
-        layer: huc12,
+        layer: landscapeLayer,
         valueExpression: getValueExpression(fieldValue),
         field: fieldValue,
         view: mapView,
@@ -1276,13 +1447,13 @@ span.onclick = function() {
           slider.viewModel.precision = 1;
 
           function changeEventHandler() {
-            const renderer = huc12.renderer.clone();
+            const renderer = landscapeLayer.renderer.clone();
             renderer.classBreakInfos = slider.updateClassBreakInfos(
               renderer.classBreakInfos
               
             );
             console.log(renderer.classBreakInfos);
-            huc12.renderer = renderer;
+            landscapeLayer.renderer = renderer;
           }
 
           slider.on(
