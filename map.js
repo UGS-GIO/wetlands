@@ -381,8 +381,8 @@ require([
     contentStudyArea = function(feature) {
         var contentStudyArea = "";
 
-        if (feature.graphic.attributes.region) {
-            contentStudyArea += "<span class='bold' title='Region'><b>Region: </b></span>{region}<br/>";
+        if (feature.graphic.attributes.project) {
+            contentStudyArea += "<span class='bold' title='Name of project'><b>Project Name: </b></span>{project}<br/>";
         }
         if (feature.graphic.attributes.years) {
             contentStudyArea += "<span class='bold' title='Years'><b>Years: </b></span>{years}<br/>";
@@ -582,18 +582,9 @@ require([
         ]
     });
 
-    var conditionsLayer = new MapImageLayer({
-        url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Condition/MapServer",
-        visible: false,
-        sublayers: [{
-                id: 2,
-                title: "Wetland Stressors",
-                opacity: 0.6,
-                //visible: false,
-
-            },
-            {
-                id: 1,
+    var assessmentLayer = new FeatureLayer({
+        url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Condition/MapServer/0",
+        visible: true,
                 title: "Wetland Assessment Projects",
                 opacity: 0.6,
                 popupTemplate: {
@@ -601,9 +592,32 @@ require([
                     content: contentStudyArea,
                     outFields: ["*"]
                 },
-                //visible: false
-            },
-        ]
+
+    });
+
+    var stressorsLayer = new FeatureLayer({
+        url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Condition/MapServer/1",
+        visible: true,
+
+                title: "Wetland Stressors",
+                opacity: 0.6,
+
+
+    });
+
+    var studyResultsLayer = new FeatureLayer({
+        url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Condition/MapServer/2",
+
+            
+                title: "Wetland Assessment Study Results",
+                opacity: 0.6,
+                // popupTemplate: {
+                //     title: "Wetland Assessment Projects",
+                //     content: contentStudyArea,
+                //     outFields: ["*"]
+                // },
+                visible: true
+
     });
 
     var ownershipLayer = new MapImageLayer({
@@ -700,6 +714,12 @@ require([
     //     },
     //   });
 
+    var conditionsGroup = new GroupLayer({
+        title: "Wetland Conditions",
+        visible: false,
+        visibiltyMode: "independent",
+        layers: [stressorsLayer, studyResultsLayer, assessmentLayer]
+    })
 
 
     var wetlandGroup = new GroupLayer({
@@ -721,7 +741,7 @@ require([
 
     mapView.map.add(ownershipLayer);
     mapView.map.add(speciesLayer);
-    mapView.map.add(conditionsLayer);
+    mapView.map.add(conditionsGroup);
     mapView.map.add(hydricSoils);
     mapView.map.add(wetlandGroup);
     //mapView.map.add(wetlandLayer);
@@ -773,10 +793,11 @@ require([
         container: "legendDiv",
         listItemCreatedFunction: function(event) {
             const item = event.item;
+            if (item.layer.type != "group") { // don't show legend twice
             item.panel = {
                 content: "legend",
                 open: true
-            };
+            }
             item.actionsSections = [
                 [{
                     title: "Increase opacity",
@@ -789,6 +810,7 @@ require([
                 }]
             ];
         }
+    }
     });
 
     //legend expand widget
