@@ -1236,11 +1236,11 @@ span.onclick = function() {
       const fieldLabel = fieldSelect.options[fieldSelect.selectedIndex].text;
       if (selectedLayer == '0') {
         var landscapeLayer = new FeatureLayer({
-            title: selectedLayerTitle,
+            title: "Watershed (HUC12)",
           url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Landscape_Data/MapServer/" + selectedLayer,
               popupTemplate: {
             // autocast as esri/PopupTemplate
-            title: selectedLayerTitle,
+            title: "Watershed (HUC12)",
             content: [
               {
                 type: "fields",
@@ -1261,11 +1261,11 @@ span.onclick = function() {
         });
       } else if (selectedLayer == '1') {
         var landscapeLayer = new FeatureLayer({
-            title: selectedLayerTitle,
+            title: "Watershed (HUC12) by Ecoregion",
           url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Landscape_Data/MapServer/" + selectedLayer,
               popupTemplate: {
             // autocast as esri/PopupTemplate
-            title: selectedLayerTitle,
+            title: "Watershed (HUC12) by Ecoregion",
             content: [
               {
                 type: "fields",
@@ -1290,11 +1290,11 @@ span.onclick = function() {
         });
     } else if (selectedLayer == '2') {
         var landscapeLayer = new FeatureLayer({
-            title: selectedLayerTitle,
+            title: "Sub-Basin (HUC8)",
           url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Landscape_Data/MapServer/" + selectedLayer,
               popupTemplate: {
             // autocast as esri/PopupTemplate
-            title: selectedLayerTitle,
+            title: "Sub-Basin (HUC8)",
             content: [
               {
                 type: "fields",
@@ -1315,11 +1315,11 @@ span.onclick = function() {
         });
     } else if (selectedLayer == '3') {
         var landscapeLayer = new FeatureLayer({
-            title: selectedLayerTitle,
+            title: "Sub-Basin (HUC8) by Ecoregion",
           url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Landscape_Data/MapServer/" + selectedLayer,
               popupTemplate: {
             // autocast as esri/PopupTemplate
-            title: selectedLayerTitle,
+            title: "Sub-Basin (HUC8) by Ecoregion",
             content: [
               {
                 type: "fields",
@@ -1344,11 +1344,11 @@ span.onclick = function() {
         });
     } else if (selectedLayer == '4') {
         var landscapeLayer = new FeatureLayer({
-            title: selectedLayerTitle,
+            title: "Ecoregion",
           url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Landscape_Data/MapServer/" + selectedLayer,
               popupTemplate: {
             // autocast as esri/PopupTemplate
-            title: selectedLayerTitle,
+            title: "Ecoregion",
             content: [
               {
                 type: "fields",
