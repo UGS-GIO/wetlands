@@ -385,13 +385,25 @@ require([
             contentStudyArea += "<span class='bold' title='Name of project'><b>Project Name: </b></span>{project}<br/>";
         }
         if (feature.graphic.attributes.years) {
-            contentStudyArea += "<span class='bold' title='Years'><b>Years: </b></span>{years}<br/>";
+            contentStudyArea += "<span class='bold' title='Years when field work was conducted'><b>Years: </b></span>{years}<br/>";
         }
 
         if (feature.graphic.attributes.ProjectReport) {
-            contentStudyArea += "<span class='bold'><b>Project Report: </b></span>" + "<a href='{ProjectReport}' target='_blank'>Opens in new tab</a>";
+            contentStudyArea += "<span class='bold' title='Link to final project report'><b>Report: </b></span>" + "<a href='{ProjectReport}' target='_blank'>Opens in new tab</a><br/>";
         } else {
-            contentStudyArea += "<span class='bold'><b>Project Report: </b></span>Currently not available.";
+            contentStudyArea += "<span class='bold'><b>Report: </b></span>Currently not available.";
+        }
+        if (feature.graphic.attributes.target_population) {
+            contentStudyArea += "<span class='bold' title='Group of wetlands targeted for study by the project'><b>Target population: </b></span>{target_population}<br/>";
+        }
+        if (feature.graphic.attributes.target_population_comparison) {
+            contentStudyArea += "<span class='bold' title='How target population compares to target in other UGS surveys'><b>Target population comparison: </b></span>{target_population_comparison}<br/>";
+        }
+        if (feature.graphic.attributes.sample_frame) {
+            contentStudyArea += "<span class='bold' title='Spatial data used to select survey sites'><b>Sample frame: </b></span>{sample_frame}<br/>";
+        }
+        if (feature.graphic.attributes.site_selection) {
+            contentStudyArea += "<span class='bold' title='Method used for selecting sites'><b>Site selection: </b></span>{site_selection}<br/>";
         }
 
 
