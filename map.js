@@ -412,6 +412,64 @@ require([
     }
 
 
+    contentStudyResults = function(feature) {
+        var contentStudyResults = "";
+
+        if (feature.graphic.attributes.project) {
+            contentStudyResults += "<span class='bold' title='Name of project'><b>Project Name: </b></span>{project}<br/>";
+        }
+        if (feature.graphic.attributes.stratum_name) {
+            contentStudyResults += "<span class='bold' title='Name of stratum within project area'><b>Stratum Name: </b></span>{stratum_name}<br/>";
+        }
+        if (feature.graphic.attributes.stratum_ecoregion) {
+            contentStudyResults += "<span class='bold' title='Ecoregion of stratum within project area'><b>Stratum Ecoregion: </b></span>{stratum_ecoregion}<br/>";
+        }
+        if (feature.graphic.attributes.sites_surveyed) {
+            contentStudyResults += "<span class='bold' title='Number of sites surveyed'><b>Sites Surveyed (#): </b></span>{sites_surveyed}<br/>";
+        }
+        if (feature.graphic.attributes.pct_very_high_condition) {
+            contentStudyResults += "<span class='bold' title='Percent of sites with very high condition score (URAP overall score ≥4.5)'><b>Very High Condition Score (%): </b></span>{pct_very_high_condition}<br/>";
+        }
+        if (feature.graphic.attributes.pct_high_condition) {
+            contentStudyResults += "<span class='bold' title='Percent of sites with high condition score (URAP overall score ≥3.5 & <4.5)'><b>High Condition Score (%): </b></span>{pct_high_condition}<br/>";
+        }
+        if (feature.graphic.attributes.pct_medium_condition) {
+            contentStudyResults += "<span class='bold' title='Percent of sites with medium condition score (URAP overall score ≥2.5 & <3.5)'><b>Medium Condition Score (%): </b></span>{pct_medium_condition}<br/>";
+        }
+        if (feature.graphic.attributes.pct_low_condition) {
+            contentStudyResults += "<span class='bold' title='Percent of sites with high condition score (URAP overall score ≥3.5 & <4.5)'><b>Low Condition Score (%): </b></span>{pct_low_condition}<br/>";
+        }
+        if (feature.graphic.attributes.pct_high_condition) {
+            contentStudyResults += "<span class='bold' title='Percent of sites with high condition score (URAP overall score ≥3.5 & <4.5)'><b>High Condition Score (%): </b></span>{pct_high_condition}<br/>";
+        }
+        if (feature.graphic.attributes.pct_absent_overall_stress) {
+            contentStudyResults += "<span class='bold' title='Percent of sites rated as having absent stressors'><b>Stressors Absent (%): </b></span>{pct_absent_overall_stress}<br/>";
+        }
+        if (feature.graphic.attributes.pct_low_overall_stress) {
+            contentStudyResults += "<span class='bold' title='Percent of sites rated as having low stressors'><b>Stressors Low (%): </b></span>{pct_low_overall_stress}<br/>";
+        }
+        if (feature.graphic.attributes.pct_med_overall_stress) {
+            contentStudyResults += "<span class='bold' title='Percent of sites rated as having medium stressors'><b>Stressors Medium (%): </b></span>{pct_med_overall_stress}<br/>";
+        }
+        if (feature.graphic.attributes.pct_high_overall_stress) {
+            contentStudyResults += "<span class='bold' title='Percent of sites rated as having high stressors'><b>Stressors High (%): </b></span>{pct_high_overall_stress}<br/>";
+        }
+        if (feature.graphic.attributes.pct_very_high_overall_stress) {
+            contentStudyResults += "<span class='bold' title='Percent of sites rated as having very high stressors'><b>Stressors Very High (%): </b></span>{pct_very_high_overall_stress}<br/>";
+        }
+        if (feature.graphic.attributes.mean_rel_native_cov) {
+            contentStudyResults += "<span class='bold' title='Mean across sites of percent cover of native plants divided by cover by all plants with known nativity'><b>Mean Relative Native Plant Cover (%): </b></span>{mean_rel_native_cov}<br/>";
+        }
+        if (feature.graphic.attributes.mean_abs_nox_cov) {
+            contentStudyResults += "<span class='bold' title='Mean across sites of percent cover of noxious weed species'><b>Mean Absolute Noxious Plant Cover (%): </b></span>{mean_abs_nox_cov}<br/>";
+        }
+
+
+        return contentStudyResults;
+
+    }
+
+
 
     contentSpecies = function(feature) {
         console.log(feature);
@@ -623,11 +681,11 @@ require([
             
                 title: "Wetland Assessment Study Results",
                 opacity: 0.6,
-                // popupTemplate: {
-                //     title: "Wetland Assessment Projects",
-                //     content: contentStudyArea,
-                //     outFields: ["*"]
-                // },
+                popupTemplate: {
+                    title: "Wetland Assessment Study Results",
+                    content: contentStudyResults,
+                    outFields: ["*"]
+                },
                 visible: true
 
     });
