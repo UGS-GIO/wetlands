@@ -555,14 +555,14 @@ require([
         url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Condition/MapServer",
         visible: false,
         sublayers: [{
-                id: 2,
+                id: 1,
                 title: "Wetland Stressors",
                 opacity: 0.6,
                 //visible: false,
 
             },
             {
-                id: 1,
+                id: 0,
                 title: "Wetland Assessment Projects",
                 opacity: 0.6,
                 popupTemplate: {
