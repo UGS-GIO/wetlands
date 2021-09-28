@@ -647,6 +647,12 @@ require([
         layers: [riparianData, wetlandLayer]
     })
 
+    var conditionsLayer = new GroupLayer({
+        title: "Wetland Condition",
+        visible: false,
+        visibiltyMode: "independent",
+        layers: [stressorsLayer, assessmentLayer]
+    })
 
 
 
