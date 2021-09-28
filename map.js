@@ -551,18 +551,9 @@ require([
         ]
     });
 
-    var conditionsLayer = new MapImageLayer({
-        url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Condition/MapServer",
-        visible: false,
-        sublayers: [{
-                id: 1,
-                title: "Wetland Stressors",
-                opacity: 0.6,
-                //visible: false,
-
-            },
-            {
-                id: 0,
+    var assessmentLayer = new FeatureLayer({
+        url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Condition/MapServer/0",
+        visible: true,
                 title: "Wetland Assessment Projects",
                 opacity: 0.6,
                 popupTemplate: {
@@ -570,10 +561,42 @@ require([
                     content: contentStudyArea,
                     outFields: ["*"]
                 },
-                //visible: false
-            },
-        ]
+
     });
+
+    var stressorsLayer = new FeatureLayer({
+        url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Condition/MapServer/1",
+        visible: true,
+
+                title: "Wetland Stressors",
+                opacity: 0.6,
+
+
+    });
+
+    // var conditionsLayer = new MapImageLayer({
+    //     url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Condition/MapServer",
+    //     visible: false,
+    //     sublayers: [{
+    //             id: 1,
+    //             title: "Wetland Stressors",
+    //             opacity: 0.6,
+    //             //visible: false,
+
+    //         },
+    //         {
+    //             id: 0,
+    //             title: "Wetland Assessment Projects",
+    //             opacity: 0.6,
+    //             popupTemplate: {
+    //                 title: "Wetland Assessment Projects",
+    //                 content: contentStudyArea,
+    //                 outFields: ["*"]
+    //             },
+    //             //visible: false
+    //         },
+    //     ]
+    // });
 
     var ownershipLayer = new MapImageLayer({
         url: "https://gis.trustlands.utah.gov/server/rest/services/Ownership/UT_SITLA_Ownership_LandOwnership_WM/MapServer",
