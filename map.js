@@ -1484,6 +1484,49 @@ span.onclick = function() {
         }
       };
 
+      if (fieldSelect.options[fieldSelect.selectedIndex].value == "surface_water_trend") {
+          console.log("Trending");
+          let rendererTrend = {
+            type: "unique-value",  // autocasts as new UniqueValueRenderer()
+            field: "surface_water_trend",
+            defaultSymbol: { type: "simple-fill" },  // autocasts as new SimpleFillSymbol()
+            uniqueValueInfos: [{
+              // All features with value of "North" will be blue
+              value: "Decreasing",
+              symbol: {
+                type: "simple-fill",  // autocasts as new SimpleFillSymbol()
+                color: "red"
+              }
+            }, {
+              // All features with value of "East" will be green
+              value: "Increasing",
+              symbol: {
+                type: "simple-fill",  // autocasts as new SimpleFillSymbol()
+                color: "blue"
+              }
+            }, {
+              // All features with value of "South" will be red
+              value: "No trend",
+              symbol: {
+                type: "simple-fill",  // autocasts as new SimpleFillSymbol()
+                color: "beige"
+              }
+            }, {
+              // All features with value of "West" will be yellow
+              value: "No data",
+              symbol: {
+                type: "simple-fill",  // autocasts as new SimpleFillSymbol()
+                color: "0, 255, 0, 0"
+              }
+            }],
+          };
+          landscapeLayer.renderer = rendererTrend;
+          if (!landscapeGroup.layers.includes(landscapeLayer)) {
+            //map.add(huc12);
+            landscapeGroup.layers.push(landscapeLayer);
+          }
+      } else {
+
       // generate the renderer and set it on the layer
       colorRendererCreator
         .createClassBreaksRenderer(params)
@@ -1559,6 +1602,7 @@ span.onclick = function() {
         }
       });
     }
+}
 
     function destroySlider() {
       if (slider) {
