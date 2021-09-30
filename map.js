@@ -216,6 +216,28 @@ require([
       }
 
     //Create popup content
+
+    contentHUC12 = function(feature) {
+        console.log(feature);
+        var contentHUC12 = "";
+
+
+        if (feature.graphic.attributes.huc12_name) {
+            contentHUC12 += "<span class='bold' title=''><b>Name: </b></span>{huc12_name}<br/>";
+        }
+
+
+        if (feature.graphic.attributes.huc12) {
+            contentHUC12 += "<span class='bold' title=''><b>Number: </b></span>{huc12}<br/>";
+        }
+        if (feature.graphic.attributes.surface_water_plot) {
+            contentHUC12 += "<span class='bold'><b>Surface Water Plot: </b></span>" + "<a href='{surface_water_plot}' target='_blank'>Opens in new tab</a>";
+        } else {
+            contentHUC12 += "<span class='bold'><b>Surface Water Plot: </b></span>Surface Water Plot not currently available.";
+        }
+
+        return contentHUC12;
+    }
     contentPro = function(feature) {
         console.log(feature);
         var contentPro = "";
@@ -1296,22 +1318,24 @@ span.onclick = function() {
               popupTemplate: {
             // autocast as esri/PopupTemplate
             title: "Watershed (HUC12)",
-            content: [
-              {
-                type: "fields",
-                fieldInfos: [
-                  {
-                    fieldName: "huc12_name",
-                    label: "Name:",
-                  },
-                  {
-                    fieldName: "huc12",
-                    label: "Number:",
-                  },
+            content: contentHUC12,
+            outFields: ["*"]
+            // [
+            //   {
+            //     type: "fields",
+            //     fieldInfos: [
+            //       {
+            //         fieldName: "huc12_name",
+            //         label: "Name:",
+            //       },
+            //       {
+            //         fieldName: "huc12",
+            //         label: "Number:",
+            //       },
                   
-                ]
-              }
-            ]
+            //     ]
+            //   }
+            // ]
           },
         });
       } else if (selectedLayer == '1') {
