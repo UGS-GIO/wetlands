@@ -901,44 +901,7 @@ require([
         expanded: true
     })
 
-    //Event listener that fires each time an action is triggered
-    layerList.on("trigger-action", function(event) {
-
-        // Capture the action id.
-        var id = event.action.id;
-
-        var title = event.item.title;
-
-        if (title === "Wetland and Riparian Mapping") {
-            layer = wetlandLayer;
-        } else if (title === "Boundaries") {
-            layer = boundaryLayer;
-        } else if (title === "Wetland Dependent Species") {
-            layer = speciesLayer;
-        } else {
-            layer = hydricSoils;
-        }
-
-
-
-        if (id === "increase-opacity") {
-            console.log("increase opacity");
-            // if the increase-opacity action is triggered, then
-            // increase the opacity of the GroupLayer by 0.25
-
-            if (layer.opacity < 1) {
-                layer.opacity += 0.1;
-            }
-        } else if (id === "decrease-opacity") {
-            console.log("decrease opacity");
-            // if the decrease-opacity action is triggered, then
-            // decrease the opacity of the GroupLayer by 0.25
-
-            if (layer.opacity > 0) {
-                layer.opacity -= 0.1;
-            }
-        }
-    });
+    
 
 
 
@@ -1327,7 +1290,7 @@ span.onclick = function() {
       console.log(selectedLayer);
       const fieldLabel = fieldSelect.options[fieldSelect.selectedIndex].text;
       if (selectedLayer == '0') {
-        var landscapeLayer = new FeatureLayer({
+         landscapeLayer = new FeatureLayer({
             title: "Watershed (HUC12)",
           url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Landscape_Data/MapServer/" + selectedLayer,
               popupTemplate: {
@@ -1492,28 +1455,32 @@ span.onclick = function() {
             defaultSymbol: { type: "simple-fill" },  // autocasts as new SimpleFillSymbol()
             uniqueValueInfos: [{
               // All features with value of "North" will be blue
-              value: "Decreasing",
+              value: "2",
+              label: "Decreasing",
               symbol: {
                 type: "simple-fill",  // autocasts as new SimpleFillSymbol()
                 color: "red"
               }
             }, {
               // All features with value of "East" will be green
-              value: "Increasing",
+              value: "3",
+              label: "Increasing",
               symbol: {
                 type: "simple-fill",  // autocasts as new SimpleFillSymbol()
                 color: "blue"
               }
             }, {
               // All features with value of "South" will be red
-              value: "No trend",
+              value: "1",
+              label: "No Trend",
               symbol: {
                 type: "simple-fill",  // autocasts as new SimpleFillSymbol()
                 color: "beige"
               }
             }, {
               // All features with value of "West" will be yellow
-              value: "No data",
+              value: "0",
+              label: "No data",
               symbol: {
                 type: "simple-fill",  // autocasts as new SimpleFillSymbol()
                 color: "0, 255, 0, 0"
@@ -1613,6 +1580,51 @@ span.onclick = function() {
         container = null;
       }
     }
+
+
+
+    //Event listener that fires each time an action is triggered
+    layerList.on("trigger-action", function(event) {
+
+        // Capture the action id.
+        var id = event.action.id;
+
+        var title = event.item.title;
+
+        if (title === "Riparian Mapping") {
+            layer = riparianData;
+        } else if (title === "River Sub Basins") {
+            layer = boundaryLayer;
+        } else if (title === "River Basins") {
+            layer = boundaryLayer;
+        } else if (title === "Wetland Mapping") {
+            layer = wetlandLayer;
+        } else if (title === "Watershed (HUC12)") {
+            layer = landscapeLayer;
+        } else if (title === "Surface Ownership and Administration") {
+            layer = ownershipLayer;
+        }
+
+
+
+        if (id === "increase-opacity") {
+            console.log("increase opacity");
+            // if the increase-opacity action is triggered, then
+            // increase the opacity of the GroupLayer by 0.25
+
+            if (layer.opacity < 1) {
+                layer.opacity += 0.1;
+            }
+        } else if (id === "decrease-opacity") {
+            console.log("decrease opacity");
+            // if the decrease-opacity action is triggered, then
+            // decrease the opacity of the GroupLayer by 0.25
+
+            if (layer.opacity > 0) {
+                layer.opacity -= 0.1;
+            }
+        }
+    });
 
 
 
