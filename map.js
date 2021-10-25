@@ -413,7 +413,7 @@ require([
         if (feature.graphic.attributes.ProjectReport) {
             contentStudyArea += "<span class='bold' title='Link to final project report'><b>Report: </b></span>" + "<a href='{ProjectReport}' target='_blank'>Opens in new tab</a><br/>";
         } else {
-            contentStudyArea += "<span class='bold'><b>Report: </b></span>Currently not available.";
+            contentStudyArea += "<span class='bold'><b>Report: </b></span>Currently not available.<br/>";
         }
         if (feature.graphic.attributes.target_population) {
             contentStudyArea += "<span class='bold' title='Group of wetlands targeted for study by the project'><b>Target population: </b></span>{target_population}<br/>";
