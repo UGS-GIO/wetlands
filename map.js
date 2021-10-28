@@ -223,12 +223,12 @@ require([
 
 
         if (feature.graphic.attributes.huc12_name) {
-            contentHUC12 += "<span class='bold' title=''><b>Name: </b></span>{huc12_name}<br/>";
+            contentHUC12 += "<span class='bold' title=''><b>Watershed Name: </b></span>{huc12_name}<br/>";
         }
 
 
         if (feature.graphic.attributes.huc12) {
-            contentHUC12 += "<span class='bold' title=''><b>Number: </b></span>{huc12}<br/>";
+            contentHUC12 += "<span class='bold' title=''><b>Watershed Identifier: </b></span>{huc12}<br/>";
         }
         if (feature.graphic.attributes.surface_water_plot) {
             contentHUC12 += "<span class='bold'><b>Surface Water Plot: </b></span>" + "<a href='{surface_water_plot}' target='_blank'>Opens in new tab</a>";
@@ -238,6 +238,29 @@ require([
 
         return contentHUC12;
     }
+
+    contentHUC8 = function(feature) {
+        console.log(feature);
+        var contentHUC8 = "";
+
+
+        if (feature.graphic.attributes.huc8_name) {
+            contentHUC8 += "<span class='bold' title=''><b>Sub-basin Name: </b></span>{huc8_name}<br/>";
+        }
+
+
+        if (feature.graphic.attributes.huc8) {
+            contentHUC8 += "<span class='bold' title=''><b>Sub-basin Identifier: </b></span>{huc8}<br/>";
+        }
+        if (feature.graphic.attributes.surface_water_plot) {
+            contentHUC8 += "<span class='bold'><b>Surface Water Plot: </b></span>" + "<a href='{surface_water_plot}' target='_blank'>Opens in new tab</a>";
+        } else {
+            contentHUC8 += "<span class='bold'><b>Surface Water Plot: </b></span>Surface Water Plot not currently available.";
+        }
+
+        return contentHUC8;
+    }
+
     contentPro = function(feature) {
         console.log(feature);
         var contentPro = "";
@@ -1255,7 +1278,6 @@ span.onclick = function() {
             
             //div.esri-ui-bottom-right.esri-ui-corner > div
             document.querySelector("#mapViewDiv > div.esri-view-root > div.esri-ui > div.esri-ui-inner-container.esri-ui-corner-container > div.esri-ui-bottom-right.esri-ui-corner > div").style.display="block";
-            console.log("adding huc12 fields");
             document.getElementById("fieldDiv").style.display="block"
             showHideCalcitePanels("#panelInfo", "#collapseInfo");
         }
@@ -1311,12 +1333,32 @@ span.onclick = function() {
       const selectedLayerTitle = layerSelect.options[layerSelect.selectedIndex].text;
       console.log(selectedLayer);
       const fieldLabel = fieldSelect.options[fieldSelect.selectedIndex].text;
+      console.log(fieldLabel);
+
       if (selectedLayer == '0') {
+        var x = document.getElementById("field-select");
+        $("#field-select option[value=pct_wells_rising]").remove();
+        $("#field-select option[value=pct_wells_falling]").remove();
+        $("#field-select option[value=mean_falling_slope]").remove();
+        $("#field-select option[value=mean_rising_slope]").remove();
+        $("#field-select option[value=surface_water_trend]").remove();
+        $("#field-select option[value=surface_water_slope]").remove();
+
+        var option = document.createElement("option");
+        option.value = "surface_water_trend";
+        option.text = "Growing Season 30-Year Surface Water Trend";
+
+        var option0 = document.createElement("option");
+        option0.value = "surface_water_slope";
+        option0.text = "Sen's Slope for Surface Water (ha/yr)";
+
+        x.add(option);
+        x.add(option0);
+
          landscapeLayer = new FeatureLayer({
             title: "Watershed (HUC12)",
           url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Landscape_Data/MapServer/" + selectedLayer,
               popupTemplate: {
-            // autocast as esri/PopupTemplate
             title: "Watershed (HUC12)",
             content: contentHUC12,
             outFields: ["*"]
@@ -1339,89 +1381,101 @@ span.onclick = function() {
           },
         });
       } else if (selectedLayer == '1') {
+        $("#field-select option[value=surface_water_trend]").remove();
+        $("#field-select option[value=surface_water_slope]").remove();
+
+        $("#field-select option[value=pct_wells_rising]").remove();
+        $("#field-select option[value=pct_wells_falling]").remove();
+        $("#field-select option[value=mean_falling_slope]").remove();
+        $("#field-select option[value=mean_rising_slope]").remove();
+
         var landscapeLayer = new FeatureLayer({
             title: "Watershed (HUC12) by Ecoregion",
           url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Landscape_Data/MapServer/" + selectedLayer,
               popupTemplate: {
             // autocast as esri/PopupTemplate
             title: "Watershed (HUC12) by Ecoregion",
-            content: [
-              {
-                type: "fields",
-                fieldInfos: [
-                  {
-                    fieldName: "huc12_name",
-                    label: "Name:",
-                  },
-                  {
-                    fieldName: "huc12",
-                    label: "Number:",
-                  },
-                  {
-                    fieldName: "ecoregion",
-                    label: "Ecoregion:",
-                  },
-                  
-                ]
-              }
-            ]
+            content: contentHUC12,
+            outFields: ["*"]
           },
         });
     } else if (selectedLayer == '2') {
+        var x = document.getElementById("field-select");
+
+        $("#field-select option[value=pct_wells_rising]").remove();
+        $("#field-select option[value=pct_wells_falling]").remove();
+        $("#field-select option[value=mean_falling_slope]").remove();
+        $("#field-select option[value=mean_rising_slope]").remove();
+        $("#field-select option[value=surface_water_trend]").remove();
+        $("#field-select option[value=surface_water_slope]").remove();
+
+        var option = document.createElement("option");
+        option.value = "surface_water_trend";
+        option.text = "Growing Season 30-Year Surface Water Trend";
+
+        var option0 = document.createElement("option");
+        option0.value = "surface_water_slope";
+        option0.text = "Sen's Slope for Surface Water (ha/yr)";
+
+        var option1 = document.createElement("option");
+        option1.value = "pct_wells_rising";
+        option1.text = "Wells Rising (%)";
+
+        var option2 = document.createElement("option");
+        option2.value = "pct_wells_falling";
+        option2.text = "Wells Falling (%)";
+
+        var option3 = document.createElement("option");
+        option3.value = "mean_falling_slope";
+        option3.text = "Wells Falling Slope Mean";
+
+        var option4 = document.createElement("option");
+        option4.value = "mean_rising_slope";
+        option4.text = "Wells Rising Slope Mean";
+
+        x.add(option);
+        x.add(option0);
+        x.add(option1);
+        x.add(option2);
+        x.add(option3);
+        x.add(option4);
+
         var landscapeLayer = new FeatureLayer({
             title: "Sub-Basin (HUC8)",
           url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Landscape_Data/MapServer/" + selectedLayer,
               popupTemplate: {
             // autocast as esri/PopupTemplate
             title: "Sub-Basin (HUC8)",
-            content: [
-              {
-                type: "fields",
-                fieldInfos: [
-                  {
-                    fieldName: "huc8_name",
-                    label: "Name:",
-                  },
-                  {
-                    fieldName: "huc8",
-                    label: "Number:",
-                  },
-                  
-                ]
-              }
-            ]
+            content: contentHUC8,
+            outFields: ["*"]
           },
         });
     } else if (selectedLayer == '3') {
+        $("#field-select option[value=pct_wells_rising]").remove();
+        $("#field-select option[value=pct_wells_falling]").remove();
+        $("#field-select option[value=mean_falling_slope]").remove();
+        $("#field-select option[value=mean_rising_slope]").remove();
+
+        $("#field-select option[value=surface_water_trend]").remove();
+        $("#field-select option[value=surface_water_slope]").remove();
         var landscapeLayer = new FeatureLayer({
             title: "Sub-Basin (HUC8) by Ecoregion",
           url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Landscape_Data/MapServer/" + selectedLayer,
               popupTemplate: {
             // autocast as esri/PopupTemplate
             title: "Sub-Basin (HUC8) by Ecoregion",
-            content: [
-              {
-                type: "fields",
-                fieldInfos: [
-                  {
-                    fieldName: "huc8_name",
-                    label: "Name:",
-                  },
-                  {
-                    fieldName: "huc8",
-                    label: "Number:",
-                  },
-                  {
-                    fieldName: "ecoregion",
-                    label: "Ecoregion:",
-                  },
-                  
-                ]
-              }
-            ]
+            content: contentHUC8,
+            outFields: ["*"]
           },
         });
     } else if (selectedLayer == '4') {
+        $("#field-select option[value=pct_wells_rising]").remove();
+        $("#field-select option[value=pct_wells_falling]").remove();
+        $("#field-select option[value=mean_falling_slope]").remove();
+        $("#field-select option[value=mean_rising_slope]").remove();
+
+        $("#field-select option[value=surface_water_trend]").remove();
+        $("#field-select option[value=surface_water_slope]").remove();
         var landscapeLayer = new FeatureLayer({
             title: "Ecoregion",
           url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Landscape_Data/MapServer/" + selectedLayer,
@@ -1468,7 +1522,8 @@ span.onclick = function() {
         numClasses: parseInt(numClassesInput.value),
         legendOptions: {
           title: fieldLabel
-        }
+        },
+        defaultLabel: "No Data"
       };
 
       if (fieldSelect.options[fieldSelect.selectedIndex].value == "surface_water_trend") {
@@ -1476,7 +1531,8 @@ span.onclick = function() {
           let rendererTrend = {
             type: "unique-value",  // autocasts as new UniqueValueRenderer()
             field: "surface_water_trend",
-            defaultSymbol: { type: "simple-fill" },  // autocasts as new SimpleFillSymbol()
+            //defaultSymbol: { type: "simple-fill" },  // autocasts as new SimpleFillSymbol()
+            //defaultLabel: "No Data",
             uniqueValueInfos: [{
               // All features with value of "North" will be blue
               value: "2",
@@ -1649,7 +1705,6 @@ span.onclick = function() {
             }
         }
     });
-
 
 
 
