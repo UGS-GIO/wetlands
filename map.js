@@ -1474,7 +1474,7 @@ span.onclick = function() {
      } else if (selectedLayer == '1') {
 
 
-       var landscapeLayer = new FeatureLayer({
+       landscapeLayer = new FeatureLayer({
            title: "Watershed (HUC12) by Ecoregion",
          url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Landscape_Data/MapServer/" + selectedLayer,
              popupTemplate: {
@@ -1488,7 +1488,7 @@ span.onclick = function() {
        var x = document.getElementById("field-select");
 
 
-       var landscapeLayer = new FeatureLayer({
+       landscapeLayer = new FeatureLayer({
            title: "Sub-Basin (HUC8)",
          url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Landscape_Data/MapServer/" + selectedLayer,
              popupTemplate: {
@@ -1500,7 +1500,7 @@ span.onclick = function() {
        });
    } else if (selectedLayer == '3') {
 
-       var landscapeLayer = new FeatureLayer({
+       landscapeLayer = new FeatureLayer({
            title: "Sub-Basin (HUC8) by Ecoregion",
          url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Landscape_Data/MapServer/" + selectedLayer,
              popupTemplate: {
@@ -1513,7 +1513,7 @@ span.onclick = function() {
    } else if (selectedLayer == '4') {
 
 
-       var landscapeLayer = new FeatureLayer({
+       landscapeLayer = new FeatureLayer({
            title: "Ecoregion",
          url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Landscape_Data/MapServer/" + selectedLayer,
              popupTemplate: {
@@ -1576,7 +1576,11 @@ span.onclick = function() {
               label: "Decreasing",
               symbol: {
                 type: "simple-fill",  // autocasts as new SimpleFillSymbol()
-                color: "red"
+                color: "red",
+                outline: {  // autocasts as new SimpleLineSymbol()
+                    color: [128, 128, 128, 0.1],
+                    width: "0.1px"
+                  }
               }
             }, {
               // All features with value of "East" will be green
@@ -1584,7 +1588,11 @@ span.onclick = function() {
               label: "Increasing",
               symbol: {
                 type: "simple-fill",  // autocasts as new SimpleFillSymbol()
-                color: "blue"
+                color: "blue",
+                outline: {  // autocasts as new SimpleLineSymbol()
+                    color: [128, 128, 128, 0.1],
+                    width: "0.1px"
+                  }
               }
             }, {
               // All features with value of "South" will be red
@@ -1592,7 +1600,11 @@ span.onclick = function() {
               label: "No Trend",
               symbol: {
                 type: "simple-fill",  // autocasts as new SimpleFillSymbol()
-                color: "beige"
+                color: "beige",
+                outline: {  // autocasts as new SimpleLineSymbol()
+                    color: [128, 128, 128, 0.1],
+                    width: "0.1px"
+                  }
               }
             }, {
               // All features with value of "West" will be yellow
@@ -1600,7 +1612,11 @@ span.onclick = function() {
               label: "No data",
               symbol: {
                 type: "simple-fill",  // autocasts as new SimpleFillSymbol()
-                color: "0, 255, 0, 0"
+                color: "0, 255, 0, 0",
+                outline: {  // autocasts as new SimpleLineSymbol()
+                    color: [128, 128, 128, 0.1],
+                    width: "0.1px"
+                  }
               }
             }],
           };
@@ -1702,6 +1718,7 @@ span.onclick = function() {
 
     //Event listener that fires each time an action is triggered
     layerList.on("trigger-action", function(event) {
+        console.log(event);
 
         // Capture the action id.
         var id = event.action.id;
@@ -1720,7 +1737,15 @@ span.onclick = function() {
             layer = landscapeLayer;
         } else if (title === "Surface Ownership and Administration") {
             layer = ownershipLayer;
-        }
+        } else if (title === "Watershed (HUC12) by Ecoregion") {
+            layer = landscapeLayer;
+        } else if (title === "Watershed (HUC8)") {
+            layer = landscapeLayer;
+        } else if (title === "Watershed (HUC8) by Ecoregion") {
+            layer = landscapeLayer;
+        } else if (title === "Ecoregion") {
+            layer = landscapeLayer;
+        } 
 
 
 
@@ -1742,6 +1767,7 @@ span.onclick = function() {
             }
         }
     });
+
 
     async function fillMetrics() {
        
