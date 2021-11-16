@@ -14,7 +14,7 @@ require([
     "esri/Graphic",
     "esri/layers/GroupLayer",
     "esri/tasks/Geoprocessor",
-    "esri/tasks/support/FeatureSet",
+    "esri/rest/support/FeatureSet",
     "esri/smartMapping/renderers/color",
     "esri/smartMapping/statistics/histogram",
     "esri/widgets/smartMapping/ClassedColorSlider",
@@ -22,7 +22,7 @@ require([
     "esri/layers/FeatureLayer",
     "esri/layers/MapImageLayer",
     //Tasks  
-    "esri/tasks/support/Query",
+    "esri/rest/support/Query",
     "esri/tasks/QueryTask",
     // Widgets
     "esri/widgets/Home",
@@ -36,7 +36,7 @@ require([
     "esri/widgets/LayerList",
     "esri/widgets/BasemapToggle",
     "esri/core/watchUtils",
-    "esri/tasks/support/RelationshipQuery",
+    "esri/rest/support/RelationshipQuery",
     "esri/popup/content/AttachmentsContent",
 
     // Bootstrap
