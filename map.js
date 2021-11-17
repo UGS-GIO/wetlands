@@ -110,7 +110,21 @@ require([
         basemaps: [Basemap.fromId("hybrid"), Basemap.fromId("streets"), Basemap.fromId("gray"), irBase]
     });
 
+    //grid vars
+    let grid;
+    let dataStore = new StoreAdapter({
+        ObjectStore: new Memory({
+            idProperty: "OBJECTID"
+        })
+    });
 
+    const gridDis = document.getElementById("gridDisplay");
+
+    var resultsAction = {
+        title: "Study Results",
+        id: "study-results",
+        className: "esri-icon-table"
+    };
 
     // Map
     var map = new Map({
@@ -584,13 +598,146 @@ require([
         return contentTitle
     }
 
-    //Add data
 
-// var huc12 = new FeatureLayer({
-// url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Landscape_Data/MapServer/0",
-// title: "HUC 12",
-// visible: false
-// });
+ // create grid
+ function createGrid(fields) {
+    console.log("creating grid");
+    console.log(fields);
+    console.log(gridFields);
+
+    //format innerHTML for a url value
+    function testRenderCell(object, value, node, options){
+        console.log(value);
+        var div = document.createElement("div");
+        div.className = "renderedCell";
+        div.innerHTML = '<a href=' + value + ' target=_blank>Click Here</a>';
+        return div;
+    }
+
+
+    var columns = fields.filter(function(field, i) {
+        if (gridFields.indexOf(field.name) >= -1) {
+            return field;
+        }
+    }).map(function(field) {
+        //console.log(field);
+        if (field.name == "reportlink") {
+            return {
+                field: field.name,
+                label: field.alias,
+                renderCell: testRenderCell
+            }
+        } else if
+         (field.name == "OBJECTID") {
+            console.log("HIDE COLUMN " + field.name);
+            return {
+                field: field.name,
+                label: field.alias,
+                //sortable: true,
+                hidden: true
+            };
+        } else {
+            console.log("SHOW COLUMN");
+            return {
+                field: field.name,
+                label: field.alias,
+                sortable: true
+            };
+        }
+
+
+    });
+
+    console.log(columns);
+
+    // create a new onDemandGrid with its selection and columnhider
+    // extensions. Set the columns of the grid to display attributes
+    // the hurricanes cvslayer
+    grid = new(declare([OnDemandGrid, Selection]))({
+        columns: columns
+    }, "grid");
+
+    // add a row-click listener on the grid. This will be used
+    // to highlight the corresponding feature on the view
+    grid.on("dgrid-select", selectFeatureFromGrid);
+    console.log(grid.columns[0].field);
+
+    //add tooltips to summary of species table
+    if (grid.columns[0].field == "family") {
+
+        console.info("SummarySpecies");
+        grid.on("th.field-commonname:mouseover", function(evt) {
+            console.info("hover");
+            evt.target.title = "Common Name from USDA Plants";
+        });
+
+    }
+
+    //add tooltips to sites table
+    if (grid.columns[0].field == "project") {
+
+        console.info("Sites");
+        grid.on("th.field-project:mouseover", function(evt) {
+            console.info("hover");
+            evt.target.title = "Project that collected site data";
+        });
+        
+    }
+}
+
+//select from grid function
+function selectFeatureFromGrid(event) {
+    console.log(event);
+    mapView.popup.close();
+    mapView.graphics.removeAll();
+    var row = event.rows[0]
+    console.log(row);
+    var id = row.data.OBJECTID;
+    console.log(id);
+
+    var query = plantSites.createQuery();
+
+    query.where = "OBJECTID = '" + id + "'";
+    query.returnGeometry = true;
+    query.outFields = ["*"],
+
+        // query the palntLayerView using the query set above
+        plantSites.queryFeatures(query).then(function(results) {
+            console.log(results);
+            var graphics = results.features;
+            console.log(graphics);
+            var item = graphics[0];
+                var cntr = [];
+                cntr.push(item.geometry.longitude);
+                cntr.push(item.geometry.latitude);
+                console.log(item.geometry);
+                mapView.goTo({
+                    center: cntr, // position:
+                    zoom: 13
+                });
+                mapView.graphics.removeAll();
+                var selectedGraphic = new Graphic({
+                    geometry: item.geometry,
+                    symbol: new SimpleMarkerSymbol({
+                        //color: [0,255,255],
+                        style: "circle",
+                        //size: "8px",
+                        outline: {
+                            color: [255, 255, 0],
+                            width: 3
+                        }
+                    })
+                });
+                mapView.graphics.add(selectedGraphic);
+                mapView.popup.open({
+                    features: [item],
+                    location: item.geometry
+                });
+        })
+}
+
+
+    //define layers
 
     var boundaryLayer = new MapImageLayer({
         url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Boundaries/MapServer",
@@ -705,6 +852,7 @@ require([
                 popupTemplate: {
                     title: "Wetland Assessment Projects",
                     content: contentStudyArea,
+                    actions: [resultsAction],
                     outFields: ["*"]
                 },
 
@@ -777,58 +925,6 @@ require([
         ]
     })
 
-    // const huc12 = new FeatureLayer({
-    //     title: "HUC12",
-    //     url:
-    //       "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Landscape_Data/MapServer/0",
-    //     popupTemplate: {
-    //       // autocast as esri/PopupTemplate
-    //       title: "HUC12",
-    //       content: [
-    //         {
-    //           type: "fields",
-    //           fieldInfos: [
-    //             {
-    //               fieldName: "huc12_name",
-    //               label: "Name",
-    //             },
-    //             {
-    //               fieldName: "huc12",
-    //               label: "HUC12 #",
-    //             },
-                
-    //           ]
-    //         }
-    //       ]
-    //     },
-    //   });
-
-    //   const huc12eco = new FeatureLayer({
-    //     title: "HUC12 by Ecoregion",
-    //     url:
-    //       "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Landscape_Data/MapServer/1",
-    //     popupTemplate: {
-    //       // autocast as esri/PopupTemplate
-    //       title: "HUC 12 by Ecoregion",
-    //       content: [
-    //         {
-    //           type: "fields",
-    //           fieldInfos: [
-    //             {
-    //               fieldName: "huc12_name",
-    //               label: "Name",
-    //             },
-    //             {
-    //               fieldName: "huc12",
-    //               label: "HUC12 #",
-    //             },
-                
-    //           ]
-    //         }
-    //       ]
-    //     },
-    //   });
-
     var conditionsGroup = new GroupLayer({
         title: "Wetland Conditions",
         visible: false,
@@ -873,15 +969,6 @@ require([
 
         if (g) {
 
-            // var symbol = new SimpleFillSymbol({
-            //     type: "simple-fill",
-            //     style: "none",
-            //     outline: { // autocasts as new SimpleLineSymbol()
-            //         color: "cyan",
-            //         width: 3
-            //     }
-            // });
-
             var symbol = {
                 type: "simple-fill",
                 style: "none",
@@ -901,6 +988,196 @@ require([
     });
 
 
+    function getResults(response) {
+      
+        console.log("getResults");
+        console.log(response);
+        console.log(response.fields);
+        let testField = response.fields[0].name;
+        console.log(testField);
+        let graphics = response.features;
+        console.log(graphics);
+        console.log(sitesCount);
+
+        gridDis.style.display = 'block';
+        domClass.add("mapViewDiv");
+        console.log("counting");
+            if (testField == "projectcode") {
+                document.getElementById("featureCount").innerHTML = "<b>Showing attributes for " + graphics.length.toString() + " project</b>"
+                            document.getElementById("removeX").setAttribute("class", "glyphicon glyphicon-remove");
+            document.getElementById("removeX").setAttribute("style", "float: right;");
+            } 
+
+console.log("go on and create grid");
+
+        createGrid(response.fields);
+        console.log(response.fields);
+        console.log(graphics);
+        console.log(graphics[0].attributes);
+        if (graphics[0].attributes) {
+            console.log("has attributes");
+            // get the attributes to display in the grid
+            var data = graphics.map(function(feature, i) {
+                return Object.keys(feature.attributes)
+                    .filter(function(key) {
+                        // get fields that exist in the grid
+                        return (gridFields.indexOf(key) !== -1);
+                    })
+                    // need to create key value pairs from the feature
+                    // attributes so that info can be displayed in the grid
+                    .reduce((obj, key) => {
+                        obj[key] = feature.attributes[key];
+                        return obj;
+                    }, {});
+            });
+            console.log(data);
+
+        } else {
+            console.log("no attributes");
+            var data = graphics;
+
+        }
+
+        //format the surveydate 
+        for (var i = 0; i < data.length; i++) {
+            if (data[i].surveydate) {
+                console.log("Found Survey Date");
+                for (var i = 0; i < data.length; i++) {
+                    var dateString = moment(data[i].surveydate).format('YYYY-MM-DD');
+                    data[i].surveydate = dateString;
+
+                }
+            }
+        }
+        // set the datastore for the grid using the
+        // attributes we got for the query results
+        dataStore.objectStore.data = data;
+        console.log(dataStore.objectStore.data);
+        grid.set("collection", dataStore);
+
+        document.getElementById("downloadX").setAttribute("class", "glyphicon glyphicon-download-alt");
+
+    }
+
+    function doGridClear() {
+        console.log("doGridClear");
+            if (grid) {
+                dataStore.objectStore.data = {};
+                grid.set("collection", dataStore);
+            }
+        gridDis.style.display = 'none';
+        //document.getElementById("featureCount2").innerHTML = "";
+        domClass.remove("mapViewDiv", 'withGrid');
+    }
+
+
+
+    function doQueryResults() {
+
+        doGridClear();
+        mapView.graphics.removeAll()
+        console.log("doQueryResults");
+        gridFields = ["project", "stratum_name", "stratum_ecoregion", "sites_surveyed", "pct_very_high_condition", "pct_high_condition",
+            "pct_medium_condition", "pct_low_condition", "pct_absent_overall_stress", "pct_low_overall_stress", "pct_med_overall_stress",
+             "pct_high_overall_stress", "pct_very_high_overall_stress", "mean_rel_native_cov", "mean_abs_nox_cov"
+        ];
+
+        var queryResults = new QueryTask({
+            url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Condition/MapServer/2"
+        });
+
+        relationQueryProjects = new RelationshipQuery({
+            objectIds: [OBJECTID],
+            outFields: ["project", "stratum_name", "stratum_ecoregion", "sites_surveyed", "pct_very_high_condition", "pct_high_condition",
+            "pct_medium_condition", "pct_low_condition", "pct_absent_overall_stress", "pct_low_overall_stress", "pct_med_overall_stress",
+             "pct_high_overall_stress", "pct_very_high_overall_stress", "mean_rel_native_cov", "mean_abs_nox_cov"],
+            relationshipId: 1
+        });
+
+        queryProjects.executeRelationshipQuery(relationQueryProjects).then(function(rslts) {
+            //console.log(rslts);
+
+            var poop = rslts[OBJECTID];
+
+            var gridFieldArray = [
+                //{alias: 'objectid', name: 'objectid'}, 
+                {
+                    alias: 'Project',
+                    name: 'project'
+                },
+                {
+                    alias: 'Stratum Name',
+                    name: 'stratum_name'
+                },
+                {
+                    alias: 'Stratum Ecoregion',
+                    name: 'stratum_ecoregion'
+                },
+                {
+                    alias: 'Sites Surveyed (#)',
+                    name: 'sites_surveyed'
+                },
+                {
+                    alias: 'Very High Condition Score (%)',
+                    name: 'pct_very_high_condition'
+                },
+                {
+                    alias: 'High Condition Score (%)',
+                    name: 'pct_high_condition'
+                },
+                {
+                    alias: 'Medium Condition Score (%)',
+                    name: 'pct_medium_condition'
+                },
+                {
+                    alias: 'Low Condition Score (%)',
+                    name: 'pct_low_condition'
+                },
+                {
+                    alias: 'Stressors Absent (%)',
+                    name: 'pct_absent_overall_stress'
+                },
+                {
+                    alias: 'Stressors Low (%)',
+                    name: 'pct_low_overall_stress'
+                },
+                {
+                    alias: 'Stressors Medium (%)',
+                    name: 'pct_med_overall_stress'
+                },
+                {
+                    alias: 'Stressors High (%)',
+                    name: 'pct_high_overall_stress'
+                },
+                {
+                    alias: 'Stressors Very High (%)',
+                    name: 'pct_very_high_overall_stress'
+                },
+                {
+                    alias: 'Mean Relative Native Plant Cover (%)',
+                    name: 'mean_rel_native_cov'
+                },
+                {
+                    alias: 'Mean Absolute Noxious Plant Cover (%)',
+                    name: 'mean_abs_nox_cov'
+                },
+            ];
+
+            poop.fields = gridFieldArray;
+
+            // poop.fields.forEach(function(fields, i) {
+            //     fields.name = gridFields[i]
+            //     fields.alias = gridFieldArray[i]
+            // });
+
+            console.log(poop);
+            getResults(rslts[OBJECTID]);
+
+        });
+
+       
+
+    }
 
 
     layerList = new LayerList({
@@ -1769,9 +2046,13 @@ span.onclick = function() {
     });
 
 
-    async function fillMetrics() {
-       
-    }
+    mapView.popup.on("trigger-action", function(event) { // Execute the relatedProjects() function if the project action is clicked
+        if (event.action.id === "study-results") {
+            console.log("results action clicked");
+            console.log(event);
+            doQueryResults();
+        }
+    });
 
 
 
