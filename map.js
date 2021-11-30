@@ -113,8 +113,8 @@ require([
     //grid vars
     let grid;
     let dataStore = new StoreAdapter({
-        ObjectStore: new Memory({
-            idProperty: "OBJECTID"
+        objectStore: new Memory({
+            idProperty: "objectid"
         })
     });
 
@@ -621,13 +621,7 @@ require([
         }
     }).map(function(field) {
         //console.log(field);
-        if (field.name == "reportlink") {
-            return {
-                field: field.name,
-                label: field.alias,
-                renderCell: testRenderCell
-            }
-        } else if
+ if
          (field.name == "OBJECTID") {
             console.log("HIDE COLUMN " + field.name);
             return {
@@ -662,27 +656,27 @@ require([
     grid.on("dgrid-select", selectFeatureFromGrid);
     console.log(grid.columns[0].field);
 
-    //add tooltips to summary of species table
-    if (grid.columns[0].field == "family") {
+    // //add tooltips to summary of species table
+    // if (grid.columns[0].field == "family") {
 
-        console.info("SummarySpecies");
-        grid.on("th.field-commonname:mouseover", function(evt) {
-            console.info("hover");
-            evt.target.title = "Common Name from USDA Plants";
-        });
+    //     console.info("SummarySpecies");
+    //     grid.on("th.field-commonname:mouseover", function(evt) {
+    //         console.info("hover");
+    //         evt.target.title = "Common Name from USDA Plants";
+    //     });
 
-    }
+    // }
 
-    //add tooltips to sites table
-    if (grid.columns[0].field == "project") {
+    // //add tooltips to sites table
+    // if (grid.columns[0].field == "project") {
 
-        console.info("Sites");
-        grid.on("th.field-project:mouseover", function(evt) {
-            console.info("hover");
-            evt.target.title = "Project that collected site data";
-        });
+    //     console.info("Sites");
+    //     grid.on("th.field-project:mouseover", function(evt) {
+    //         console.info("hover");
+    //         evt.target.title = "Project that collected site data";
+    //     });
         
-    }
+    // }
 }
 
 //select from grid function
@@ -997,13 +991,13 @@ function selectFeatureFromGrid(event) {
         console.log(testField);
         let graphics = response.features;
         console.log(graphics);
-        console.log(sitesCount);
+        //console.log(sitesCount);
 
         gridDis.style.display = 'block';
         domClass.add("mapViewDiv");
         console.log("counting");
-            if (testField == "projectcode") {
-                document.getElementById("featureCount").innerHTML = "<b>Showing attributes for " + graphics.length.toString() + " project</b>"
+            if (testField == "project") {
+                document.getElementById("featureCount").innerHTML = "<b>Showing attributes for " + graphics.length.toString() + " results</b>"
                             document.getElementById("removeX").setAttribute("class", "glyphicon glyphicon-remove");
             document.getElementById("removeX").setAttribute("style", "float: right;");
             } 
@@ -1037,18 +1031,7 @@ console.log("go on and create grid");
             var data = graphics;
 
         }
-
-        //format the surveydate 
-        for (var i = 0; i < data.length; i++) {
-            if (data[i].surveydate) {
-                console.log("Found Survey Date");
-                for (var i = 0; i < data.length; i++) {
-                    var dateString = moment(data[i].surveydate).format('YYYY-MM-DD');
-                    data[i].surveydate = dateString;
-
-                }
-            }
-        }
+        console.log(dataStore);
         // set the datastore for the grid using the
         // attributes we got for the query results
         dataStore.objectStore.data = data;
@@ -1083,24 +1066,26 @@ console.log("go on and create grid");
         ];
 
         var queryResults = new QueryTask({
-            url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Condition/MapServer/2"
+            url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Condition/MapServer/0"
         });
+        console.log(objectid);
 
-        relationQueryProjects = new RelationshipQuery({
-            objectIds: [OBJECTID],
+        relationQueryResults = new RelationshipQuery({
+            objectIds: [objectid],
             outFields: ["project", "stratum_name", "stratum_ecoregion", "sites_surveyed", "pct_very_high_condition", "pct_high_condition",
             "pct_medium_condition", "pct_low_condition", "pct_absent_overall_stress", "pct_low_overall_stress", "pct_med_overall_stress",
              "pct_high_overall_stress", "pct_very_high_overall_stress", "mean_rel_native_cov", "mean_abs_nox_cov"],
-            relationshipId: 1
+            relationshipId: 0
         });
 
-        queryProjects.executeRelationshipQuery(relationQueryProjects).then(function(rslts) {
-            //console.log(rslts);
+        queryResults.executeRelationshipQuery(relationQueryResults).then(function(rslts) {
+            console.log(rslts);
 
-            var poop = rslts[OBJECTID];
+            var poop = rslts[objectid];
+            console.log(poop);
 
             var gridFieldArray = [
-                //{alias: 'objectid', name: 'objectid'}, 
+                //{alias: 'OBJECTID', name: 'OBJECTID'}, 
                 {
                     alias: 'Project',
                     name: 'project'
@@ -1171,7 +1156,8 @@ console.log("go on and create grid");
             // });
 
             console.log(poop);
-            getResults(rslts[OBJECTID]);
+            console.log(rslts);
+            getResults(rslts[objectid]);
 
         });
 
@@ -1232,213 +1218,213 @@ console.log("go on and create grid");
 
 
     
-            //load download geoprocessor
-            var gp = new Geoprocessor(gpUrl);
-                gp.outSpatialReference = { // autocasts as new SpatialReference()
-                wkid: 102100
-            };
+//             //load download geoprocessor
+//             var gp = new Geoprocessor(gpUrl);
+//                 gp.outSpatialReference = { // autocasts as new SpatialReference()
+//                 wkid: 102100
+//             };
 
-    // SketchView functions
-    mapView.when(function() {
-        // create a new sketch view model
-        const sketchViewModel = new SketchViewModel({
-            view: mapView,
-            layer: tempGraphicsLayer,
-            polygonSymbol: {
-                type: "simple-fill",
-                color: [52, 229, 235, 0.8],
-                outline: {
-                  color: "gray",
-                  width: 0
-                }
-              }
-        });
+//     // SketchView functions
+//     mapView.when(function() {
+//         // create a new sketch view model
+//         const sketchViewModel = new SketchViewModel({
+//             view: mapView,
+//             layer: tempGraphicsLayer,
+//             polygonSymbol: {
+//                 type: "simple-fill",
+//                 color: [52, 229, 235, 0.8],
+//                 outline: {
+//                   color: "gray",
+//                   width: 0
+//                 }
+//               }
+//         });
 
-        setUpClickHandler();
+//         setUpClickHandler();
 
-        // Listen to create event to add a newly created graphic to view
-        sketchViewModel.on("create", addGraphic);
+//         // Listen to create event to add a newly created graphic to view
+//         sketchViewModel.on("create", addGraphic);
 
-        // Listen the sketchViewModel's update-complete and update-cancel events
-        sketchViewModel.on("update", updateGraphic);
+//         // Listen the sketchViewModel's update-complete and update-cancel events
+//         sketchViewModel.on("update", updateGraphic);
 
-        //*************************************************************
-        // called when sketchViewModel's create-complete event is fired.
-        //*************************************************************
-        function addGraphic(event) {
+//         //*************************************************************
+//         // called when sketchViewModel's create-complete event is fired.
+//         //*************************************************************
+//         function addGraphic(event) {
 
-            if (event.state === "complete") {
+//             if (event.state === "complete") {
                 
               
-            // Create a new graphic and set its geometry to
-            // `create-complete` event geometry.
-            graphic = new Graphic({
-                geometry: event.graphic.geometry,
-                symbol: {
-                    type: "simple-fill",
-                    color: [52, 229, 235, 0.8],
-                    outline: {
-                      color: "gray",
-                      width: 0
-                    }
-                  }
-            });
-            console.log("1228", graphic);
-            console.log("1229", sketchViewModel);
-            tempGraphicsLayer.add(graphic);
-            mapView.map.layers.reorder(tempGraphicsLayer, 6);
-        }
-        }
+//             // Create a new graphic and set its geometry to
+//             // `create-complete` event geometry.
+//             graphic = new Graphic({
+//                 geometry: event.graphic.geometry,
+//                 symbol: {
+//                     type: "simple-fill",
+//                     color: [52, 229, 235, 0.8],
+//                     outline: {
+//                       color: "gray",
+//                       width: 0
+//                     }
+//                   }
+//             });
+//             console.log("1228", graphic);
+//             console.log("1229", sketchViewModel);
+//             tempGraphicsLayer.add(graphic);
+//             mapView.map.layers.reorder(tempGraphicsLayer, 6);
+//         }
+//         }
 
-        //***************************************************************
-        // called when sketchViewModel's update-complete or update-cancel
-        // events are fired.
-        //*************************************************************
-        function updateGraphic(event) {
-            // event.graphic is the graphic that user clicked on and its geometry
-            // has not been changed. Update its geometry and add it to the layer
-            event.graphic.geometry = event.geometry;
-            tempGraphicsLayer.add(event.graphic);
+//         //***************************************************************
+//         // called when sketchViewModel's update-complete or update-cancel
+//         // events are fired.
+//         //*************************************************************
+//         function updateGraphic(event) {
+//             // event.graphic is the graphic that user clicked on and its geometry
+//             // has not been changed. Update its geometry and add it to the layer
+//             event.graphic.geometry = event.geometry;
+//             tempGraphicsLayer.add(event.graphic);
 
-            // set the editGraphic to null update is complete or cancelled.
-            editGraphic = null;
-        }
+//             // set the editGraphic to null update is complete or cancelled.
+//             editGraphic = null;
+//         }
 
-        // ************************************************************************************
-        // set up logic to handle geometry update and reflect the update on "tempGraphicsLayer"
-        // ************************************************************************************
-        function setUpClickHandler() {
-            mapView.on("click", function(event) {
-                console.log("Click Handler", event);
-                mapView.hitTest(event).then(function(response) {
-                    var results = response.results;
-                    // Found a valid graphic
-                    if (results.length && results[results.length - 1]
-                        .graphic) {
-                        // Check if we're already editing a graphic
-                        if (!editGraphic) {
-                            // Save a reference to the graphic we intend to update
-                            editGraphic = results[results.length - 1].graphic;
-                            // Remove the graphic from the GraphicsLayer
-                            // Sketch will handle displaying the graphic while being updated
-                            tempGraphicsLayer.remove(editGraphic);
-                            sketchViewModel.update(editGraphic);
-                        }
-                    }
-                });
-            });
-        }
-
-
-        //***************************************
-        // activate the sketch to create a polygon
-        //***************************************
-        var drawPolygonButton = document.getElementById("polygonButton");
-        drawPolygonButton.onclick = function() {
-            // set the sketch to create a polygon geometry
-            sketchViewModel.create("polygon");
-            setActiveButton(this);
-        };
+//         // ************************************************************************************
+//         // set up logic to handle geometry update and reflect the update on "tempGraphicsLayer"
+//         // ************************************************************************************
+//         function setUpClickHandler() {
+//             mapView.on("click", function(event) {
+//                 console.log("Click Handler", event);
+//                 mapView.hitTest(event).then(function(response) {
+//                     var results = response.results;
+//                     // Found a valid graphic
+//                     if (results.length && results[results.length - 1]
+//                         .graphic) {
+//                         // Check if we're already editing a graphic
+//                         if (!editGraphic) {
+//                             // Save a reference to the graphic we intend to update
+//                             editGraphic = results[results.length - 1].graphic;
+//                             // Remove the graphic from the GraphicsLayer
+//                             // Sketch will handle displaying the graphic while being updated
+//                             tempGraphicsLayer.remove(editGraphic);
+//                             sketchViewModel.update(editGraphic);
+//                         }
+//                     }
+//                 });
+//             });
+//         }
 
 
-        //***************************************
-        // activate the GP Download
-        //***************************************
-        var downloadButton = document.getElementById("DownloadButton");
-        var modal = document.getElementById("myModal");
-        var span = document.getElementsByClassName("close")[0];
-        downloadButton.onclick = function() {
-            modal.style.display = "block";
-            // set the sketch to create a polygon geometry
-            var inputGraphicContainer = [];
-            inputGraphicContainer.push(graphic);
-            var featureSet = new FeatureSet();
-            featureSet.features = inputGraphicContainer;
-            console.log("1294", inputGraphicContainer);
-            console.log("1295", featureSet);
-            console.log("1296", graphic);
-            var params = {
-                "Area_of_Interest": featureSet,
-            };
-            console.log("1301", params);
-
-            gp.submitJob(params).then(function(jobInfo){
+//         //***************************************
+//         // activate the sketch to create a polygon
+//         //***************************************
+//         var drawPolygonButton = document.getElementById("polygonButton");
+//         drawPolygonButton.onclick = function() {
+//             // set the sketch to create a polygon geometry
+//             sketchViewModel.create("polygon");
+//             setActiveButton(this);
+//         };
 
 
-                var jobid = jobInfo.jobId;
+//         //***************************************
+//         // activate the GP Download
+//         //***************************************
+//         var downloadButton = document.getElementById("DownloadButton");
+//         var modal = document.getElementById("myModal");
+//         var span = document.getElementsByClassName("close")[0];
+//         downloadButton.onclick = function() {
+//             modal.style.display = "block";
+//             // set the sketch to create a polygon geometry
+//             var inputGraphicContainer = [];
+//             inputGraphicContainer.push(graphic);
+//             var featureSet = new FeatureSet();
+//             featureSet.features = inputGraphicContainer;
+//             console.log("1294", inputGraphicContainer);
+//             console.log("1295", featureSet);
+//             console.log("1296", graphic);
+//             var params = {
+//                 "Area_of_Interest": featureSet,
+//             };
+//             console.log("1301", params);
 
-                    var options = {
-                        interval: 1500,
-                        statusCallback: function(j) {
-                        console.log("Job Status: ", j.jobStatus);
-                        var waiting = j.jobStatus;
-                        document.getElementsByClassName("modal-content")[0].innerHTML = '<b>Please wait while we process your file.</b> <br>';
-                        }
-                    };
+//             gp.submitJob(params).then(function(jobInfo){
 
-                    gp.waitForJobCompletion(jobid, options).then(function(rslt) {
 
-                        //function downloadFile(rslt) {
-                            console.log("1306", rslt);
-                            console.log(rslt.jobStatus);
-                            var test1 = "https://webmaps.geology.utah.gov/arcgis/rest/directories/arcgisjobs/wetlands/wetlandsdownload_gpserver/" + rslt.jobId + "/scratch/wetlands_download.zip";
+//                 var jobid = jobInfo.jobId;
 
-                            console.log("1319", test1);
+//                     var options = {
+//                         interval: 1500,
+//                         statusCallback: function(j) {
+//                         console.log("Job Status: ", j.jobStatus);
+//                         var waiting = j.jobStatus;
+//                         document.getElementsByClassName("modal-content")[0].innerHTML = '<b>Please wait while we process your file.</b> <br>';
+//                         }
+//                     };
+
+//                     gp.waitForJobCompletion(jobid, options).then(function(rslt) {
+
+//                         //function downloadFile(rslt) {
+//                             console.log("1306", rslt);
+//                             console.log(rslt.jobStatus);
+//                             var test1 = "https://webmaps.geology.utah.gov/arcgis/rest/directories/arcgisjobs/wetlands/wetlandsdownload_gpserver/" + rslt.jobId + "/scratch/wetlands_download.zip";
+
+//                             console.log("1319", test1);
                 
-                            document.getElementsByClassName("modal-content")[0].innerHTML = '<b><a href="' + test1 + '">Click to download your file.</a></b> <br>';
+//                             document.getElementsByClassName("modal-content")[0].innerHTML = '<b><a href="' + test1 + '">Click to download your file.</a></b> <br>';
                 
                 
-                            //modal.style.display = "block";
-                        ///}
+//                             //modal.style.display = "block";
+//                         ///}
                         
-                    });
-                    modal.style.display = "block";     
-             });
+//                     });
+//                     modal.style.display = "block";     
+//              });
 
-        };
+//         };
 
     
 
 
 
 
-        // When the user clicks on <span> (x), close the modal
-span.onclick = function() {
-    modal.style.display = "none";
-  }
+//         // When the user clicks on <span> (x), close the modal
+// span.onclick = function() {
+//     modal.style.display = "none";
+//   }
   
-  // When the user clicks anywhere outside of the modal, close it
-  window.onclick = function(event) {
-    if (event.target == modal) {
-      modal.style.display = "none";
-    }
-  }
+//   // When the user clicks anywhere outside of the modal, close it
+//   window.onclick = function(event) {
+//     if (event.target == modal) {
+//       modal.style.display = "none";
+//     }
+//   }
 
 
 
 
-        //**************
-        // reset button
-        //**************
-        document.getElementById("resetBtn").onclick = function() {
-            //sketchViewModel.reset();
-            tempGraphic = null;
-            tempGraphicsLayer.removeAll();
-            setActiveButton();
-        };
+//         //**************
+//         // reset button
+//         //**************
+//         document.getElementById("resetBtn").onclick = function() {
+//             //sketchViewModel.reset();
+//             tempGraphic = null;
+//             tempGraphicsLayer.removeAll();
+//             setActiveButton();
+//         };
 
-        function setActiveButton(selectedButton) {
-            // focus the view to activate keyboard shortcuts for sketching
-            mapView.focus();
-            var elements = document.getElementsByClassName("active");
-            for (var i = 0; i < elements.length; i++) {
-                elements[i].classList.remove("active");
-            }
-            if (selectedButton) {
-                selectedButton.classList.add("active");
-            }
-        }
-    });
+//         function setActiveButton(selectedButton) {
+//             // focus the view to activate keyboard shortcuts for sketching
+//             mapView.focus();
+//             var elements = document.getElementsByClassName("active");
+//             for (var i = 0; i < elements.length; i++) {
+//                 elements[i].classList.remove("active");
+//             }
+//             if (selectedButton) {
+//                 selectedButton.classList.add("active");
+//             }
+//         }
+//     });
 
 
     mapView.popup.dockOptions = {
@@ -1448,6 +1434,7 @@ span.onclick = function() {
     };
 
 
+        
 
 
     // Basemap events
@@ -1818,6 +1805,13 @@ span.onclick = function() {
 
 
       landscapeGroup.layers.push(landscapeLayer);
+
+      
+    watchUtils.when(mapView.popup, "selectedFeature", function species(evt) {
+        objectid = evt.attributes.OBJECTID;
+        console.log(objectid);
+
+    }); // end watchUtil
 
 
       
