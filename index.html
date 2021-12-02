@@ -28,21 +28,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
   <!-- Calcite Maps Bootstrap -->
   <link rel="stylesheet" href="https://esri.github.io/calcite-maps/dist/css/calcite-maps-bootstrap.min-v0.10.css">
-  <!--link rel="stylesheet" href="http://localhost/GitHub/calcite-maps/dist/css/calcite-maps-bootstrap.min-v0.9.css"-->
   
   <!-- Calcite Maps -->
   <link rel="stylesheet" href="https://esri.github.io/calcite-maps/dist/css/calcite-maps-arcgis-4.x.min-v0.10.css">
-  <!--link rel="stylesheet" href="http://localhost/GitHub/calcite-maps/dist/css/calcite-maps-arcgis-4.x.min-v0.9.css"-->
+
+  <!-- dGrid css, no longer part of ESRI JS API-->
+  <link rel="stylesheet" href="https://js.arcgis.com/4.17/dgrid/css/dgrid.css"/>
 
   <!-- ArcGIS JS 4 -->
   <link rel="stylesheet" href="https://js.arcgis.com/4.21/esri/css/main.css">
 
-  <link rel="stylesheet" type="text/css" href="https://unpkg.com/@esri/calcite-components/dist/calcite/calcite.css" />
-  <script type="module" src="https://unpkg.com/@esri/calcite-components/dist/calcite/calcite.esm.js"></script>
-  <script nomodule="" src="https://unpkg.com/@esri/calcite-components/dist/calcite/calcite.js"></script>
 
-  <!-- dgrid styling-->
-  <!-- <link rel="stylesheet" type="text/css" href="https://github.com/SitePen/dgrid/blob/master/css/dgrid.css" /> -->
 
 
   <style>
@@ -194,6 +190,7 @@ a:active {
       font-family: "Avenir Next W00", "Helvetica Neue", Helvetica, Arial, sans-serif;
       font-size: 14px;
       display: none;
+      z-index: 80;
     }
 
     .esri-layer-list__item-actions-menu-item--active, .esri-layer-list__item-actions-menu-item--active:hover {
@@ -205,9 +202,6 @@ a:active {
     right: 0;
 }
 
-    #gridDisplay {
-      z-index: 80;
-    }
 
     .info {
         line-height: 20px;
@@ -221,9 +215,7 @@ a:active {
       padding-right: 20px;
     } */
 
-    #collapseQuerySpecies .panel-body {
-      overflow-x: visible;
-    }
+
 
     .dgrid-header,
     .dgrid-header-row {
@@ -365,14 +357,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <div id='removeX'></div>
           <div id="grid"></div>
         </div>
-
-
         </div>
-        <div
-        id="select-by-polygon"
-        class="esri-widget esri-widget--button esri-widget esri-interactive"
-        title="Select features by polygon"
-      >
         <span class="esri-icon-checkbox-unchecked"></span>
       </div>
 

@@ -61,7 +61,7 @@ require([
     "dojo/mouse",
 
     // Calcite Maps
-    "calcite-maps/calcitemaps-v0.9",
+    "calcite-maps/calcitemaps-v0.10",
 
     // Calcite Maps ArcGIS Support
     "calcite-maps/calcitemaps-arcgis-support-v0.10",
