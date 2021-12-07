@@ -1038,7 +1038,7 @@ console.log("go on and create grid");
         console.log(dataStore.objectStore.data);
         grid.set("collection", dataStore);
 
-        document.getElementById("downloadX").setAttribute("class", "glyphicon glyphicon-download-alt");
+        //document.getElementById("downloadX").setAttribute("class", "glyphicon glyphicon-download-alt");
 
     }
 
@@ -2039,6 +2039,25 @@ console.log("go on and create grid");
         }
     });
 
+    
+    function doClear() {
+        mapView.graphics.removeAll()
+        console.log("doClear");
+        sitesCount = 0;
+        if (grid) {
+            dataStore.objectStore.data = {};
+            grid.set("collection", dataStore);
+        }
+        gridDis.style.display = 'none';
+        document.getElementById("featureCount2").innerHTML = "";
+        domClass.remove("mapViewDiv", 'withGrid');
+        mapView.graphics.removeAll();
+        if (highlight) {
+            highlight.remove();
+        
+    }
+}
+
 
     mapView.popup.on("trigger-action", function(event) { // Execute the relatedProjects() function if the project action is clicked
         if (event.action.id === "study-results") {
@@ -2047,7 +2066,13 @@ console.log("go on and create grid");
             doQueryResults();
         }
     });
+//hide grid on X click.
+    document.getElementById("removeX").addEventListener("click", function(evt) {
+        mapView.popup.close();
+        mapView.graphics.removeAll();
+        doClear();
 
+    })
 
 
 });
