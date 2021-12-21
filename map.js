@@ -1494,8 +1494,8 @@ console.log("go on and create grid");
         // activate the GP Download
         //***************************************
         var downloadButton = document.getElementById("DownloadButton");
-        var modal = document.getElementById("myModal");
-        var span = document.getElementsByClassName("close")[0];
+        modal = document.getElementById("myModal");
+        span = document.getElementsByClassName("close")[0];
         downloadButton.onclick = function() {
             modal.style.display = "block";
             // set the sketch to create a polygon geometry
@@ -2185,6 +2185,8 @@ span.onclick = function() {
             layer = assessmentLayer;
         } else if (title === "Wetland Assessment Study Results") {
             layer = assessmentLayer;
+        } else if (title === "Wetland Stressors") {
+            layer = stressorsLayer;
         }
 
 
@@ -2213,10 +2215,12 @@ span.onclick = function() {
             } else if (title === "Wetland Assessment Projects") {
                 console.log(title);
                 doQueryWassProjects();
+            } else {
+                console.log("No Table");
+                modal.style.display = "block";
+                document.getElementsByClassName("modal-content")[0].innerHTML = '<b>No feature table for this layer.</b> <br>';  
             }
-        } else {
-
-        }
+        } 
 
     });
 
