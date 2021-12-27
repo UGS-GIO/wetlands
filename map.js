@@ -3,6 +3,7 @@ require([
     "esri/Map",
     "esri/views/MapView",
     "esri/symbols/SimpleMarkerSymbol",
+    "esri/symbols/SimpleFillSymbol",
     "esri/layers/GraphicsLayer",
     "esri/layers/ImageryLayer",
     "esri/layers/support/RasterFunction",
@@ -71,7 +72,7 @@ require([
     "dojo/dom-class",
     "dojo/dom-construct",
     "dojo/domReady!"
-], function(Map, MapView, SimpleMarkerSymbol, GraphicsLayer, ImageryLayer, RasterFunction, Basemap, BasemapGallery, LocalBasemapsSource, SketchViewModel, Sketch, Graphic, GroupLayer, Geoprocessor, FeatureSet, colorRendererCreator, histogram, ClassedColorSlider, FeatureLayer, MapImageLayer, Query, QueryTask, Home, ScaleBar, Zoom, Compass, Search, Locate, Legend, Expand, LayerList, BasemapToggle, watchUtils, RelationshipQuery, AttachmentsContent, Collapse, Dropdown, query, Memory, ObjectStore, ItemFileReadStore, DataGrid, OnDemandGrid, ColumnHider, Selection, StoreAdapter, List, declare, parser, aspect, request, mouse, CalciteMaps, CalciteMapArcGISSupport, on, arrayUtils, dom, domClass, domConstruct) {
+], function(Map, MapView, SimpleMarkerSymbol, SimpleFillSymbol, GraphicsLayer, ImageryLayer, RasterFunction, Basemap, BasemapGallery, LocalBasemapsSource, SketchViewModel, Sketch, Graphic, GroupLayer, Geoprocessor, FeatureSet, colorRendererCreator, histogram, ClassedColorSlider, FeatureLayer, MapImageLayer, Query, QueryTask, Home, ScaleBar, Zoom, Compass, Search, Locate, Legend, Expand, LayerList, BasemapToggle, watchUtils, RelationshipQuery, AttachmentsContent, Collapse, Dropdown, query, Memory, ObjectStore, ItemFileReadStore, DataGrid, OnDemandGrid, ColumnHider, Selection, StoreAdapter, List, declare, parser, aspect, request, mouse, CalciteMaps, CalciteMapArcGISSupport, on, arrayUtils, dom, domClass, domConstruct) {
 
     var gpUrl ="https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/WetlandsDownload/GPServer/ExtractWetlandsData";
 
@@ -666,46 +667,81 @@ function selectFeatureFromGrid(event) {
     console.log(row);
     var id = row.data.OBJECTID;
     console.log(id);
+    console.log(layer);
 
-    var query = plantSites.createQuery();
+    if (layer.title == "Wetland Assessment Projects") {
+        var query = assessmentLayer.createQuery();
+                // query the palntLayerView using the query set above
+                assessmentLayer.queryFeatures(query).then(function(results) {
+                    console.log(results);
+                    var graphics = results.features;
+                    console.log(graphics);
+                    var item = graphics[0];
+                        var cntr = [];
+                        cntr.push(item.geometry.extent.center.longitude);
+                        cntr.push(item.geometry.extent.center.latitude);
+                        console.log(item.geometry);
+                        mapView.goTo({
+                            center: cntr, // position:
+                            zoom: 10
+                        });
+                        mapView.graphics.removeAll();
+                        var selectedGraphic = new Graphic({
+                            geometry: item.geometry,
+                            symbol: new SimpleFillSymbol({
+                                //color: [0,255,255],
+                                style: "none",
+                                //size: "8px",
+                                outline: {
+                                    color: [255, 255, 0],
+                                    width: 3
+                                }
+                            })
+                        });
+                        mapView.graphics.add(selectedGraphic);
+                        mapView.popup.open({
+                            features: [item],
+                            location: item.geometry
+                        });
+                })
+    } else if (layer.title == "Wetland Assessment Study Results") {
+        var query = studyResultsLayer.createQuery();
+                        // query the palntLayerView using the query set above
+                        studyResultsLayer.queryFeatures(query).then(function(results) {
+                            console.log(results);
+                            var graphics = results.features;
+                            console.log(graphics);
+                            var item = graphics[0];
+                            var cntr = [];
+                            cntr.push(item.geometry.extent.center.longitude);
+                            cntr.push(item.geometry.extent.center.latitude);
+                            console.log(item.geometry);
+                            mapView.goTo({
+                                center: cntr, // position:
+                                zoom: 10
+                            });
+                            mapView.graphics.removeAll();
+                            var selectedGraphic = new Graphic({
+                                geometry: item.geometry,
+                                symbol: new SimpleFillSymbol({
+                                    //color: [0,255,255],
+                                    style: "none",
+                                    //size: "8px",
+                                    outline: {
+                                        color: [255, 255, 0],
+                                        width: 3
+                                    }
+                                })
+                            });
+                                mapView.graphics.add(selectedGraphic);
+                                mapView.popup.open({
+                                    features: [item],
+                                    location: item.geometry
+                                });
+                        })
 
-    query.where = "OBJECTID = '" + id + "'";
-    query.returnGeometry = true;
-    query.outFields = ["*"],
+    }
 
-        // query the palntLayerView using the query set above
-        plantSites.queryFeatures(query).then(function(results) {
-            console.log(results);
-            var graphics = results.features;
-            console.log(graphics);
-            var item = graphics[0];
-                var cntr = [];
-                cntr.push(item.geometry.longitude);
-                cntr.push(item.geometry.latitude);
-                console.log(item.geometry);
-                mapView.goTo({
-                    center: cntr, // position:
-                    zoom: 13
-                });
-                mapView.graphics.removeAll();
-                var selectedGraphic = new Graphic({
-                    geometry: item.geometry,
-                    symbol: new SimpleMarkerSymbol({
-                        //color: [0,255,255],
-                        style: "circle",
-                        //size: "8px",
-                        outline: {
-                            color: [255, 255, 0],
-                            width: 3
-                        }
-                    })
-                });
-                mapView.graphics.add(selectedGraphic);
-                mapView.popup.open({
-                    features: [item],
-                    location: item.geometry
-                });
-        })
 }
 
 
@@ -1038,7 +1074,7 @@ console.log("go on and create grid");
         doGridClear();
         mapView.graphics.removeAll()
         console.log("doQueryResults");
-        gridFields = ["project", "stratum_name", "stratum_ecoregion", "sites_surveyed", "pct_very_high_condition", "pct_high_condition",
+        gridFields = ["OBJECTID", "project", "stratum_name", "stratum_ecoregion", "sites_surveyed", "pct_very_high_condition", "pct_high_condition",
             "pct_medium_condition", "pct_low_condition", "pct_absent_overall_stress", "pct_low_overall_stress", "pct_med_overall_stress",
              "pct_high_overall_stress", "pct_very_high_overall_stress", "mean_rel_native_cov", "mean_abs_nox_cov"
         ];
@@ -1050,7 +1086,7 @@ console.log("go on and create grid");
 
         relationQueryResults = new RelationshipQuery({
             objectIds: [objectid],
-            outFields: ["project", "stratum_name", "stratum_ecoregion", "sites_surveyed", "pct_very_high_condition", "pct_high_condition",
+            outFields: ["OBJECTID", "project", "stratum_name", "stratum_ecoregion", "sites_surveyed", "pct_very_high_condition", "pct_high_condition",
             "pct_medium_condition", "pct_low_condition", "pct_absent_overall_stress", "pct_low_overall_stress", "pct_med_overall_stress",
              "pct_high_overall_stress", "pct_very_high_overall_stress", "mean_rel_native_cov", "mean_abs_nox_cov"],
             relationshipId: 0
@@ -1149,7 +1185,7 @@ console.log("go on and create grid");
         doGridClear();
         mapView.graphics.removeAll()
         console.log("doQueryAllResults");
-        gridFields = ["project", "stratum_name", "stratum_ecoregion", "sites_surveyed", "pct_very_high_condition", "pct_high_condition",
+        gridFields = ["OBJECTID", "project", "stratum_name", "stratum_ecoregion", "sites_surveyed", "pct_very_high_condition", "pct_high_condition",
             "pct_medium_condition", "pct_low_condition", "pct_absent_overall_stress", "pct_low_overall_stress", "pct_med_overall_stress",
              "pct_high_overall_stress", "pct_very_high_overall_stress", "mean_rel_native_cov", "mean_abs_nox_cov"
         ];
@@ -1161,7 +1197,7 @@ console.log("go on and create grid");
 
         allQueryResults = new Query();
         allQueryResults.where = "1=1";
-        allQueryResults.outFields = ["project", "stratum_name", "stratum_ecoregion", "sites_surveyed", "pct_very_high_condition", "pct_high_condition",
+        allQueryResults.outFields = ["OBJECTID", "project", "stratum_name", "stratum_ecoregion", "sites_surveyed", "pct_very_high_condition", "pct_high_condition",
             "pct_medium_condition", "pct_low_condition", "pct_absent_overall_stress", "pct_low_overall_stress", "pct_med_overall_stress",
              "pct_high_overall_stress", "pct_very_high_overall_stress", "mean_rel_native_cov", "mean_abs_nox_cov"];
 
@@ -1260,7 +1296,7 @@ console.log("go on and create grid");
         doGridClear();
         mapView.graphics.removeAll()
         console.log("doQueryWassProjects");
-        gridFields = ["region", "years", "ProjectReport", "project", "target_population", "target_population_comparison",
+        gridFields = ["OBJECTID", "region", "years", "ProjectReport", "project", "target_population", "target_population_comparison",
             "sample_frame", "site_selection"];
 
         var queryResults = new QueryTask({
@@ -1270,7 +1306,7 @@ console.log("go on and create grid");
 
         allQueryResults = new Query();
         allQueryResults.where = "1=1";
-        allQueryResults.outFields = ["region", "years", "ProjectReport", "project", "target_population", "target_population_comparison",
+        allQueryResults.outFields = ["OBJECTID", "region", "years", "ProjectReport", "project", "target_population", "target_population_comparison",
         "sample_frame", "site_selection"];
 
     
@@ -2155,6 +2191,7 @@ span.onclick = function() {
     //Event listener that fires each time an action is triggered
     layerList.on("trigger-action", function(event) {
         console.log(event);
+
 
         // Capture the action id.
         var id = event.action.id;
