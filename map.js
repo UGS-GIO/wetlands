@@ -115,7 +115,7 @@ require([
     let grid;
     let dataStore = new StoreAdapter({
         objectStore: new Memory({
-            idProperty: "objectid"
+            idProperty: "OBJECTID"
         })
     });
 
@@ -606,14 +606,6 @@ require([
     console.log(fields);
     console.log(gridFields);
 
-    //format innerHTML for a url value
-    function testRenderCell(object, value, node, options){
-        console.log(value);
-        var div = document.createElement("div");
-        div.className = "renderedCell";
-        div.innerHTML = '<a href=' + value + ' target=_blank>Click Here</a>';
-        return div;
-    }
 
 
     var columns = fields.filter(function(field, i) {
@@ -649,6 +641,7 @@ require([
     // extensions. Set the columns of the grid to display attributes
     // the hurricanes cvslayer
     grid = new(declare([OnDemandGrid, Selection]))({
+        selectionMode: 'single',
         columns: columns
     }, "grid");
 
@@ -656,6 +649,7 @@ require([
     // to highlight the corresponding feature on the view
     grid.on("dgrid-select", selectFeatureFromGrid);
     console.log(grid.columns[0].field);
+    grid.clearSelection();
 }
 
 //select from grid function
@@ -663,7 +657,7 @@ function selectFeatureFromGrid(event) {
     console.log(event);
     mapView.popup.close();
     mapView.graphics.removeAll();
-    var row = event.rows[0]
+    var row = event.rows[0];
     console.log(row);
     var id = row.data.OBJECTID;
     console.log(id);
@@ -671,11 +665,13 @@ function selectFeatureFromGrid(event) {
 
     if (layer.title == "Wetland Assessment Projects") {
         var query = assessmentLayer.createQuery();
-                // query the palntLayerView using the query set above
+        query.where = "OBJECTID = " + id;
+              
                 assessmentLayer.queryFeatures(query).then(function(results) {
                     console.log(results);
                     var graphics = results.features;
                     console.log(graphics);
+
                     var item = graphics[0];
                         var cntr = [];
                         cntr.push(item.geometry.extent.center.longitude);
@@ -683,7 +679,7 @@ function selectFeatureFromGrid(event) {
                         console.log(item.geometry);
                         mapView.goTo({
                             center: cntr, // position:
-                            zoom: 10
+                            zoom: 9
                         });
                         mapView.graphics.removeAll();
                         var selectedGraphic = new Graphic({
@@ -701,12 +697,13 @@ function selectFeatureFromGrid(event) {
                         mapView.graphics.add(selectedGraphic);
                         mapView.popup.open({
                             features: [item],
-                            location: item.geometry
+                            location: mapView.center
                         });
                 })
     } else if (layer.title == "Wetland Assessment Study Results") {
         var query = studyResultsLayer.createQuery();
-                        // query the palntLayerView using the query set above
+        query.where = "OBJECTID = " + id;
+                       
                         studyResultsLayer.queryFeatures(query).then(function(results) {
                             console.log(results);
                             var graphics = results.features;
@@ -718,7 +715,7 @@ function selectFeatureFromGrid(event) {
                             console.log(item.geometry);
                             mapView.goTo({
                                 center: cntr, // position:
-                                zoom: 10
+                                zoom: 9
                             });
                             mapView.graphics.removeAll();
                             var selectedGraphic = new Graphic({
@@ -1009,12 +1006,12 @@ function selectFeatureFromGrid(event) {
 
         gridDis.style.display = 'block';
         domClass.add("mapViewDiv");
-        console.log("counting");
-            if (testField == "project") {
-                document.getElementById("featureCount").innerHTML = "<b>Showing attributes for " + graphics.length.toString() + " results</b>"
+        //console.log("counting");
+            // if (testField == "project") {
+            //     document.getElementById("featureCount").innerHTML = "<b>Showing attributes for " + graphics.length.toString() + " results</b>"
                             document.getElementById("removeX").setAttribute("class", "glyphicon glyphicon-remove");
             document.getElementById("removeX").setAttribute("style", "float: right;");
-            } 
+            // } 
 
 console.log("go on and create grid");
 
@@ -1210,7 +1207,7 @@ console.log("go on and create grid");
             console.log(poop);
 
             var gridFieldArray = [
-                //{alias: 'OBJECTID', name: 'OBJECTID'}, 
+                {alias: 'OBJECTID', name: 'OBJECTID'}, 
                 {
                     alias: 'Project',
                     name: 'project'
@@ -1318,7 +1315,7 @@ console.log("go on and create grid");
             console.log(poop);
 
             var gridFieldArray = [
-                //{alias: 'OBJECTID', name: 'OBJECTID'}, 
+                {alias: 'OBJECTID', name: 'OBJECTID'}, 
                 {
                     alias: 'Project',
                     name: 'project'
@@ -2271,7 +2268,6 @@ span.onclick = function() {
             grid.set("collection", dataStore);
         }
         gridDis.style.display = 'none';
-        document.getElementById("featureCount2").innerHTML = "";
         domClass.remove("mapViewDiv", 'withGrid');
         mapView.graphics.removeAll();
         if (highlight) {
