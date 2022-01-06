@@ -733,7 +733,7 @@ function selectFeatureFromGrid(event) {
                                 mapView.graphics.add(selectedGraphic);
                                 mapView.popup.open({
                                     features: [item],
-                                    location: item.geometry
+                                    location: mapView.center
                                 });
                         })
 
@@ -1207,7 +1207,7 @@ console.log("go on and create grid");
             console.log(poop);
 
             var gridFieldArray = [
-                {alias: 'OBJECTID', name: 'OBJECTID'}, 
+                //{alias: 'OBJECTID', name: 'OBJECTID'}, 
                 {
                     alias: 'Project',
                     name: 'project'
@@ -1315,7 +1315,7 @@ console.log("go on and create grid");
             console.log(poop);
 
             var gridFieldArray = [
-                {alias: 'OBJECTID', name: 'OBJECTID'}, 
+                //{alias: 'OBJECTID', name: 'OBJECTID'}, 
                 {
                     alias: 'Project',
                     name: 'project'
@@ -2218,7 +2218,7 @@ span.onclick = function() {
         } else if (title === "Wetland Assessment Projects") {
             layer = assessmentLayer;
         } else if (title === "Wetland Assessment Study Results") {
-            layer = assessmentLayer;
+            layer = studyResultsLayer;
         } else if (title === "Wetland Stressors") {
             layer = stressorsLayer;
         }
