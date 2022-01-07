@@ -697,7 +697,7 @@ function selectFeatureFromGrid(event) {
                         mapView.graphics.add(selectedGraphic);
                         mapView.popup.open({
                             features: [item],
-                            location: mapView.center
+                            location: cntr
                         });
                 })
     } else if (layer.title == "Wetland Assessment Study Results") {
@@ -733,7 +733,7 @@ function selectFeatureFromGrid(event) {
                                 mapView.graphics.add(selectedGraphic);
                                 mapView.popup.open({
                                     features: [item],
-                                    location: mapView.center
+                                    location: cntr
                                 });
                         })
 
