@@ -2279,6 +2279,7 @@ span.onclick = function() {
 
     mapView.popup.on("trigger-action", function(event) { // Execute the relatedProjects() function if the project action is clicked
         if (event.action.id === "study-results") {
+            layer = studyResultsLayer;
             console.log("results action clicked");
             console.log(event);
             doQueryResults();
