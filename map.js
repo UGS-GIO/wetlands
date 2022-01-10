@@ -682,19 +682,19 @@ function selectFeatureFromGrid(event) {
                             zoom: 9
                         });
                         mapView.graphics.removeAll();
-                        var selectedGraphic = new Graphic({
-                            geometry: item.geometry,
-                            symbol: new SimpleFillSymbol({
-                                //color: [0,255,255],
-                                style: "none",
-                                //size: "8px",
-                                outline: {
-                                    color: [255, 255, 0],
-                                    width: 3
-                                }
-                            })
-                        });
-                        mapView.graphics.add(selectedGraphic);
+                        // var selectedGraphic = new Graphic({
+                        //     geometry: item.geometry,
+                        //     symbol: new SimpleFillSymbol({
+                        //         //color: [0,255,255],
+                        //         style: "none",
+                        //         //size: "8px",
+                        //         outline: {
+                        //             color: [255, 255, 0],
+                        //             width: 3
+                        //         }
+                        //     })
+                        // });
+                        // mapView.graphics.add(selectedGraphic);
                         mapView.popup.open({
                             features: [item],
                             location: cntr
@@ -718,19 +718,19 @@ function selectFeatureFromGrid(event) {
                                 zoom: 9
                             });
                             mapView.graphics.removeAll();
-                            var selectedGraphic = new Graphic({
-                                geometry: item.geometry,
-                                symbol: new SimpleFillSymbol({
-                                    //color: [0,255,255],
-                                    style: "none",
-                                    //size: "8px",
-                                    outline: {
-                                        color: [255, 255, 0],
-                                        width: 3
-                                    }
-                                })
-                            });
-                                mapView.graphics.add(selectedGraphic);
+                            // var selectedGraphic = new Graphic({
+                            //     geometry: item.geometry,
+                            //     symbol: new SimpleFillSymbol({
+                            //         //color: [0,255,255],
+                            //         style: "none",
+                            //         //size: "8px",
+                            //         outline: {
+                            //             color: [255, 255, 0],
+                            //             width: 3
+                            //         }
+                            //     })
+                            // });
+                            //     mapView.graphics.add(selectedGraphic);
                                 mapView.popup.open({
                                     features: [item],
                                     location: cntr
@@ -2270,10 +2270,10 @@ span.onclick = function() {
         gridDis.style.display = 'none';
         domClass.remove("mapViewDiv", 'withGrid');
         mapView.graphics.removeAll();
-        if (highlight) {
-            highlight.remove();
+    //     if (highlight) {
+    //         highlight.remove();
         
-    }
+    // }
 }
 
 
