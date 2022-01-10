@@ -572,15 +572,14 @@ require([
 
                 });
 
-                console.log(contentSpecies);
-
 
                 var thetitle = contentTitle(feature);
 
                 mapView.popup.open({
                     title: "Sensitive Amphibian Species " + thetitle,
                     content: contentSpecies,
-                    outFields: ["*"]
+                    outFields: ["*"],
+                    visibleElements: {featureNaviagtion: true, closeButton: true}
                 });
                 //});
 
@@ -681,7 +680,7 @@ function selectFeatureFromGrid(event) {
                             center: cntr, // position:
                             zoom: 9
                         });
-                        mapView.graphics.removeAll();
+                        //mapView.graphics.removeAll();
                         // var selectedGraphic = new Graphic({
                         //     geometry: item.geometry,
                         //     symbol: new SimpleFillSymbol({
@@ -717,7 +716,7 @@ function selectFeatureFromGrid(event) {
                                 center: cntr, // position:
                                 zoom: 9
                             });
-                            mapView.graphics.removeAll();
+                            //mapView.graphics.removeAll();
                             // var selectedGraphic = new Graphic({
                             //     geometry: item.geometry,
                             //     symbol: new SimpleFillSymbol({
@@ -1436,7 +1435,7 @@ console.log("go on and create grid");
               }
         });
 
-        setUpClickHandler();
+        //setUpClickHandler();
 
         // Listen to create event to add a newly created graphic to view
         sketchViewModel.on("create", addGraphic);
@@ -1489,27 +1488,27 @@ console.log("go on and create grid");
         // ************************************************************************************
         // set up logic to handle geometry update and reflect the update on "tempGraphicsLayer"
         // ************************************************************************************
-        function setUpClickHandler() {
-            mapView.on("click", function(event) {
-                console.log("Click Handler", event);
-                mapView.hitTest(event).then(function(response) {
-                    var results = response.results;
-                    // Found a valid graphic
-                    if (results.length && results[results.length - 1]
-                        .graphic) {
-                        // Check if we're already editing a graphic
-                        if (!editGraphic) {
-                            // Save a reference to the graphic we intend to update
-                            editGraphic = results[results.length - 1].graphic;
-                            // Remove the graphic from the GraphicsLayer
-                            // Sketch will handle displaying the graphic while being updated
-                            tempGraphicsLayer.remove(editGraphic);
-                            sketchViewModel.update(editGraphic);
-                        }
-                    }
-                });
-            });
-        }
+        // function setUpClickHandler() {
+        //     mapView.on("click", function(event) {
+        //         console.log("Click Event", event);
+        //         mapView.hitTest(event).then(function(response) {
+        //             var results = response.results;
+        //             // Found a valid graphic
+        //             if (results.length && results[results.length - 1]
+        //                 .graphic) {
+        //                 // Check if we're already editing a graphic
+        //                 if (!editGraphic) {
+        //                     // Save a reference to the graphic we intend to update
+        //                     editGraphic = results[results.length - 1].graphic;
+        //                     // Remove the graphic from the GraphicsLayer
+        //                     // Sketch will handle displaying the graphic while being updated
+        //                     tempGraphicsLayer.remove(editGraphic);
+        //                     sketchViewModel.update(editGraphic);
+        //                 }
+        //             }
+        //         });
+        //     });
+        // }
 
 
         //***************************************
@@ -1674,9 +1673,7 @@ span.onclick = function() {
             // we don't want to do anything if we aren't resizing.
             if (!isResizing)
                 return;
-            console.log("e.clientY ", e.clientY, container.offset().top)
             var offsetRight = container.height() - (e.clientY - container.offset().top);
-            console.log(offsetRight);
 
             top.css('bottom', offsetRight);
             bottom.css('height', offsetRight);
@@ -1703,8 +1700,6 @@ span.onclick = function() {
     // Breakpoints
 
     mapView.watch("widthBreakpoint", function(breakpoint) {
-        console.log("watching breakpoint");
-        console.log(breakpoint);
         switch (breakpoint) {
             case "xsmall":
                 updateView(true);
@@ -1720,7 +1715,6 @@ span.onclick = function() {
     });
 
     function updateView(isMobile) {
-        console.log("Is Mobile");
         setLegendMobile(isMobile);
     }
 
@@ -1787,11 +1781,9 @@ span.onclick = function() {
     function resolveMetrics(){
         const selectedLayer = layerSelect.options[layerSelect.selectedIndex].value;
         const selectedLayerTitle = layerSelect.options[layerSelect.selectedIndex].text;
-        console.log(selectedLayer);
         return new Promise(resolve => {
             var removed = $();
         if (selectedLayer == '0') {
-            console.log("remove 0");
 
             var x = document.getElementById("field-select");
 
@@ -1820,7 +1812,6 @@ span.onclick = function() {
     
     
         } else if (selectedLayer == '1') {
-            console.log("remove 1");
             $("#field-select option[value=pct_wells_rising]").remove();
             $("#field-select option[value=pct_wells_falling]").remove();
             $("#field-select option[value=mean_falling_slope]").remove();
@@ -1829,8 +1820,6 @@ span.onclick = function() {
             $("#field-select option[value=surface_water_slope]").remove();
 
         } else if (selectedLayer == '2') {
-           
-            console.log("remove 2");
 
             var x = document.getElementById("field-select");
 
@@ -1915,11 +1904,9 @@ span.onclick = function() {
       //grab values from element for field choice
       const selectedLayer = layerSelect.options[layerSelect.selectedIndex].value;
       const selectedLayerTitle = layerSelect.options[layerSelect.selectedIndex].text;
-      console.log(selectedLayer);
       var fieldLabel = await resolveMetrics();
       
-      //fieldSelect.options[fieldSelect.selectedIndex].text;
-      console.log(fieldLabel);
+
 
 
       if (selectedLayer == '0') {
@@ -2007,7 +1994,6 @@ span.onclick = function() {
       
     watchUtils.when(mapView.popup, "selectedFeature", function species(evt) {
         objectid = evt.attributes.OBJECTID;
-        console.log(objectid);
 
     }); // end watchUtil
 
@@ -2033,7 +2019,6 @@ span.onclick = function() {
       };
 
       if (fieldSelect.options[fieldSelect.selectedIndex].value == "surface_water_trend") {
-          console.log("Trending");
           let rendererTrend = {
             type: "unique-value",  // autocasts as new UniqueValueRenderer()
             field: "surface_water_trend",
@@ -2111,7 +2096,7 @@ span.onclick = function() {
             // if manual is selected, then add or update
             // a classed color slider to allow the user to
             // construct manual class breaks
-            console.log("manual breaks")
+
             updateColorSlider(rendererResponse);
           } else {
             destroySlider();
@@ -2124,7 +2109,7 @@ span.onclick = function() {
     // the class breaks starting with the generated renderer
 
     function updateColorSlider(rendererResult) {
-      console.log("Custom", fieldSelect);
+
       const fieldValue =
       fieldSelect.options[fieldSelect.selectedIndex].value;
         //fieldSelect.selectedItems[0].id;
@@ -2135,7 +2120,7 @@ span.onclick = function() {
         view: mapView,
         numBins: 100
       }).then(function (histogramResult) {
-        console.log(histogramResult);
+
         if (!slider) {
           const sliderContainer = document.createElement("div");
           const container = document.createElement("div");
@@ -2156,7 +2141,7 @@ span.onclick = function() {
               renderer.classBreakInfos
               
             );
-            console.log(renderer.classBreakInfos);
+
             landscapeLayer.renderer = renderer;
           }
 
@@ -2166,8 +2151,7 @@ span.onclick = function() {
           );
         } else {
           slider.updateFromRendererResult(rendererResult, histogramResult);
-          console.log(rendererResult);
-          console.log(histogramResult);
+
         }
       });
     }
@@ -2187,7 +2171,6 @@ span.onclick = function() {
 
     //Event listener that fires each time an action is triggered
     layerList.on("trigger-action", function(event) {
-        console.log(event);
 
 
         // Capture the action id.
@@ -2226,7 +2209,6 @@ span.onclick = function() {
 
 
         if (id === "increase-opacity") {
-            console.log("increase opacity");
             // if the increase-opacity action is triggered, then
             // increase the opacity of the GroupLayer by 0.25
 
@@ -2234,7 +2216,6 @@ span.onclick = function() {
                 layer.opacity += 0.1;
             }
         } else if (id === "decrease-opacity") {
-            console.log("decrease opacity");
             // if the decrease-opacity action is triggered, then
             // decrease the opacity of the GroupLayer by 0.25
 
