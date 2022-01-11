@@ -1090,9 +1090,11 @@ console.log("go on and create grid");
 
         queryResults.executeRelationshipQuery(relationQueryResults).then(function(rslts) {
             console.log(rslts);
+            
 
             var poop = rslts[objectid];
             console.log(poop);
+            if (poop) {
 
             var gridFieldArray = [
                 //{alias: 'OBJECTID', name: 'OBJECTID'}, 
@@ -1168,6 +1170,12 @@ console.log("go on and create grid");
             console.log(poop);
             console.log(rslts);
             getResults(rslts[objectid]);
+
+        } else {
+            console.log("No Table");
+                modal.style.display = "block";
+                document.getElementsByClassName("modal-content")[0].innerHTML = '<b>No feature table for this layer.</b> <br>';  
+        }
 
         });
 
