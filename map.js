@@ -852,7 +852,7 @@ function selectFeatureFromGrid(event) {
         url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Condition/MapServer/0",
         visible: true,
                 title: "Wetland Assessment Projects",
-                opacity: 0.6,
+                //opacity: 0.6,
                 popupTemplate: {
                     title: "Wetland Assessment Projects",
                     content: contentStudyArea,
