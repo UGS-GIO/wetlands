@@ -776,7 +776,8 @@ function selectFeatureFromGrid(event) {
                 minScale: 1500000,
 
             }
-        ]
+        ],
+        listMode: "hide-children"
     });
 
 
@@ -833,6 +834,7 @@ function selectFeatureFromGrid(event) {
     var speciesLayer = new MapImageLayer({
         url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Dependent_Species/MapServer",
         visible: false,
+        listMode: "hide-children",
         sublayers: [{
                 id: 1,
                 title: "Sensitive amphibian species ",
@@ -891,6 +893,7 @@ function selectFeatureFromGrid(event) {
         url: "https://gis.trustlands.utah.gov/server/rest/services/Ownership/UT_SITLA_Ownership_LandOwnership_WM/MapServer",
         visible: false,
         title: "Land Ownership",
+        listMode: "hide-children",
         popupTemplate: {
             title: "Land Ownership",
             // content: contentOwnership
@@ -907,6 +910,7 @@ function selectFeatureFromGrid(event) {
     var riparianData = new MapImageLayer({
         url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Riparian/MapServer",
         title: "Riparian Mapping",
+        listMode: "hide-children",
         visible: false,
         sublayers: [{
                 id: 0,
@@ -930,7 +934,7 @@ function selectFeatureFromGrid(event) {
     })
 
     var conditionsGroup = new GroupLayer({
-        title: "Wetland Conditions",
+        title: "Wetland Condition",
         visible: false,
         visibiltyMode: "independent",
         layers: [stressorsLayer, studyResultsLayer, assessmentLayer]
@@ -957,11 +961,12 @@ function selectFeatureFromGrid(event) {
     mapView.map.add(ownershipLayer);
     mapView.map.add(speciesLayer);
     mapView.map.add(conditionsGroup);
+    mapView.map.add(landscapeGroup);
     mapView.map.add(hydricSoils);
     mapView.map.add(wetlandGroup);
     //mapView.map.add(wetlandLayer);
     mapView.map.add(boundaryLayer);
-    mapView.map.add(landscapeGroup);
+    
 
 
     ownershipLayer.opacity = .6;
