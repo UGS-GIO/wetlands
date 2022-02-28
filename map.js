@@ -866,7 +866,7 @@ function selectFeatureFromGrid(event) {
 
     var stressorsLayer = new FeatureLayer({
         url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Condition/MapServer/1",
-        visible: true,
+        visible: false,
 
                 title: "Wetland Stressors",
                 opacity: 0.6,
@@ -885,7 +885,7 @@ function selectFeatureFromGrid(event) {
                     content: contentStudyResults,
                     outFields: ["*"]
                 },
-                visible: true
+                visible: false
 
     });
 
