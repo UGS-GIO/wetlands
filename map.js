@@ -127,6 +127,12 @@ require([
         className: "esri-icon-table"
     };
 
+    var projectsAction = {
+        title: "Project Table",
+        id: "project-table",
+        className: "esri-icon-table"
+    };
+
     // Map
     var map = new Map({
         basemap: "hybrid",
@@ -499,9 +505,7 @@ require([
         if (feature.graphic.attributes.pct_low_condition) {
             contentStudyResults += "<span class='bold' title='Percent of sites with high condition score (URAP overall score ≥3.5 & <4.5)'><b>Low Condition Score (%): </b></span>{pct_low_condition}<br/>";
         }
-        if (feature.graphic.attributes.pct_high_condition) {
-            contentStudyResults += "<span class='bold' title='Percent of sites with high condition score (URAP overall score ≥3.5 & <4.5)'><b>High Condition Score (%): </b></span>{pct_high_condition}<br/>";
-        }
+        
         if (feature.graphic.attributes.pct_absent_overall_stress) {
             contentStudyResults += "<span class='bold' title='Percent of sites rated as having absent stressors'><b>Stressors Absent (%): </b></span>{pct_absent_overall_stress}<br/>";
         }
@@ -883,6 +887,7 @@ function selectFeatureFromGrid(event) {
                 popupTemplate: {
                     title: "Wetland Assessment Study Results",
                     content: contentStudyResults,
+                    actions: [projectsAction],
                     outFields: ["*"]
                 },
                 visible: false
@@ -1372,6 +1377,88 @@ console.log("go on and create grid");
             console.log(poop);
             console.log(rslts);
             getResults(rslts);
+
+        });
+    }
+
+    function doQueryWassProjectSpecific() {
+
+        doGridClear();
+        mapView.graphics.removeAll()
+        console.log("doQueryWassProjectsSpecific");
+        gridFields = ["OBJECTID", "region", "years", "ProjectReport", "project", "target_population", "target_population_comparison",
+            "sample_frame", "site_selection"];
+
+        var queryWResults = new QueryTask({
+            url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Condition/MapServer/2"
+        });
+       
+
+        console.log(objectid);
+
+        relationQueryWResults = new RelationshipQuery({
+            objectIds: [objectid],
+            outFields: ["OBJECTID", "region", "years", "ProjectReport", "project", "target_population", "target_population_comparison",
+            "sample_frame", "site_selection"],
+            relationshipId: 0
+        });
+
+        queryWResults.executeRelationshipQuery(relationQueryWResults).then(function(rslts) {
+            console.log(rslts);
+            console.log(rslts[8].features[0].attributes.project);
+            
+
+            var poop = rslts[8];
+            console.log(poop);
+
+    
+
+            var gridFieldArray = [
+                //{alias: 'OBJECTID', name: 'OBJECTID'}, 
+                {
+                    alias: 'Project',
+                    name: 'project'
+                },
+                {
+                    alias: 'Region',
+                    name: 'region'
+                },
+                {
+                    alias: 'Years',
+                    name: 'years'
+                },
+                {
+                    alias: 'Project Report',
+                    name: 'ProjectReport'
+                },
+                {
+                    alias: 'Target Population',
+                    name: 'target_population'
+                },
+                {
+                    alias: 'target_population_comparison',
+                    name: 'target_population_comparison'
+                },
+                {
+                    alias: 'sample_frame',
+                    name: 'sample_frame'
+                },
+                {
+                    alias: 'site_selection',
+                    name: 'site_selection'
+                }
+            ];
+
+            poop.fields = gridFieldArray;
+
+            // poop.fields.forEach(function(fields, i) {
+            //     fields.name = gridFields[i]
+            //     fields.alias = gridFieldArray[i]
+            // });
+
+            console.log(poop);
+            console.log(rslts);
+            getResults(rslts[8]);
 
         });
     }
@@ -2277,6 +2364,11 @@ span.onclick = function() {
             console.log("results action clicked");
             console.log(event);
             doQueryResults();
+        } else if (event.action.id === "project-table") {
+            layer = assessmentLayer;
+            console.log("projects table action clicked");
+            console.log(event);
+            doQueryWassProjectSpecific();
         }
     });
 //hide grid on X click.
