@@ -251,11 +251,15 @@ require([
         if (feature.graphic.attributes.huc12) {
             contentHUC12 += "<span class='bold' title=''><b>Watershed Identifier: </b></span>{huc12}<br/>";
         }
-        if (feature.graphic.attributes.surface_water_plot) {
-            contentHUC12 += "<span class='bold'><b>Surface Water Plot: </b></span>" + "<a href='{surface_water_plot}' target='_blank'>Opens in new tab</a>";
-        } else {
-            contentHUC12 += "<span class='bold'><b>Surface Water Plot: </b></span>Surface Water Plot not currently available.";
+
+        if (feature.graphic.attributes.ecoregion) {
+            contentHUC12 += "<span class='bold' title=''><b>Ecoregion: </b></span>{ecoregion}<br/>";
         }
+        // if (feature.graphic.attributes.surface_water_plot) {
+        //     contentHUC12 += "<span class='bold'><b>Surface Water Plot: </b></span>" + "<a href='{surface_water_plot}' target='_blank'>Opens in new tab</a>";
+        // } else {
+        //     contentHUC12 += "<span class='bold'><b>Surface Water Plot: </b></span>Surface Water Plot not currently available.";
+        // }
 
         return contentHUC12;
     }
@@ -273,13 +277,26 @@ require([
         if (feature.graphic.attributes.huc8) {
             contentHUC8 += "<span class='bold' title=''><b>Sub-basin Identifier: </b></span>{huc8}<br/>";
         }
-        if (feature.graphic.attributes.surface_water_plot) {
-            contentHUC8 += "<span class='bold'><b>Surface Water Plot: </b></span>" + "<a href='{surface_water_plot}' target='_blank'>Opens in new tab</a>";
-        } else {
-            contentHUC8 += "<span class='bold'><b>Surface Water Plot: </b></span>Surface Water Plot not currently available.";
+
+        if (feature.graphic.attributes.ecoregion) {
+            contentHUC8 += "<span class='bold' title=''><b>Ecoregion: </b></span>{ecoregion}<br/>";
         }
+        // if (feature.graphic.attributes.surface_water_plot) {
+        //     contentHUC8 += "<span class='bold'><b>Surface Water Plot: </b></span>" + "<a href='{surface_water_plot}' target='_blank'>Opens in new tab</a>";
+        // } else {
+        //     contentHUC8 += "<span class='bold'><b>Surface Water Plot: </b></span>Surface Water Plot not currently available.";
+        // }
 
         return contentHUC8;
+    }
+
+    contentEcoregion = function(feature) {
+        console.log(feature);
+        var contentEcoregion = "";
+        if (feature.graphic.attributes.ecoregion) {
+            contentEcoregion += "<span class='bold' title=''><b>Ecoregion: </b></span>{ecoregion}<br/>";
+        }
+        return contentEcoregion;
     }
 
     contentPro = function(feature) {
@@ -2068,18 +2085,8 @@ span.onclick = function() {
              popupTemplate: {
            // autocast as esri/PopupTemplate
            title: "Ecoregion",
-           content: [
-             {
-               type: "fields",
-               fieldInfos: [
-                   {
-                       fieldName: "ecoregion",
-                       label: "Ecoregion:",
-                     },
-                 
-               ]
-             }
-           ]
+           outFields: ["*"],
+           content: contentEcoregion
          },
        });
 }
@@ -2123,7 +2130,7 @@ span.onclick = function() {
             type: "unique-value",  // autocasts as new UniqueValueRenderer()
             field: "surface_water_trend",
             //defaultSymbol: { type: "simple-fill" },  // autocasts as new SimpleFillSymbol()
-            //defaultLabel: "No Data",
+            defaultLabel: "No Data",
             uniqueValueInfos: [{
               // All features with value of "North" will be blue
               value: "2",
@@ -2185,6 +2192,7 @@ span.onclick = function() {
       colorRendererCreator
         .createClassBreaksRenderer(params)
         .then(function (rendererResponse) {
+            rendererResponse.renderer.defaultLabel = "No Data";
             landscapeLayer.renderer = rendererResponse.renderer;
 
           if (!landscapeGroup.layers.includes(landscapeLayer)) {
@@ -2241,6 +2249,7 @@ span.onclick = function() {
               renderer.classBreakInfos
               
             );
+            renderer.defaultLabel = "No Data";
 
             landscapeLayer.renderer = renderer;
           }
@@ -2255,6 +2264,7 @@ span.onclick = function() {
         }
       });
     }
+
 }
 
     function destroySlider() {
