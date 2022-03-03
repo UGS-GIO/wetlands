@@ -1976,14 +1976,14 @@ span.onclick = function() {
         
         var option3 = document.createElement("option");
         option3.value = "mean_falling_slope";
-        option3.text = "Wells Falling Slope Mean";
+        option3.text = "Wells Falling Slope Mean: Mean Sen’s Slope for Falling Wells (ft/yr)";
         x.add(option3);
     }
     if ($("#field-select option[value='mean_rising_slope']").length == 0) {
         
         var option4 = document.createElement("option");
         option4.value = "mean_rising_slope";
-        option4.text = "Wells Rising Slope Mean";
+        option4.text = "Wells Rising Slope Mean: Mean Sen’s Slope for Rising Wells (ft/yr)";
         x.add(option4);
     }
         
@@ -2137,10 +2137,10 @@ span.onclick = function() {
               label: "Decreasing",
               symbol: {
                 type: "simple-fill",  // autocasts as new SimpleFillSymbol()
-                color: "red",
+                color: [255, 86, 74],
                 outline: {  // autocasts as new SimpleLineSymbol()
                     color: [128, 128, 128, 0.1],
-                    width: "0.1px"
+                    width: "1px"
                   }
               }
             }, {
@@ -2149,10 +2149,10 @@ span.onclick = function() {
               label: "Increasing",
               symbol: {
                 type: "simple-fill",  // autocasts as new SimpleFillSymbol()
-                color: "blue",
+                color: [74, 80, 255],
                 outline: {  // autocasts as new SimpleLineSymbol()
                     color: [128, 128, 128, 0.1],
-                    width: "0.1px"
+                    width: "1px"
                   }
               }
             }, {
@@ -2164,7 +2164,7 @@ span.onclick = function() {
                 color: "beige",
                 outline: {  // autocasts as new SimpleLineSymbol()
                     color: [128, 128, 128, 0.1],
-                    width: "0.1px"
+                    width: "1px"
                   }
               }
             }, {
@@ -2173,10 +2173,10 @@ span.onclick = function() {
               label: "No data",
               symbol: {
                 type: "simple-fill",  // autocasts as new SimpleFillSymbol()
-                color: "0, 255, 0, 0",
+                color: "168, 168, 168, 0",
                 outline: {  // autocasts as new SimpleLineSymbol()
                     color: [128, 128, 128, 0.1],
-                    width: "0.1px"
+                    width: "1px"
                   }
               }
             }],
