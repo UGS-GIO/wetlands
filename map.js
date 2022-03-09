@@ -2396,8 +2396,7 @@ span.onclick = function() {
         doClear();
 
     })
-    var noLegend = document.getElementsByClassName("esri-legend__message");
-console.log(noLegend);
+
 
 document.body.addEventListener( 'click', function ( event ) {
     if( event.target.id == 'btnSubmit' ) {
