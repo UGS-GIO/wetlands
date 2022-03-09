@@ -901,61 +901,63 @@ function selectFeatureFromGrid(event) {
         },
     })
 
-    var wetlandLayer = new MapImageLayer({
-        url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Mapping/MapServer",
-        title: "Wetland Mapping",
-        sublayers: [{
-                id: 4,
-                title: "Wetlands Outline",
-                visible: false,
+    var wetOutlines = new FeatureLayer({
+        url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Mapping/MapServer/4",
+        title: "Wetlands Outline",
+        visible: false,
                 popupTemplate: {
                     title: "Wetland Outlines",
                     content: contentType,
                     outFields: ["*"]
                 },
-            },
-            {
-                id: 3,
-                title: "Riverine",
-                visible: false,
+    })
+
+    var riverine = new FeatureLayer({
+        url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Mapping/MapServer/3",
+        title: "Riverine",
+        visible: false,
                 popupTemplate: {
                     title: "Riverine",
                     content: contentType,
                     outFields: ["*"]
                 },
+    })
 
-            },
-            {
-                id: 2,
-                title: "Wetlands (non-riverine)",
-                visible: true,
+    var wetNonRiverine = new FeatureLayer({
+        url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Mapping/MapServer/2",
+        title: "Wetlands (non-riverine)",
+        visible: true,
                 popupTemplate: {
                     title: "Wetlands (non-riverine)",
                     content: contentType,
                     outFields: ["*"]
                 },
-                popupEnabled: true
-            },
-            {
-                id: 1,
-                title: "Wetland Metadata",
-                visible: false,
+    })
+
+    var wetMeta = new FeatureLayer({
+        url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Mapping/MapServer/1",
+        title: "Wetland Metadata",
+        visible: false,
                 popupTemplate: {
                     title: "Wetland Metadata",
-                    content: contentPro,
+                    content: contentType,
                     outFields: ["*"]
                 },
-                popupEnabled: true
-            },
+    })
 
-        ]
-    });
 
     var ripGroup = new GroupLayer({
         title: "Riparian Data",
         visible: false,
         visibiltyMode: "independent",
         layers: [ripData, ripMeta]
+    })
+
+    var wetGroup = new GroupLayer({
+        title: "Wetland Mapping",
+        visible: true,
+        visibiltyMode: "independent",
+        layers: [wetMeta, wetNonRiverine, riverine, wetOutlines]
     })
 
     var conditionsGroup = new GroupLayer({
@@ -970,7 +972,7 @@ function selectFeatureFromGrid(event) {
         title: "Wetland and Riparian Mapping",
         visible: true,
         visibiltyMode: "independent",
-        layers: [ripGroup, wetlandLayer]
+        layers: [ripGroup, wetGroup]
     })
 
     var landscapeGroup = new GroupLayer({
@@ -991,7 +993,6 @@ function selectFeatureFromGrid(event) {
     mapView.map.add(landscapeGroup);
     mapView.map.add(hydricSoils);
     mapView.map.add(wetlandGroup);
-    //mapView.map.add(wetlandLayer);
     mapView.map.add(boundaryLayer);
     
 
@@ -2302,7 +2303,7 @@ span.onclick = function() {
         } else if (title === "River Basins") {
             layer = boundaryLayer;
         } else if (title === "Wetland Mapping") {
-            layer = wetlandLayer;
+            layer = wetGroup;
         } else if (title === "Watershed (HUC12)") {
             layer = landscapeLayer;
         } else if (title === "Surface Ownership and Administration") {
