@@ -802,55 +802,7 @@ function selectFeatureFromGrid(event) {
     });
 
 
-    var wetlandLayer = new MapImageLayer({
-        url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Mapping/MapServer",
-        title: "Wetland Mapping",
-        sublayers: [{
-                id: 4,
-                title: "Wetlands Outline",
-                visible: false,
-                popupTemplate: {
-                    title: "Wetland Outlines",
-                    content: contentType,
-                    outFields: ["*"]
-                },
-            },
-            {
-                id: 3,
-                title: "Riverine",
-                visible: false,
-                popupTemplate: {
-                    title: "Riverine",
-                    content: contentType,
-                    outFields: ["*"]
-                },
 
-            },
-            {
-                id: 2,
-                title: "Wetlands (non-riverine)",
-                visible: true,
-                popupTemplate: {
-                    title: "Wetlands (non-riverine)",
-                    content: contentType,
-                    outFields: ["*"]
-                },
-                popupEnabled: true
-            },
-            {
-                id: 1,
-                title: "Wetland Metadata",
-                visible: false,
-                popupTemplate: {
-                    title: "Wetland Metadata",
-                    content: contentPro,
-                    outFields: ["*"]
-                },
-                popupEnabled: true
-            },
-
-        ]
-    });
 
     var speciesLayer = new MapImageLayer({
         url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Dependent_Species/MapServer",
@@ -928,31 +880,82 @@ function selectFeatureFromGrid(event) {
         title: "Hydric Soils Classes",
         visible: false
     })
-
-    var riparianData = new MapImageLayer({
-        url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Riparian/MapServer",
-        title: "Riparian Mapping",
-        listMode: "hide-children",
+    var ripMeta = new FeatureLayer({
+        url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Riparian/MapServer/0",
         visible: false,
-        sublayers: [{
-                id: 0,
+        title: "Riparian Metadata",
+        popupTemplate: {
                 title: "Riparian Metadata",
+                content: contentRipMeta,
+                outFields: ["*"]
+        },
+    })    
+    var ripData = new FeatureLayer({
+        url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Riparian/MapServer/1",
+        title: "Riparian Mapping",
+        visible: false,
+        popupTemplate: {
+                title: "Riparian Metadata",
+                content: contentRipMeta,
+                outFields: ["*"]
+        },
+    })
+
+    var wetlandLayer = new MapImageLayer({
+        url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Mapping/MapServer",
+        title: "Wetland Mapping",
+        sublayers: [{
+                id: 4,
+                title: "Wetlands Outline",
+                visible: false,
                 popupTemplate: {
-                    title: "Riparian Metadata",
-                    content: contentRipMeta,
+                    title: "Wetland Outlines",
+                    content: contentType,
                     outFields: ["*"]
                 },
             },
             {
-                id: 1,
-                title: "Riparian",
+                id: 3,
+                title: "Riverine",
+                visible: false,
                 popupTemplate: {
-                    title: "Riparian Areas",
-                    content: contentRipType,
+                    title: "Riverine",
+                    content: contentType,
                     outFields: ["*"]
                 },
+
             },
+            {
+                id: 2,
+                title: "Wetlands (non-riverine)",
+                visible: true,
+                popupTemplate: {
+                    title: "Wetlands (non-riverine)",
+                    content: contentType,
+                    outFields: ["*"]
+                },
+                popupEnabled: true
+            },
+            {
+                id: 1,
+                title: "Wetland Metadata",
+                visible: false,
+                popupTemplate: {
+                    title: "Wetland Metadata",
+                    content: contentPro,
+                    outFields: ["*"]
+                },
+                popupEnabled: true
+            },
+
         ]
+    });
+
+    var ripGroup = new GroupLayer({
+        title: "Riparian Data",
+        visible: false,
+        visibiltyMode: "independent",
+        layers: [ripData, ripMeta]
     })
 
     var conditionsGroup = new GroupLayer({
@@ -967,7 +970,7 @@ function selectFeatureFromGrid(event) {
         title: "Wetland and Riparian Mapping",
         visible: true,
         visibiltyMode: "independent",
-        layers: [riparianData, wetlandLayer]
+        layers: [ripGroup, wetlandLayer]
     })
 
     var landscapeGroup = new GroupLayer({
@@ -976,6 +979,8 @@ function selectFeatureFromGrid(event) {
         visibiltyMode: "independent",
         layers: []
     })
+
+
 
 
 
@@ -1422,10 +1427,10 @@ console.log("go on and create grid");
 
         queryWResults.executeRelationshipQuery(relationQueryWResults).then(function(rslts) {
             console.log(rslts);
-            console.log(rslts[8].features[0].attributes.project);
+            console.log(rslts[objectid].features[0].attributes.project);
             
 
-            var poop = rslts[8];
+            var poop = rslts[objectid];
             console.log(poop);
 
     
@@ -1453,15 +1458,15 @@ console.log("go on and create grid");
                     name: 'target_population'
                 },
                 {
-                    alias: 'target_population_comparison',
+                    alias: 'Target Population Comparison',
                     name: 'target_population_comparison'
                 },
                 {
-                    alias: 'sample_frame',
+                    alias: 'Sample Frame',
                     name: 'sample_frame'
                 },
                 {
-                    alias: 'site_selection',
+                    alias: 'Site Selection',
                     name: 'site_selection'
                 }
             ];
@@ -1475,7 +1480,7 @@ console.log("go on and create grid");
 
             console.log(poop);
             console.log(rslts);
-            getResults(rslts[8]);
+            getResults(rslts[objectid]);
 
         });
     }
@@ -2289,7 +2294,9 @@ span.onclick = function() {
         var title = event.item.title;
 
         if (title === "Riparian Mapping") {
-            layer = riparianData;
+            layer = ripData;
+        } else if (title === "Riparian Metadata") {
+            layer = ripMeta;
         } else if (title === "River Sub Basins") {
             layer = boundaryLayer;
         } else if (title === "River Basins") {
@@ -2388,8 +2395,14 @@ span.onclick = function() {
         doClear();
 
     })
+    var noLegend = document.getElementsByClassName("esri-legend__message");
+console.log(noLegend);
 
-
+document.body.addEventListener( 'click', function ( event ) {
+    if( event.target.id == 'btnSubmit' ) {
+      someFunc();
+    };
+  } );
 
 
 });
