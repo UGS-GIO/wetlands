@@ -947,8 +947,6 @@ require([
                             document.getElementsByClassName("modal-content")[0].innerHTML = '<b><a href="' + test1 + '">Click to download your file.</a></b> <br>';
                 
                 
-                            //modal.style.display = "block";
-                        ///}
                         
                     });
                     modal.style.display = "block";     
