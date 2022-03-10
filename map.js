@@ -940,7 +940,7 @@ function selectFeatureFromGrid(event) {
         visible: false,
                 popupTemplate: {
                     title: "Wetland Metadata",
-                    content: contentType,
+                    content: contentPro,
                     outFields: ["*"]
                 },
     })
