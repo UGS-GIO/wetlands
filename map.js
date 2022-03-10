@@ -994,7 +994,7 @@ function selectFeatureFromGrid(event) {
     mapView.map.add(hydricSoils);
     mapView.map.add(wetlandGroup);
     mapView.map.add(boundaryLayer);
-    
+      
 
 
     ownershipLayer.opacity = .6;
