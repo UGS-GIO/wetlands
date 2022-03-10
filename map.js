@@ -964,7 +964,7 @@ function selectFeatureFromGrid(event) {
         title: "Wetland Condition",
         visible: false,
         visibiltyMode: "independent",
-        layers: [stressorsLayer, studyResultsLayer, assessmentLayer]
+        layers: [studyResultsLayer, assessmentLayer]
     })
 
 
