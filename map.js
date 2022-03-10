@@ -957,7 +957,7 @@ function selectFeatureFromGrid(event) {
         title: "Wetland Mapping",
         visible: true,
         visibiltyMode: "independent",
-        layers: [wetMeta, wetNonRiverine, riverine, wetOutlines]
+        layers: [wetOutlines, riverine, wetNonRiverine, wetMeta]
     })
 
     var conditionsGroup = new GroupLayer({
