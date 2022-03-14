@@ -2287,7 +2287,7 @@ span.onclick = function() {
 
     //Event listener that fires each time an action is triggered
     layerList.on("trigger-action", function(event) {
-
+console.log(event);
 
         // Capture the action id.
         var id = event.action.id;
@@ -2322,6 +2322,8 @@ span.onclick = function() {
             layer = studyResultsLayer;
         } else if (title === "Wetland Stressors") {
             layer = stressorsLayer;
+        } else if (title === "Wetland Metadata") {
+            layer = wetMeta;
         }
 
 
