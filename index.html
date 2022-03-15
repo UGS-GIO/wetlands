@@ -28,17 +28,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
   <!-- Calcite Maps Bootstrap -->
   <link rel="stylesheet" href="https://esri.github.io/calcite-maps/dist/css/calcite-maps-bootstrap.min-v0.10.css">
-  <!--link rel="stylesheet" href="http://localhost/GitHub/calcite-maps/dist/css/calcite-maps-bootstrap.min-v0.9.css"-->
   
   <!-- Calcite Maps -->
   <link rel="stylesheet" href="https://esri.github.io/calcite-maps/dist/css/calcite-maps-arcgis-4.x.min-v0.10.css">
-  <!--link rel="stylesheet" href="http://localhost/GitHub/calcite-maps/dist/css/calcite-maps-arcgis-4.x.min-v0.9.css"-->
+
+  <!-- dGrid css, no longer part of ESRI JS API-->
+  <link rel="stylesheet" href="https://js.arcgis.com/4.17/dgrid/css/dgrid.css"/>
 
   <!-- ArcGIS JS 4 -->
-  <link rel="stylesheet" href="https://js.arcgis.com/4.17/esri/css/main.css">
+  <link rel="stylesheet" href="https://js.arcgis.com/4.22/esri/css/main.css">
 
-  <!-- dgrid styling-->
-  <!-- <link rel="stylesheet" type="text/css" href="https://github.com/SitePen/dgrid/blob/master/css/dgrid.css" /> -->
+
 
 
   <style>
@@ -66,6 +66,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             text-transform: uppercase;
         }
 
+        
 
  /* Tooltip container */
 
@@ -98,6 +99,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         .dropdown-toggle:hover .tooltiptext {
             visibility: visible;
         }
+        div.esri-ui-bottom-right.esri-ui-corner > div {
+          display: none;
+        }
+
 
 
 /* unvisited link */
@@ -120,6 +125,22 @@ a:active {
   color: blue;
 }
 
+.esri-icon-layer-list {
+  display: none;
+}
+
+.esri-layer-list__item-actions-menu-item.esri-layer-list__item-actions-menu-item--active {
+ display: none;
+}
+
+.esri-layer-list__item-actions-menu-item:first-of-type {
+    padding-right: 9px;
+    padding-left: 7px;
+}
+
+.esri-legend.esri-widget.esri-widget--panel {
+    display: contents;
+}
 
 
     .esri-feature__content-element {
@@ -185,15 +206,18 @@ a:active {
       font-family: "Avenir Next W00", "Helvetica Neue", Helvetica, Arial, sans-serif;
       font-size: 14px;
       display: none;
+      z-index: 80;
     }
 
     .esri-layer-list__item-actions-menu-item--active, .esri-layer-list__item-actions-menu-item--active:hover {
     background-color: #ffffff;
 }
 
-    #gridDisplay {
-      z-index: 80;
-    }
+.esri-ui-top-right {
+    top: 50px;
+    right: 0;
+}
+
 
     .info {
         line-height: 20px;
@@ -207,9 +231,7 @@ a:active {
       padding-right: 20px;
     } */
 
-    #collapseQuerySpecies .panel-body {
-      overflow-x: visible;
-    }
+
 
     .dgrid-header,
     .dgrid-header-row {
@@ -271,6 +293,15 @@ a:active {
   text-decoration: none;
   cursor: pointer;
 }
+
+#fieldDiv {
+  display: none;
+        padding: 10px;
+      }
+
+      .esri-legend__message {
+        display: none;
+      }
 
 
   </style>
@@ -337,23 +368,110 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   <div class="calcite-map calcite-map-absolute" id="cont">
     <div id="mapViewDiv">  
-    
-
-
+      <div id="gridDisplay">
+        <div id="drag"></div>
+        
+          <span class="info" id="featureCount"></span>
+          <!-- <div id="downloadX"></div> -->
+          <!-- <span class="downloadX" id ="downloadCSV"></span> -->
+          <div id='removeX'></div>
+          <div id="grid"></div>
         </div>
-        <div
-        id="select-by-polygon"
-        class="esri-widget esri-widget--button esri-widget esri-interactive"
-        title="Select features by polygon"
-      >
+        </div>
         <span class="esri-icon-checkbox-unchecked"></span>
       </div>
+
+
     
+  </div>
+  <div id="fieldDiv" class="esri-widget">
+  <b>Select Scale:</b>
+    <select id="layer-select" class ="esri-widget">
+      
+      <option value="1" active>HUC12 by Ecoregion</option>
+      <option value="0">HUC12</option>
+      <option value="3">HUC8 by Ecoregion</option>
+      <option value="2">HUC8</option>
+      <option value="4">Ecoregion</option>
+    </select><br>
+    <b>Select Metric:</b>
+    <select id="field-select" class="esri-widget">
+        <option value="utah_percent" selected>Area in Utah (%)</option>
+        <option value="outdated_mapping_percent">Outdated Wetland Mapping (%)</option>
+        <option value="hr2000s_mapping_percent">Wetland Mapping 2000-2009 (%)</option>
+        <option value="hr2010s_mapping_percent">Wetland Mapping 2010-2019 (%)</option>
+        <option value="riverine_count">Rivers, Channels, and Bars (#)</option>
+        <option value="lake_count">Lakes (#)</option>
+        <option value="pond_count">Ponds (#)</option>
+        <option value="shore_count">Shores, Salt Flats, and Unvegetated Wetlands (#)</option>
+        <option value="woody_count">Woody Wetlands (#)</option>
+        <option value="emergent_count">Emergent Wetlands (#)</option>
+        <option value="riverine_area">Rivers, Channels, and Bars (ha)</option>
+        <option value="lake_area">Lakes (ha)</option>
+        <option value="pond_area">Ponds (ha)</option>
+        <option value="shore_area">Shores, Salt Flats, and Unvegetated Wetlands (ha)</option>
+        <option value="woody_area">Woody Wetlands (ha)</option>
+        <option value="emergent_area">Emergent Wetlands (ha)</option>
+        <option value="riverine_density">Rivers, Channels, and Bars (ha/km2)</option>
+        <option value="lake_density">Lakes (ha/km2)</option>
+        <option value="pond_density">Ponds (ha/km2)</option>
+        <option value="shore_density">Shores, Salt Flats, and Unvegetated Wetlands (ha/km2)</option>
+        <option value="woody_density">Woody Wetlands (ha/km2)</option>
+        <option value="emergent_density">Emergent Wetlands (ha/km2)</option>
+        <option value="riparian_percent">Riparian Mapping (%)</option>
+        <option value="riparian_woody_area">Woody Riparian Area (ha)</option>
+        <option value="riparian_herbaceous_area">Herbaceous Riparian Area (ha) </option>
+        <option value="federal_percent">Federal Ownership (%)</option>
+        <option value="state_percent">State Ownership (%)</option>
+        <option value="private_percent">Private Ownership (%)</option>
+        <option value="tribal_percent">Tribal Ownership (%)</option>
+        <option value="riverine_federal_percent">Federal Rivers, Channels, and Bars (%)</option>
+        <option value="riverine_state_percent">State Rivers, Channels, and Bars (%)</option>
+        <option value="riverine_private_percent">Private Rivers, Channels, and Bars (%)</option>
+        <option value="riverine_tribal_percent">Tribal Rivers, Channels, and Bars (%)</option>
+        <option value="waterbody_federal_percent">Federal Lakes, Ponds, and Shores (%)</option>
+        <option value="waterbody_state_percent">State Lakes, Ponds, and Shores (%)</option>
+        <option value="waterbody_private_percent">Private Lakes, Ponds, and Shores (%)</option>
+        <option value="waterbody_tribal_percent">Tribal Lakes, Ponds, and Shores (%)</option>
+        <option value="vegetated_federal_percent">Federal Vegetated Wetlands (%)</option>
+        <option value="vegetated_state_percent">State Vegetated Wetlands (%)</option>
+        <option value="vegetated_private_percent">Private Vegetated Wetlands (%)</option>
+        <option value="vegetated_tribal_percent">Tribal Vegetated Wetlands (%)</option>
+        <option value="vegetated_private_ratio">Private Vegetated Wetlands to Private Ownership Ratio</option>
+        <option value="riverine_private_ratio">Private Rivers, Channels, and Bars to Private Ownership Ratio</option>
+        <option value="waterbody_private_ratio">Private Lakes, Ponds, and Shores to Private Ownership Ratio</option>
+        <option value="restorable_wetland_on_ag">Restorable Wetlands on Agricultural Lands (%)</option>
+        <option value="surface_water_trend">Growing Season 30-Year Surface Water Trend</option>
+        <option value="surface_water_slope">Sen's Slope for Surface Water (ha/yr)</option>
+        <option value="pct_wells_rising">Rising Groundwater Wells (% of Wells)</option>
+        <option value="pct_wells_falling">Falling Groundwater Wells (% of Wells)</option>
+        <option value="mean_rising_slope">Mean Sen's Slope Rising Wells (ft/yr)</option>
+        <option value="mean_falling_slope">Mean Sen's Slope Falling Wells (ft/yr)</option>
+        </select>
+    <b>Classification:</b>
+    <select id="classification-select" class="esri-widget">
+
+          
+          <option value="quantile" active>Quantile</option>
+          <option value="equal-interval">Equal Interval</option>
+          <option value="natural-breaks" >Natural Breaks</option>
+          <option value="manual" >Manual</option>
+        </select><br>
+
+
+      <b>Breaks:</b>
+  <input
+    type="number"
+    id="num-classes"
+    class="esri-widget"
+    value="5"
+    min="2"
+    max="10"
+  />
   </div>
 
 
-
-  <!-- /.calcite-map -->
+  <!-- /.calcite-map --> 
   
 
 
@@ -412,11 +530,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <p style="padding-left: 30px; text-align: left;"><span style="font-weight: 400;">Metadata are a description of wetland and riparian mapping projects, including the scale at which mapping was conducted and the imagery year used for the mapping. Some mapping projects include supplemental map information that describes the projects in more detail. The riparian metadata also depicts the project boundaries where riparian mapping has occurred. Other wetland mapping projects do not include riparian data.</span></p>
           <p><strong>HYDRIC SOIL CLASSES</strong></p>
           <p style="padding-left: 30px; text-align: left;"><span style="font-weight: 400;"></span>The hydric soil classes data were produced by the Natural Resources Consevation Service and depict soils that are saturated for periods of time long enough to create wetland conditions. This data layer is maintained by <a href="https://www.arcgis.com/home/item.html?id=2be45af986af4624839cedae883faf47"><span style="font-weight: 400;">ESRI.</span></a></span></p>
+          <p><strong>LANDSCAPE DATA</strong></p>
+          <p style="padding-left: 30px; text-align: left;"><span style="font-weight: 400;"></span>The landscape dataset summarizes information relevant to Utah’s wetlands at five spatial scales. These data allow us to understand where and what kinds of wetlands are in Utah, who owns those wetlands, how ownership patterns differ from overall land ownership patterns, and locations that have potentially restorable wetlands. These data also summarize trends in groundwater and surface water resources across the state. The data and a more detailed description of how they were developed are available via <a href='https://geology.utah.gov/apps/wetlands/appfiles/Wetlands_Landscape_StudyResults.zip' target='_blank'>download</a>.</span></p>
+          <p style="padding-left: 30px; text-align: left;"><strong>Wetland assessment projects</strong></p>
+          <p style="padding-left: 30px; text-align: left;"><span style="font-weight: 400;">The UGS has conducted field studies to evaluate the condition and potential function of Utah’s wetlands using the Utah Rapid Assessment Procedure. These projects provide baseline information on the types of wetlands, abundance and severity of common stressors, and rare and common wetland plants in each project area. The wetland assessments project layer shows the boundaries where assessment projects have taken place, years when field data were collected, a link to the associated reports when available, and information about project study design.</span></p>
+          <p style="padding-left: 30px; text-align: left;"><strong>Wetland assessment results</strong></p>
+          <p style="padding-left: 30px; text-align: left;"><span style="font-weight: 400;">The wetland assessment results dataset summarizes major findings from UGS wetland surveys. Results are organized by strata, which were based on ecoregions or watersheds, depending on the project. Only results from projects where sites were selected and surveyed using a random design are included in this dataset. The data and a more detailed methodology are available via <a href='https://geology.utah.gov/apps/wetlands/appfiles/Wetlands_Landscape_StudyResults.zip' target='_blank'>download</a>.</span></p>
           <p><strong>WETLAND CONDITION</strong></p>
           <p style="padding-left: 30px; text-align: left;"><strong>Wetland stressors</strong></p>
           <p style="padding-left: 30px; text-align: left;"><span style="font-weight: 400;">UGS created a landscape stress model for the state of Utah, focused on stressors likely to impact wetlands, including agriculture, development, hydrologic manipulations, and linear disturbances such as roads and pipelines. See Menuz (2015) for more information on the development of the landscape stress model.</span></p>
-          <p style="padding-left: 30px; text-align: left;"><strong>Wetland assessment projects</strong></p>
-          <p style="padding-left: 30px; text-align: left;"><span style="font-weight: 400;">UGS has conducted field studies to evaluate the condition and potential function of Utah&rsquo;s wetlands. These studies provide baseline information such as the types of wetlands, abundance and severity of common stressors, and rare and common wetland plants in each study area. The wetland assessments project layer shows the boundaries where assessment projects have taken place, with a link to the associated reports when available.</span></p>
+
           <p><strong>WETLAND-DEPENDENT SPECIES</strong></p>
           <p style="padding-left: 30px;"><strong>Sensitive amphibian ranges and habitat</strong></p>
           <p style="padding-left: 30px;"><span style="font-weight: 400;">County-level data on species&rsquo; ranges were compiled from the Utah Conservation Data Center (2017) and the National Amphibian Atlas (U.S. Geological Survey, 2014). Final presence/absence designations for each county where the two sources disagreed were based on a combination of literature review and best professional judgment. Elevation range and habitat descriptions were developed through consultation with three primary sources (Green and others, 2014; IUCN, 2017; AmphibiaWeb, 2018) and additional literature review.</span></p>
@@ -537,6 +660,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </div>
 
+
   <!-- /.calcite-panels -->
 
 
@@ -551,6 +675,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 
 </div>
+
+
+
 
   <script type="text/javascript">
     var dojoConfig = {
@@ -567,7 +694,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </script>
 
   <!-- ArcGIS JS 4 -->
-  <script src="https://js.arcgis.com/4.17/"></script>
+  <script src="https://js.arcgis.com/4.22/"></script>
 
   <script src="map.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
