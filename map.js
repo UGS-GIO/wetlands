@@ -329,10 +329,10 @@ require([
         }
 
 
-        if (feature.graphic.attributes.SUPPMAPINFO) {
-            contentPro += "<span class='bold'><b>Supplemental Map Info: </b></span>" + "<a href='{SUPPMAPINFO}' target='_blank'>Opens in new tab</a>";
-        } else {
+        if (feature.graphic.attributes.SUPPMAPINFO == "None") {
             contentPro += "<span class='bold'><b>Supplemental Map Info: </b></span>Supplemental Map Info not currently available.";
+        }   else {
+            contentPro += "<span class='bold'><b>Supplemental Map Info: </b></span>" + "<a href='{SUPPMAPINFO}' target='_blank'>Opens in new tab</a>";
         }
 
         return contentPro;
@@ -522,7 +522,6 @@ require([
         if (feature.graphic.attributes.pct_low_condition || feature.graphic.attributes.pct_low_condition == 0) {
             contentStudyResults += "<span class='bold' title='Percent of sites with high condition score (URAP overall score ≥3.5 & <4.5)'><b>Low Condition Score (%): </b></span>{pct_low_condition}<br/>";
         }
-        
         if (feature.graphic.attributes.pct_absent_overall_stress || feature.graphic.attributes.pct_absent_overall_stress == 0) {
             contentStudyResults += "<span class='bold' title='Percent of sites rated as having absent stressors'><b>Stressors Absent (%): </b></span>{pct_absent_overall_stress}<br/>";
         }
