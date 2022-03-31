@@ -848,6 +848,8 @@ function selectFeatureFromGrid(event) {
 
     var studyResultsLayer = new FeatureLayer({
         url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Condition/MapServer/2",
+
+            
                 title: "Wetland Assessment Study Results",
                 opacity: 0.6,
                 popupTemplate: {
@@ -857,18 +859,8 @@ function selectFeatureFromGrid(event) {
                     outFields: ["*"]
                 },
                 visible: false
-    });
-
-    var stressorsLayer = new FeatureLayer({
-        url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Condition/MapServer/1",
-        visible: true,
-
-                title: "Wetland Stressors",
-                opacity: 0.6,
-
 
     });
-
 
     var ownershipLayer = new MapImageLayer({
         url: "https://gis.trustlands.utah.gov/server/rest/services/Ownership/UT_SITLA_Ownership_LandOwnership_WM/MapServer",
@@ -989,12 +981,6 @@ function selectFeatureFromGrid(event) {
         layers: []
     })
 
-    var conditionsLayer = new GroupLayer({
-        title: "Wetland Condition",
-        visible: false,
-        visibiltyMode: "independent",
-        layers: [stressorsLayer, assessmentLayer]
-    })
 
 
 
@@ -1705,6 +1691,8 @@ console.log("go on and create grid");
                             document.getElementsByClassName("modal-content")[0].innerHTML = '<b><a href="' + test1 + '">Click to download your file.</a></b> <br>';
                 
                 
+                            //modal.style.display = "block";
+                        ///}
                         
                     });
                     modal.style.display = "block";     
