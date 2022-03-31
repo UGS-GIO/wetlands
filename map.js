@@ -255,11 +255,11 @@ require([
         if (feature.graphic.attributes.ecoregion) {
             contentHUC12 += "<span class='bold' title=''><b>Ecoregion: </b></span>{ecoregion}<br/>";
         }
-        // if (feature.graphic.attributes.surface_water_plot) {
-        //     contentHUC12 += "<span class='bold'><b>Surface Water Plot: </b></span>" + "<a href='{surface_water_plot}' target='_blank'>Opens in new tab</a>";
-        // } else {
-        //     contentHUC12 += "<span class='bold'><b>Surface Water Plot: </b></span>Surface Water Plot not currently available.";
-        // }
+        if (feature.graphic.attributes.surface_water_plot) {
+            contentHUC12 += "<span class='bold'><b>Surface Water Plot: </b></span>" + "<a href='{surface_water_plot}' target='_blank'>Opens in new tab</a>";
+        } else {
+            contentHUC12 += "<span class='bold'><b>Surface Water Plot: </b></span>Surface Water Plot not currently available.";
+        }
 
         return contentHUC12;
     }
@@ -281,11 +281,11 @@ require([
         if (feature.graphic.attributes.ecoregion) {
             contentHUC8 += "<span class='bold' title=''><b>Ecoregion: </b></span>{ecoregion}<br/>";
         }
-        // if (feature.graphic.attributes.surface_water_plot) {
-        //     contentHUC8 += "<span class='bold'><b>Surface Water Plot: </b></span>" + "<a href='{surface_water_plot}' target='_blank'>Opens in new tab</a>";
-        // } else {
-        //     contentHUC8 += "<span class='bold'><b>Surface Water Plot: </b></span>Surface Water Plot not currently available.";
-        // }
+        if (feature.graphic.attributes.surface_water_plot) {
+            contentHUC8 += "<span class='bold'><b>Surface Water Plot: </b></span>" + "<a href='{surface_water_plot}' target='_blank'>Opens in new tab</a>";
+        } else {
+            contentHUC8 += "<span class='bold'><b>Surface Water Plot: </b></span>Surface Water Plot not currently available.";
+        }
 
         return contentHUC8;
     }
