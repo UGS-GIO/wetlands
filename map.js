@@ -255,11 +255,11 @@ require([
         if (feature.graphic.attributes.ecoregion) {
             contentHUC12 += "<span class='bold' title=''><b>Ecoregion: </b></span>{ecoregion}<br/>";
         }
-        // if (feature.graphic.attributes.surface_water_plot) {
-        //     contentHUC12 += "<span class='bold'><b>Surface Water Plot: </b></span>" + "<a href='{surface_water_plot}' target='_blank'>Opens in new tab</a>";
-        // } else {
-        //     contentHUC12 += "<span class='bold'><b>Surface Water Plot: </b></span>Surface Water Plot not currently available.";
-        // }
+        if (feature.graphic.attributes.surface_water_plot) {
+            contentHUC12 += "<span class='bold'><b>Surface Water Plot: </b></span>" + "<a href='{surface_water_plot}' target='_blank'>Opens in new tab</a>";
+        } else {
+            contentHUC12 += "<span class='bold'><b>Surface Water Plot: </b></span>Surface Water Plot not currently available.";
+        }
 
         return contentHUC12;
     }
@@ -281,11 +281,11 @@ require([
         if (feature.graphic.attributes.ecoregion) {
             contentHUC8 += "<span class='bold' title=''><b>Ecoregion: </b></span>{ecoregion}<br/>";
         }
-        // if (feature.graphic.attributes.surface_water_plot) {
-        //     contentHUC8 += "<span class='bold'><b>Surface Water Plot: </b></span>" + "<a href='{surface_water_plot}' target='_blank'>Opens in new tab</a>";
-        // } else {
-        //     contentHUC8 += "<span class='bold'><b>Surface Water Plot: </b></span>Surface Water Plot not currently available.";
-        // }
+        if (feature.graphic.attributes.surface_water_plot) {
+            contentHUC8 += "<span class='bold'><b>Surface Water Plot: </b></span>" + "<a href='{surface_water_plot}' target='_blank'>Opens in new tab</a>";
+        } else {
+            contentHUC8 += "<span class='bold'><b>Surface Water Plot: </b></span>Surface Water Plot not currently available.";
+        }
 
         return contentHUC8;
     }
@@ -848,6 +848,8 @@ function selectFeatureFromGrid(event) {
 
     var studyResultsLayer = new FeatureLayer({
         url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Condition/MapServer/2",
+
+            
                 title: "Wetland Assessment Study Results",
                 opacity: 0.6,
                 popupTemplate: {
@@ -857,18 +859,8 @@ function selectFeatureFromGrid(event) {
                     outFields: ["*"]
                 },
                 visible: false
-    });
-
-    var stressorsLayer = new FeatureLayer({
-        url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Condition/MapServer/1",
-        visible: true,
-
-                title: "Wetland Stressors",
-                opacity: 0.6,
-
 
     });
-
 
     var ownershipLayer = new MapImageLayer({
         url: "https://gis.trustlands.utah.gov/server/rest/services/Ownership/UT_SITLA_Ownership_LandOwnership_WM/MapServer",
@@ -989,12 +981,6 @@ function selectFeatureFromGrid(event) {
         layers: []
     })
 
-    var conditionsLayer = new GroupLayer({
-        title: "Wetland Condition",
-        visible: false,
-        visibiltyMode: "independent",
-        layers: [stressorsLayer, assessmentLayer]
-    })
 
 
 
@@ -1705,6 +1691,8 @@ console.log("go on and create grid");
                             document.getElementsByClassName("modal-content")[0].innerHTML = '<b><a href="' + test1 + '">Click to download your file.</a></b> <br>';
                 
                 
+                            //modal.style.display = "block";
+                        ///}
                         
                     });
                     modal.style.display = "block";     
