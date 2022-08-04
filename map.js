@@ -968,7 +968,7 @@ function selectFeatureFromGrid(event) {
     })
 
     var conditionsGroup = new GroupLayer({
-        title: "Wetland Condition",
+        title: "Wetland Field Studies",
         visible: false,
         visibiltyMode: "independent",
         layers: [studyResultsLayer, assessmentLayer]
