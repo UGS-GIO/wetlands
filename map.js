@@ -987,6 +987,7 @@ function selectFeatureFromGrid(event) {
 
 
     mapView.map.add(ownershipLayer);
+    mapView.map.add(stressorsLayer);
     mapView.map.add(speciesLayer);
     mapView.map.add(conditionsGroup);
     mapView.map.add(landscapeGroup);
