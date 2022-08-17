@@ -1227,20 +1227,21 @@ console.log("go on and create grid");
              "pct_high_overall_stress", "pct_very_high_overall_stress", "mean_rel_native_cov", "mean_abs_nox_cov"
         ];
 
-        var queryResults = new QueryTask({
-            url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Condition/MapServer/2"
-        });
+        // var queryResults = new QueryTask({
+        //     url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Condition/MapServer/2"
+        // });
        
 
-        allQueryResults = new Query();
-        allQueryResults.where = "1=1";
-        allQueryResults.outFields = ["OBJECTID", "project", "stratum_name", "stratum_ecoregion", "sites_surveyed", "pct_very_high_condition", "pct_high_condition",
+        allQueryResults = {
+        where: "1=1",
+        outFields: ["OBJECTID", "project", "stratum_name", "stratum_ecoregion", "sites_surveyed", "pct_very_high_condition", "pct_high_condition",
             "pct_medium_condition", "pct_low_condition", "pct_absent_overall_stress", "pct_low_overall_stress", "pct_med_overall_stress",
-             "pct_high_overall_stress", "pct_very_high_overall_stress", "mean_rel_native_cov", "mean_abs_nox_cov"];
+             "pct_high_overall_stress", "pct_very_high_overall_stress", "mean_rel_native_cov", "mean_abs_nox_cov"]
+        };
 
     
 
-        queryResults.execute(allQueryResults).then(function(rslts) {
+        studyResultsLayer.queryFeatures(allQueryResults).then(function(rslts) {
             console.log(rslts);
 
             var poop = rslts;
@@ -1336,19 +1337,20 @@ console.log("go on and create grid");
         gridFields = ["OBJECTID", "region", "years", "ProjectReport", "project", "target_population", "target_population_comparison",
             "sample_frame", "site_selection"];
 
-        var queryResults = new QueryTask({
-            url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Condition/MapServer/0"
-        });
+        // var queryResults = new QueryTask({
+        //     url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Condition/MapServer/0"
+        // });
        
 
-        allQueryResults = new Query();
-        allQueryResults.where = "1=1";
-        allQueryResults.outFields = ["OBJECTID", "region", "years", "ProjectReport", "project", "target_population", "target_population_comparison",
-        "sample_frame", "site_selection"];
+        allQueryResults = {
+        where: "1=1",
+        outFields: ["OBJECTID", "region", "years", "ProjectReport", "project", "target_population", "target_population_comparison",
+        "sample_frame", "site_selection"]
+        }
 
     
 
-        queryResults.execute(allQueryResults).then(function(rslts) {
+        assessmentLayer.queryFeatures(allQueryResults).then(function(rslts) {
             console.log(rslts);
 
             var poop = rslts;
@@ -1412,21 +1414,21 @@ console.log("go on and create grid");
         gridFields = ["OBJECTID", "region", "years", "ProjectReport", "project", "target_population", "target_population_comparison",
             "sample_frame", "site_selection"];
 
-        var queryWResults = new QueryTask({
-            url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Condition/MapServer/2"
-        });
+        // var queryWResults = new QueryTask({
+        //     url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Condition/MapServer/2" //studyResultsLayer
+        // });
        
 
         console.log(objectid);
 
-        relationQueryWResults = new RelationshipQuery({
+        relationQueryWResults = {
             objectIds: [objectid],
             outFields: ["OBJECTID", "region", "years", "ProjectReport", "project", "target_population", "target_population_comparison",
             "sample_frame", "site_selection"],
             relationshipId: 0
-        });
+        };
 
-        queryWResults.executeRelationshipQuery(relationQueryWResults).then(function(rslts) {
+        studyResultsLayer.queryRelatedFeatures(relationQueryWResults).then(function(rslts) {
             console.log(rslts);
             console.log(rslts[objectid].features[0].attributes.project);
             
