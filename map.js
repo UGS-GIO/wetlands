@@ -1860,6 +1860,7 @@ console.log("go on and create grid");
             document.querySelector("#mapViewDiv > div.esri-view-root > div.esri-ui > div.esri-ui-inner-container.esri-ui-corner-container > div.esri-ui-bottom-right.esri-ui-corner > div").style.display="block";
             document.getElementById("fieldDiv").style.display="block"
             showHideCalcitePanels("#panelInfo", "#collapseInfo");
+            generateRenderer();
         }
         if (e == false) {
             document.querySelector("#mapViewDiv > div.esri-view-root > div.esri-ui > div.esri-ui-inner-container.esri-ui-corner-container > div.esri-ui-bottom-right.esri-ui-corner > div").style.display="none";
@@ -2043,6 +2044,7 @@ console.log("go on and create grid");
 
     async function generateRenderer() {
         //remove existing layers from the landscape data group
+        console.log("remove landscape layers")
         landscapeGroup.layers.removeAll();
 
       //grab values from element for field choice
