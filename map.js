@@ -573,30 +573,18 @@ require([
     }
 
 
-
-
     contentSpecies = function(feature) {
-         console.log(feature);
         var contentSpecies = "";
-        objectID = feature.graphic.attributes[feature.graphic.speciesLayer.objectIdField];
-        console.log(objectID);
+        objectID = feature.graphic.attributes.OBJECTID;
 
-        var queryURL = "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Dependent_Species/MapServer/1";
-
-        var speciesSpecs = new RelationshipQuery({
-            //outFields: ["OBJECTID", "Species", "Notes", "Status", "Known_elevation_range", "Habitat_Description", "Link_to_More_Information"],
-            outFields: ["*"],
-            //returnGeometry: true,
+        var speciesSpecs = {
+            outFields: ["OBJECTID", "Species", "Notes", "Status", "Known_elevation_range", "Habitat_Description", "Link_to_More_Information"],
             relationshipId: 0,
             objectIds: [objectID]
-        });
+        }
 
-        //var idArray = [];
-        console.log(speciesSpecs);
-        //query.executeRelationshipQuery(queryURL, speciesSpecs).then(function (rslts) {
-        speciesLayer.queryRelatedFeatures(speciesSpecs).then(function (rslts) {
-            relatedSpecies(rslts)
-                console.log(rslts);
+        speciesLayer.queryRelatedFeatures(speciesSpecs)
+            .then(function (rslts) {
                 var features = rslts[objectID].features;
                 features.forEach(function(ftr) {
                     var t = ftr.attributes;
@@ -609,14 +597,7 @@ require([
                     var url = t.Link_to_More_Information;
                     contentSpecies += "<span class='bold' id='more' title='Status'><b>More Info: </b></span> <a target='_blank' href='" + url + "'>Link</a><br/><br>";
                 })
-                .catch((error) => {
-                    console.log("species query error", error)
-                })
-            });
-                
 
-            
-            console.log("Open", specs)
                 var thetitle = contentTitle(feature);
 
                 mapView.popup.open({
@@ -625,7 +606,7 @@ require([
                     outFields: ["*"],
                     visibleElements: {featureNaviagtion: true, closeButton: true}
                 })
-
+            })
     }
 
 
