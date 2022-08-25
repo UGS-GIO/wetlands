@@ -162,10 +162,7 @@ require([
         }
     });
 
-    // mapView.popup.watch("selectedFeature", (evt) => {
-    //     console.log(evt)
-    //     objectid = evt.attributes.OBJECTID;
-    // })
+
 
     // Popup and panel sync
     mapView.when(function() {
@@ -1099,10 +1096,11 @@ console.log("go on and create grid");
 
 
     function doQueryResults() {
-
+        objectid = mapView.popup.viewModel.selectedFeature.attributes.OBJECTID;
         doGridClear();
         mapView.graphics.removeAll()
         console.log("doQueryResults");
+
         gridFields = ["OBJECTID", "project", "stratum_name", "stratum_ecoregion", "sites_surveyed", "pct_very_high_condition", "pct_high_condition",
             "pct_medium_condition", "pct_low_condition", "pct_absent_overall_stress", "pct_low_overall_stress", "pct_med_overall_stress",
              "pct_high_overall_stress", "pct_very_high_overall_stress", "mean_rel_native_cov", "mean_abs_nox_cov"
@@ -2385,6 +2383,11 @@ console.log(event);
         
     // }
 }
+
+// mapView.popup.watch("selectedFeature", (evt) => {
+//     console.log(evt)
+//         objectid = evt.attributes.OBJECTID;
+// });
 
 
     mapView.popup.on("trigger-action", function(event) { // Execute the relatedProjects() function if the project action is clicked
