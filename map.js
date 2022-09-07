@@ -111,7 +111,7 @@ require([
     });
 
     let baseSource = new LocalBasemapsSource({
-        basemaps: [Basemap.fromId("hybrid"), Basemap.fromId("streets"), Basemap.fromId("gray"), irBase]
+        basemaps: [Basemap.fromId("hybrid"), Basemap.fromId("streets-vector"), Basemap.fromId("gray-vector"), irBase]
     });
 
     //grid vars
