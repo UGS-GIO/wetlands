@@ -913,8 +913,8 @@ function selectFeatureFromGrid(event) {
         title: "Riparian Mapping",
         visible: false,
         popupTemplate: {
-                title: "Riparian Metadata",
-                content: contentRipMeta,
+                title: "Riparian Mapping",
+                content: contentRipType,
                 outFields: ["*"]
         },
     })
@@ -941,15 +941,21 @@ function selectFeatureFromGrid(event) {
                 },
     })
 
-    var wetNonRiverine = new FeatureLayer({
-        url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Mapping/MapServer/2",
+    var wetNonRiverine = new MapImageLayer({
+        url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Mapping/MapServer",
+        sublayers: [
+            {
+        id: 2,
         title: "Wetlands (non-riverine)",
+        listMode: "hide",
         visible: true,
                 popupTemplate: {
                     title: "Wetlands (non-riverine)",
                     content: contentType,
                     outFields: ["*"]
-                },
+                }
+            }
+        ]
     })
 
     var wetMeta = new FeatureLayer({
@@ -1416,7 +1422,7 @@ console.log("go on and create grid");
         //     url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Condition/MapServer/2" //studyResultsLayer
         // });
        
-
+        objectid = mapView.popup.viewModel.selectedFeature.attributes.OBJECTID;
         console.log(objectid);
 
         relationQueryWResults = {
