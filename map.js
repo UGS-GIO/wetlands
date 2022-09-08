@@ -799,7 +799,7 @@ function selectFeatureFromGrid(event) {
 
     var speciesLayer = new FeatureLayer({
         url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Dependent_Species/MapServer/1",
-        visible: false,
+        visible: true,
         title: "Sensitive amphibian species",
         popupTemplate: {
             title:  "Sensitive Amphibian Species {NAME:contentTitle}",
@@ -1006,6 +1006,13 @@ function selectFeatureFromGrid(event) {
         layers: []
     })
 
+    var speciesGroup = new GroupLayer({
+        title: "Wetland Dependent Species",
+        visible: false,
+        visibiltyMode: "independent",
+        layers: [speciesLayer]
+    })
+
 
 
 
@@ -1013,7 +1020,7 @@ function selectFeatureFromGrid(event) {
 
     mapView.map.add(ownershipLayer);
     mapView.map.add(stressorsLayer);
-    mapView.map.add(speciesLayer);
+    mapView.map.add(speciesGroup);
     mapView.map.add(conditionsGroup);
     mapView.map.add(landscapeGroup);
     mapView.map.add(hydricSoils);
