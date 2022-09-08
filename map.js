@@ -985,10 +985,10 @@ function selectFeatureFromGrid(event) {
     })
 
     var conditionsGroup = new GroupLayer({
-        title: "Wetland Field Studies",
+        title: "Wetland Condition",
         visible: false,
         visibiltyMode: "independent",
-        layers: [studyResultsLayer, assessmentLayer]
+        layers: [stressorsLayer, studyResultsLayer, assessmentLayer]
     })
 
 
@@ -1019,7 +1019,6 @@ function selectFeatureFromGrid(event) {
 
 
     mapView.map.add(ownershipLayer);
-    mapView.map.add(stressorsLayer);
     mapView.map.add(speciesGroup);
     mapView.map.add(conditionsGroup);
     mapView.map.add(landscapeGroup);
