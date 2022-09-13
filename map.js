@@ -757,6 +757,70 @@ function selectFeatureFromGrid(event) {
 }
 
 
+// stressors renderer
+
+let stressorsRenderer = {
+    type: "unique-value",  // autocasts as new UniqueValueRenderer()
+    field: "gridcode",
+    //defaultSymbol: { type: "simple-fill" },  // autocasts as new SimpleFillSymbol()
+    legendOptions: {
+        title: "Stress Level"
+      },
+    uniqueValueInfos: [{
+      // All features with value of "North" will be blue
+      value: "0",
+      label: "None",
+      symbol: {
+        type: "simple-fill",  // autocasts as new SimpleFillSymbol()
+        color: "#0070FF",
+        outline: {  // autocasts as new SimpleLineSymbol()
+            width: "0px"
+          }
+      }
+    }, {
+      // All features with value of "East" will be green
+      value: "1",
+      label: "Low",
+      symbol: {
+        type: "simple-fill",  // autocasts as new SimpleFillSymbol()
+        color: "#3AFF00",
+        outline: {  // autocasts as new SimpleLineSymbol()
+            width: "0px"
+          }
+      }
+    }, {
+      // All features with value of "South" will be red
+      value: "2",
+      label: "Moderate",
+      symbol: {
+        type: "simple-fill",  // autocasts as new SimpleFillSymbol()
+        color: "#FFAA00",
+        outline: {  // autocasts as new SimpleLineSymbol()
+            width: "0px"
+          }
+      }
+    }, {
+      // All features with value of "West" will be yellow
+      value: "3",
+      label: "High",
+      symbol: {
+        type: "simple-fill",  // autocasts as new SimpleFillSymbol()
+        color: "#FF0000",
+        outline: {  // autocasts as new SimpleLineSymbol()
+            width: "0px"
+          }
+      }
+    }],
+    // visualVariables: [{
+    //   type: "opacity",
+    //   field: "POPULATION",
+    //   normalizationField: "SQ_KM",
+    //   // features with 30 ppl/sq km or below are assigned the first opacity value
+    //   stops: [{ value: 100, opacity: 0.15 },
+    //           { value: 1000, opacity: 0.90 }]
+    // }]
+  };
+
     //define layers
 
     var boundaryLayer = new MapImageLayer({
@@ -857,6 +921,7 @@ function selectFeatureFromGrid(event) {
 
     var stressorsLayer = new FeatureLayer({
         url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Condition/MapServer/1",
+        renderer: stressorsRenderer,
         visible: false,
 
                 title: "Wetland Stressors",
