@@ -976,7 +976,7 @@ let stressorsRenderer = {
     var ripData = new FeatureLayer({
         url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Riparian/MapServer/1",
         title: "Riparian Mapping",
-        visible: false,
+        visible: true,
         popupTemplate: {
                 title: "Riparian Mapping",
                 content: contentRipType,
