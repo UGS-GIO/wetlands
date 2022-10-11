@@ -14,7 +14,7 @@ require([
     "esri/widgets/Sketch",
     "esri/Graphic",
     "esri/layers/GroupLayer",
-    "esri/tasks/Geoprocessor",
+    "esri/rest/geoprocessor",
     "esri/rest/support/FeatureSet",
     "esri/smartMapping/renderers/color",
     "esri/smartMapping/statistics/histogram",
@@ -24,7 +24,7 @@ require([
     "esri/layers/MapImageLayer",
     //Tasks  
     "esri/rest/support/Query",
-    "esri/tasks/QueryTask",
+    "esri/rest/query",
     // Widgets
     "esri/widgets/Home",
     "esri/widgets/ScaleBar",
@@ -36,7 +36,7 @@ require([
     "esri/widgets/Expand",
     "esri/widgets/LayerList",
     "esri/widgets/BasemapToggle",
-    "esri/core/watchUtils",
+    "esri/core/reactiveUtils",
     "esri/rest/support/RelationshipQuery",
     "esri/popup/content/AttachmentsContent",
 
@@ -72,19 +72,22 @@ require([
     "dojo/dom-class",
     "dojo/dom-construct",
     "dojo/domReady!"
-], function(Map, MapView, SimpleMarkerSymbol, SimpleFillSymbol, GraphicsLayer, ImageryLayer, RasterFunction, Basemap, BasemapGallery, LocalBasemapsSource, SketchViewModel, Sketch, Graphic, GroupLayer, Geoprocessor, FeatureSet, colorRendererCreator, histogram, ClassedColorSlider, FeatureLayer, MapImageLayer, Query, QueryTask, Home, ScaleBar, Zoom, Compass, Search, Locate, Legend, Expand, LayerList, BasemapToggle, watchUtils, RelationshipQuery, AttachmentsContent, Collapse, Dropdown, query, Memory, ObjectStore, ItemFileReadStore, DataGrid, OnDemandGrid, ColumnHider, Selection, StoreAdapter, List, declare, parser, aspect, request, mouse, CalciteMaps, CalciteMapArcGISSupport, on, arrayUtils, dom, domClass, domConstruct) {
+], function(Map, MapView, SimpleMarkerSymbol, SimpleFillSymbol, GraphicsLayer, ImageryLayer, RasterFunction, Basemap, BasemapGallery, LocalBasemapsSource, SketchViewModel, Sketch, Graphic, GroupLayer, geoprocessor, FeatureSet, colorRendererCreator, histogram, ClassedColorSlider, FeatureLayer, MapImageLayer, Query, QueryTask, Home, ScaleBar, Zoom, Compass, Search, Locate, Legend, Expand, LayerList, BasemapToggle, reactiveUtils, RelationshipQuery, AttachmentsContent, Collapse, Dropdown, query, Memory, ObjectStore, ItemFileReadStore, DataGrid, OnDemandGrid, ColumnHider, Selection, StoreAdapter, List, declare, parser, aspect, request, mouse, CalciteMaps, CalciteMapArcGISSupport, on, arrayUtils, dom, domClass, domConstruct) {
 
     var gpUrl ="https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/WetlandsDownload/GPServer/ExtractWetlandsData";
-
-    //let graphic = {};
-            var tempGraphic = null;          
+    var tempGraphic = null;          
             let editGraphic;
             // GraphicsLayer to hold graphics created via sketch view model
             const tempGraphicsLayer = new GraphicsLayer({
                 listMode: "hide",
             });
-        //variables for landscape data
+
+    //variables for landscape data
     let layerSelect, fieldSelect, classSelect, numClassesInput, slider;
+
+    let objectid;
+
+
            
 
     //custom basemap layer of false color IR
@@ -108,7 +111,7 @@ require([
     });
 
     let baseSource = new LocalBasemapsSource({
-        basemaps: [Basemap.fromId("hybrid"), Basemap.fromId("streets"), Basemap.fromId("gray"), irBase]
+        basemaps: [Basemap.fromId("hybrid"), Basemap.fromId("streets-vector"), Basemap.fromId("gray-vector"), irBase]
     });
 
     //grid vars
@@ -159,6 +162,8 @@ require([
         }
     });
 
+
+
     // Popup and panel sync
     mapView.when(function() {
         CalciteMapArcGISSupport.setPopupPanelSync(mapView);
@@ -190,6 +195,16 @@ require([
         source: baseSource
     });
 
+    modal = document.getElementById("myModal");
+
+
+  
+  // When the user clicks anywhere outside of the modal, close it
+  window.onclick = function(event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  }
 
     var locateWidget = new Locate({
         view: mapView,   // Attaches the Locate button to the view
@@ -237,6 +252,14 @@ require([
       }
 
     //Create popup content
+
+    contentTitle = function(feature) {
+        console.log(feature);
+        var contentTitle = "";
+        var titleName = feature.graphic.attributes.NAME;
+        contentTitle += "for " + titleName + " County";
+        return contentTitle
+    }
 
     contentHUC12 = function(feature) {
         console.log(feature);
@@ -300,8 +323,9 @@ require([
     }
 
     contentPro = function(feature) {
-        console.log(feature);
+
         var contentPro = "";
+
 
 
         if (feature.graphic.attributes.IMAGE_YR) {
@@ -462,6 +486,7 @@ require([
 
 
     contentStudyArea = function(feature) {
+        console.log(feature)
         var contentStudyArea = "";
 
         if (feature.graphic.attributes.project) {
@@ -497,6 +522,7 @@ require([
 
     contentStudyResults = function(feature) {
         var contentStudyResults = "";
+
 
         if (feature.graphic.attributes.project) {
             contentStudyResults += "<span class='bold' title='Name of project'><b>Project Name: </b></span>{project}<br/>";
@@ -550,29 +576,18 @@ require([
     }
 
 
-
     contentSpecies = function(feature) {
-        console.log(feature);
         var contentSpecies = "";
-
         objectID = feature.graphic.attributes.OBJECTID;
 
-        var queryTask = new QueryTask({
-            url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Dependent_Species/MapServer/1"
-        });
-
-        var relationQuery = new RelationshipQuery({
-            objectIds: [objectID],
+        var speciesSpecs = {
             outFields: ["OBJECTID", "Species", "Notes", "Status", "Known_elevation_range", "Habitat_Description", "Link_to_More_Information"],
-            //returnGeometry: true,
-            relationshipId: 0
-        });
+            relationshipId: 0,
+            objectIds: [objectID]
+        }
 
-        //var idArray = [];
-
-        queryTask.executeRelationshipQuery(relationQuery)
-            .then(function(rslts) {
-                console.log(rslts);
+        speciesLayer.queryRelatedFeatures(speciesSpecs)
+            .then(function (rslts) {
                 var features = rslts[objectID].features;
                 features.forEach(function(ftr) {
                     var t = ftr.attributes;
@@ -582,16 +597,9 @@ require([
                     contentSpecies += "<span class='bold' title='Notes'><b>Known Elevation Range: </b></span>" + range + "<br/>";
                     var habitat = t.Habitat_Description;
                     contentSpecies += "<span class='bold' title='Status'><b>Habitat: </b></span>" + habitat + "<br/>";
-                    // var notes = t.Notes;
-                    // contentSpecies += "<span class='bold' title='Notes'><b>Notes: </b></span>" + notes + "<br/>";
-                    // var status = t.Status;
-                    // contentSpecies += "<span class='bold' title='Status'><b>Status: </b></span>" + status + "<br/>";
                     var url = t.Link_to_More_Information;
                     contentSpecies += "<span class='bold' id='more' title='Status'><b>More Info: </b></span> <a target='_blank' href='" + url + "'>Link</a><br/><br>";
-                    //idArray.push(t.OBJECTID);
-
-                });
-
+                })
 
                 var thetitle = contentTitle(feature);
 
@@ -600,23 +608,11 @@ require([
                     content: contentSpecies,
                     outFields: ["*"],
                     visibleElements: {featureNaviagtion: true, closeButton: true}
-                });
-                //});
-
-                //});
-
+                })
             })
-
     }
 
 
-    contentTitle = function(feature) {
-        console.log(feature);
-        var contentTitle = "";
-        var titleName = feature.graphic.attributes.NAME;
-        contentTitle += "for " + titleName + " County";
-        return contentTitle
-    }
 
 
  // create grid
@@ -761,6 +757,70 @@ function selectFeatureFromGrid(event) {
 }
 
 
+// stressors renderer
+
+let stressorsRenderer = {
+    type: "unique-value",  // autocasts as new UniqueValueRenderer()
+    field: "gridcode",
+    //defaultSymbol: { type: "simple-fill" },  // autocasts as new SimpleFillSymbol()
+    legendOptions: {
+        title: "Stress Level"
+      },
+    uniqueValueInfos: [{
+      // All features with value of "North" will be blue
+      value: "0",
+      label: "None",
+      symbol: {
+        type: "simple-fill",  // autocasts as new SimpleFillSymbol()
+        color: "#0070FF",
+        outline: {  // autocasts as new SimpleLineSymbol()
+            width: "0px"
+          }
+      }
+    }, {
+      // All features with value of "East" will be green
+      value: "1",
+      label: "Low",
+      symbol: {
+        type: "simple-fill",  // autocasts as new SimpleFillSymbol()
+        color: "#3AFF00",
+        outline: {  // autocasts as new SimpleLineSymbol()
+            width: "0px"
+          }
+      }
+    }, {
+      // All features with value of "South" will be red
+      value: "2",
+      label: "Moderate",
+      symbol: {
+        type: "simple-fill",  // autocasts as new SimpleFillSymbol()
+        color: "#FFAA00",
+        outline: {  // autocasts as new SimpleLineSymbol()
+            width: "0px"
+          }
+      }
+    }, {
+      // All features with value of "West" will be yellow
+      value: "3",
+      label: "High",
+      symbol: {
+        type: "simple-fill",  // autocasts as new SimpleFillSymbol()
+        color: "#FF0000",
+        outline: {  // autocasts as new SimpleLineSymbol()
+            width: "0px"
+          }
+      }
+    }],
+    // visualVariables: [{
+    //   type: "opacity",
+    //   field: "POPULATION",
+    //   normalizationField: "SQ_KM",
+    //   // features with 30 ppl/sq km or below are assigned the first opacity value
+    //   stops: [{ value: 100, opacity: 0.15 },
+    //           { value: 1000, opacity: 0.90 }]
+    // }]
+  };
+
     //define layers
 
     var boundaryLayer = new MapImageLayer({
@@ -801,26 +861,49 @@ function selectFeatureFromGrid(event) {
     });
 
 
+    var speciesLayer = new FeatureLayer({
+        url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Dependent_Species/MapServer/1",
+        visible: true,
+        title: "Sensitive amphibian species",
+        popupTemplate: {
+            title:  "Sensitive Amphibian Species {NAME:contentTitle}",
+            content: contentSpecies,
+            outFields: ["*"]
+        }
+        // listMode: "hide-children",
+        // sublayers: [{
+        //         id: 1,
+        //         title: "Sensitive amphibian species ",
+        //         //visible: false,
+        //         popupTemplate: {
+        //             title: "Sensitive Amphibian Species {NAME:contentTitle}",
+        //             content: contentSpecies,
+        //             outFields: ["*"]
 
+        //         },
+        //     }
 
-    var speciesLayer = new MapImageLayer({
-        url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Dependent_Species/MapServer",
-        visible: false,
-        listMode: "hide-children",
-        sublayers: [{
-                id: 1,
-                title: "Sensitive amphibian species ",
-                //visible: false,
-                popupTemplate: {
-                    title: "Sensitive Amphibian Species {NAME:contentTitle}",
-                    content: contentSpecies,
-                    outFields: ["*"]
-
-                },
-            }
-
-        ]
+        // ]
     });
+
+    // var speciesLayer = new MapImageLayer({
+    //     url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Dependent_Species/MapServer",
+    //     visible: false,
+    //     listMode: "hide-children",
+    //     sublayers: [{
+    //             id: 1,
+    //             title: "Sensitive amphibian species ",
+    //             //visible: false,
+    //             popupTemplate: {
+    //                 title: "Sensitive Amphibian Species {NAME:contentTitle}",
+    //                 content: contentSpecies,
+    //                 outFields: ["*"]
+
+    //             },
+    //         }
+
+    //     ]
+    // });
 
     var assessmentLayer = new FeatureLayer({
         url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Condition/MapServer/0",
@@ -838,6 +921,7 @@ function selectFeatureFromGrid(event) {
 
     var stressorsLayer = new FeatureLayer({
         url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Condition/MapServer/1",
+        renderer: stressorsRenderer,
         visible: false,
 
                 title: "Wetland Stressors",
@@ -892,10 +976,10 @@ function selectFeatureFromGrid(event) {
     var ripData = new FeatureLayer({
         url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Riparian/MapServer/1",
         title: "Riparian Mapping",
-        visible: false,
+        visible: true,
         popupTemplate: {
-                title: "Riparian Metadata",
-                content: contentRipMeta,
+                title: "Riparian Mapping",
+                content: contentRipType,
                 outFields: ["*"]
         },
     })
@@ -922,15 +1006,21 @@ function selectFeatureFromGrid(event) {
                 },
     })
 
-    var wetNonRiverine = new FeatureLayer({
-        url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Mapping/MapServer/2",
+    var wetNonRiverine = new MapImageLayer({
+        url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Mapping/MapServer",
+        sublayers: [
+            {
+        id: 2,
         title: "Wetlands (non-riverine)",
+        listMode: "hide",
         visible: true,
                 popupTemplate: {
                     title: "Wetlands (non-riverine)",
                     content: contentType,
                     outFields: ["*"]
-                },
+                }
+            }
+        ]
     })
 
     var wetMeta = new FeatureLayer({
@@ -960,10 +1050,10 @@ function selectFeatureFromGrid(event) {
     })
 
     var conditionsGroup = new GroupLayer({
-        title: "Wetland Field Studies",
+        title: "Wetland Condition",
         visible: false,
         visibiltyMode: "independent",
-        layers: [studyResultsLayer, assessmentLayer]
+        layers: [stressorsLayer, studyResultsLayer, assessmentLayer]
     })
 
 
@@ -981,13 +1071,20 @@ function selectFeatureFromGrid(event) {
         layers: []
     })
 
+    var speciesGroup = new GroupLayer({
+        title: "Wetland Dependent Species",
+        visible: false,
+        visibiltyMode: "independent",
+        layers: [speciesLayer]
+    })
+
 
 
 
 
 
     mapView.map.add(ownershipLayer);
-    mapView.map.add(speciesLayer);
+    mapView.map.add(speciesGroup);
     mapView.map.add(conditionsGroup);
     mapView.map.add(landscapeGroup);
     mapView.map.add(hydricSoils);
@@ -999,29 +1096,7 @@ function selectFeatureFromGrid(event) {
     ownershipLayer.opacity = .6;
     hydricSoils.opacity = .7;
 
-    mapView.popup.watch(["selectedFeature"], function(g) {
-        // event is the event handle returned after the event fires.
-        mapView.graphics.remove(tempGraphic);
 
-        if (g) {
-
-            var symbol = {
-                type: "simple-fill",
-                style: "none",
-                outline: { // autocasts as new SimpleLineSymbol()
-                    color: "cyan",
-                    width: 3
-                }
-            };
-
-            tempGraphic = new Graphic({
-                geometry: g.geometry,
-                symbol: symbol
-            });
-            mapView.graphics.add(tempGraphic);
-
-        }
-    });
 
 
     function getResults(response) {
@@ -1098,29 +1173,30 @@ console.log("go on and create grid");
 
 
     function doQueryResults() {
-
+        objectid = mapView.popup.viewModel.selectedFeature.attributes.OBJECTID;
         doGridClear();
         mapView.graphics.removeAll()
         console.log("doQueryResults");
+
         gridFields = ["OBJECTID", "project", "stratum_name", "stratum_ecoregion", "sites_surveyed", "pct_very_high_condition", "pct_high_condition",
             "pct_medium_condition", "pct_low_condition", "pct_absent_overall_stress", "pct_low_overall_stress", "pct_med_overall_stress",
              "pct_high_overall_stress", "pct_very_high_overall_stress", "mean_rel_native_cov", "mean_abs_nox_cov"
         ];
 
-        var queryResults = new QueryTask({
-            url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Condition/MapServer/0"
-        });
+        // var queryResults = new query({
+        //     url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Condition/MapServer/0" //assesmentLayer
+        // });
         console.log(objectid);
 
-        relationQueryResults = new RelationshipQuery({
+        relationQueryResults = {
             objectIds: [objectid],
             outFields: ["OBJECTID", "project", "stratum_name", "stratum_ecoregion", "sites_surveyed", "pct_very_high_condition", "pct_high_condition",
             "pct_medium_condition", "pct_low_condition", "pct_absent_overall_stress", "pct_low_overall_stress", "pct_med_overall_stress",
              "pct_high_overall_stress", "pct_very_high_overall_stress", "mean_rel_native_cov", "mean_abs_nox_cov"],
             relationshipId: 0
-        });
+        };
 
-        queryResults.executeRelationshipQuery(relationQueryResults).then(function(rslts) {
+        assessmentLayer.queryRelatedFeatures(relationQueryResults).then(function(rslts) {
             console.log(rslts);
             
 
@@ -1226,20 +1302,21 @@ console.log("go on and create grid");
              "pct_high_overall_stress", "pct_very_high_overall_stress", "mean_rel_native_cov", "mean_abs_nox_cov"
         ];
 
-        var queryResults = new QueryTask({
-            url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Condition/MapServer/2"
-        });
+        // var queryResults = new QueryTask({
+        //     url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Condition/MapServer/2"
+        // });
        
 
-        allQueryResults = new Query();
-        allQueryResults.where = "1=1";
-        allQueryResults.outFields = ["OBJECTID", "project", "stratum_name", "stratum_ecoregion", "sites_surveyed", "pct_very_high_condition", "pct_high_condition",
+        allQueryResults = {
+        where: "1=1",
+        outFields: ["OBJECTID", "project", "stratum_name", "stratum_ecoregion", "sites_surveyed", "pct_very_high_condition", "pct_high_condition",
             "pct_medium_condition", "pct_low_condition", "pct_absent_overall_stress", "pct_low_overall_stress", "pct_med_overall_stress",
-             "pct_high_overall_stress", "pct_very_high_overall_stress", "mean_rel_native_cov", "mean_abs_nox_cov"];
+             "pct_high_overall_stress", "pct_very_high_overall_stress", "mean_rel_native_cov", "mean_abs_nox_cov"]
+        };
 
     
 
-        queryResults.execute(allQueryResults).then(function(rslts) {
+        studyResultsLayer.queryFeatures(allQueryResults).then(function(rslts) {
             console.log(rslts);
 
             var poop = rslts;
@@ -1335,19 +1412,20 @@ console.log("go on and create grid");
         gridFields = ["OBJECTID", "region", "years", "ProjectReport", "project", "target_population", "target_population_comparison",
             "sample_frame", "site_selection"];
 
-        var queryResults = new QueryTask({
-            url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Condition/MapServer/0"
-        });
+        // var queryResults = new QueryTask({
+        //     url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Condition/MapServer/0"
+        // });
        
 
-        allQueryResults = new Query();
-        allQueryResults.where = "1=1";
-        allQueryResults.outFields = ["OBJECTID", "region", "years", "ProjectReport", "project", "target_population", "target_population_comparison",
-        "sample_frame", "site_selection"];
+        allQueryResults = {
+        where: "1=1",
+        outFields: ["OBJECTID", "region", "years", "ProjectReport", "project", "target_population", "target_population_comparison",
+        "sample_frame", "site_selection"]
+        }
 
     
 
-        queryResults.execute(allQueryResults).then(function(rslts) {
+        assessmentLayer.queryFeatures(allQueryResults).then(function(rslts) {
             console.log(rslts);
 
             var poop = rslts;
@@ -1411,21 +1489,21 @@ console.log("go on and create grid");
         gridFields = ["OBJECTID", "region", "years", "ProjectReport", "project", "target_population", "target_population_comparison",
             "sample_frame", "site_selection"];
 
-        var queryWResults = new QueryTask({
-            url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Condition/MapServer/2"
-        });
+        // var queryWResults = new QueryTask({
+        //     url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Condition/MapServer/2" //studyResultsLayer
+        // });
        
-
+        objectid = mapView.popup.viewModel.selectedFeature.attributes.OBJECTID;
         console.log(objectid);
 
-        relationQueryWResults = new RelationshipQuery({
+        relationQueryWResults = {
             objectIds: [objectid],
             outFields: ["OBJECTID", "region", "years", "ProjectReport", "project", "target_population", "target_population_comparison",
             "sample_frame", "site_selection"],
             relationshipId: 0
-        });
+        };
 
-        queryWResults.executeRelationshipQuery(relationQueryWResults).then(function(rslts) {
+        studyResultsLayer.queryRelatedFeatures(relationQueryWResults).then(function(rslts) {
             console.log(rslts);
             console.log(rslts[objectid].features[0].attributes.project);
             
@@ -1534,12 +1612,14 @@ console.log("go on and create grid");
     })
 
 
-//DOWNLOAD CODE
+
+
+    //DOWNLOAD CODE
             //load download geoprocessor
-            var gp = new Geoprocessor(gpUrl);
-                gp.outSpatialReference = { // autocasts as new SpatialReference()
-                wkid: 102100
-            };
+            // var gp = new Geoprocessor(gpUrl);
+            //     gp.outSpatialReference = { // autocasts as new SpatialReference()
+            //     wkid: 102100
+            // };
 
     // SketchView functions
     mapView.when(function() {
@@ -1665,7 +1745,7 @@ console.log("go on and create grid");
             };
             console.log("1301", params);
 
-            gp.submitJob(params).then(function(jobInfo){
+            geoprocessor.submitJob(gpUrl, params).then(function(jobInfo){
 
 
                 var jobid = jobInfo.jobId;
@@ -1679,7 +1759,7 @@ console.log("go on and create grid");
                         }
                     };
 
-                    gp.waitForJobCompletion(jobid, options).then(function(rslt) {
+                    jobInfo.waitForJobCompletion(jobid, options).then(function(rslt) {
 
                         //function downloadFile(rslt) {
                             console.log("1306", rslt);
@@ -1850,7 +1930,8 @@ span.onclick = function() {
     }
 
     
-    watchUtils.watch(landscapeGroup, 'visible', function(e) {
+    reactiveUtils.watch(() => landscapeGroup.visible === true, (e) => {
+        console.log(e)
         if (e == true) {
 
             
@@ -1858,12 +1939,14 @@ span.onclick = function() {
             document.querySelector("#mapViewDiv > div.esri-view-root > div.esri-ui > div.esri-ui-inner-container.esri-ui-corner-container > div.esri-ui-bottom-right.esri-ui-corner > div").style.display="block";
             document.getElementById("fieldDiv").style.display="block"
             showHideCalcitePanels("#panelInfo", "#collapseInfo");
+            generateRenderer();
         }
         if (e == false) {
             document.querySelector("#mapViewDiv > div.esri-view-root > div.esri-ui > div.esri-ui-inner-container.esri-ui-corner-container > div.esri-ui-bottom-right.esri-ui-corner > div").style.display="none";
             document.getElementById("fieldDiv").style.display="none"
         };
     });
+
 
 
 
@@ -1889,7 +1972,12 @@ span.onclick = function() {
       numClassesInput = document.getElementById("num-classes");
       numClassesInput.addEventListener("change", generateRenderer);
 
-      watchUtils.whenFalseOnce(mapView, "updating", generateRenderer);
+      reactiveUtils.whenOnce(
+          () => mapView?.updating, generateRenderer
+          
+      )
+
+
     });
 
     // Generate rounded arcade expression when user
@@ -2021,6 +2109,7 @@ span.onclick = function() {
 
     async function generateRenderer() {
         //remove existing layers from the landscape data group
+        console.log("remove landscape layers")
         landscapeGroup.layers.removeAll();
 
       //grab values from element for field choice
@@ -2097,18 +2186,14 @@ span.onclick = function() {
 }
 
 
-
-        
-
-
       landscapeGroup.layers.push(landscapeLayer);
 
       
-    watchUtils.when(mapView.popup, "selectedFeature", function species(evt) {
-        objectid = evt.attributes.OBJECTID;
-
-    }); // end watchUtil
-
+    // mapView.popup.watch("selectedFeature", (evt) => {
+    //     console.log(evt)
+    //     objectid = evt.attributes.OBJECTID;
+    // });
+    
 
       
       // default to natural-breaks when manual is selected for classification method
@@ -2376,6 +2461,11 @@ console.log(event);
     // }
 }
 
+// mapView.popup.watch("selectedFeature", (evt) => {
+//     console.log(evt)
+//         objectid = evt.attributes.OBJECTID;
+// });
+
 
     mapView.popup.on("trigger-action", function(event) { // Execute the relatedProjects() function if the project action is clicked
         if (event.action.id === "study-results") {
@@ -2399,11 +2489,6 @@ console.log(event);
     })
 
 
-document.body.addEventListener( 'click', function ( event ) {
-    if( event.target.id == 'btnSubmit' ) {
-      someFunc();
-    };
-  } );
 
 
 });

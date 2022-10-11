@@ -36,7 +36,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   <link rel="stylesheet" href="https://js.arcgis.com/4.17/dgrid/css/dgrid.css"/>
 
   <!-- ArcGIS JS 4 -->
-  <link rel="stylesheet" href="https://js.arcgis.com/4.22/esri/css/main.css">
+  <link rel="stylesheet" href="https://js.arcgis.com/4.24/esri/themes/light/main.css">
 
 
 
@@ -303,6 +303,9 @@ a:active {
         display: none;
       }
 
+      .esri-layer-list__item-actions-menu-item.esri-layer-list__item-actions-menu-item--active {
+        display: flex;
+      }
 
   </style>
 
@@ -539,6 +542,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <p style="padding-left: 30px; text-align: left;"><span style="font-weight: 400;">The UGS has conducted field studies to evaluate the condition and potential function of Utah’s wetlands using the Utah Rapid Assessment Procedure. These projects provide baseline information on the types of wetlands, abundance and severity of common stressors, and rare and common wetland plants in each project area. The wetland assessments project layer shows the boundaries where assessment projects have taken place, years when field data were collected, a link to the associated reports when available, and information about project study design.</span></p>
           <p style="padding-left: 30px; text-align: left;"><strong>Wetland assessment results</strong></p>
           <p style="padding-left: 30px; text-align: left;"><span style="font-weight: 400;">The wetland assessment results dataset summarizes major findings from UGS wetland surveys. Results are organized by strata, which were based on ecoregions or watersheds, depending on the project. Only results from projects where sites were selected and surveyed using a random design are included in this dataset. The data and a more detailed methodology are available via <a href='https://geology.utah.gov/apps/wetlands/appfiles/Wetlands_Landscape_StudyResults.zip' target='_blank'>download</a>.</span></p>
+          <p style="padding-left: 30px; text-align: left;"><strong>Wetland stressor</strong></p>
+          <p style="padding-left: 30px; text-align: left;"><span style="font-weight: 400;">UGS created a landscape stress model for the state of Utah, focused on stressors likely to impact wetlands, including agriculture, development, hydrologic manipulations, and linear disturbances such as roads and pipelines. See Menuz (2015) for more information on the development of the landscape stress model.</span></p>
 
           <p><strong>WETLAND-DEPENDENT SPECIES</strong></p>
           <p style="padding-left: 30px;"><strong>Sensitive amphibian ranges and habitat</strong></p>
@@ -697,7 +702,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </script>
 
   <!-- ArcGIS JS 4 -->
-  <script src="https://js.arcgis.com/4.22/"></script>
+  <script src="https://js.arcgis.com/4.24/"></script>
 
   <script src="map.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
