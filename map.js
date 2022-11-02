@@ -821,6 +821,105 @@ let stressorsRenderer = {
     // }]
   };
 
+  // wetland assessment projects renderer
+
+let assRenderer = {
+    type: "unique-value",  // autocasts as new UniqueValueRenderer()
+    field: "project",
+    //defaultSymbol: { type: "simple-fill" },  // autocasts as new SimpleFillSymbol()
+    legendOptions: {
+        title: "Project Name"
+      },
+    uniqueValueInfos: [{
+      // All features with value of "North" will be blue
+      value: "Bear River URAP",
+      label: "Bear River URAP",
+      symbol: {
+        type: "simple-fill",  // autocasts as new SimpleFillSymbol()
+        color: "rgba(228, 26, 28, 0.8)",
+        outline: {  // autocasts as new SimpleLineSymbol()
+            width: "0px"
+          }
+      }
+    }, {
+      // All features with value of "East" will be green
+      value: "Jordan URAP",
+      label: "Jordan URAP",
+      symbol: {
+        type: "simple-fill",  // autocasts as new SimpleFillSymbol()
+        color: "rgba(55, 126, 184, 0.8)",
+        outline: {  // autocasts as new SimpleLineSymbol()
+            width: "0px"
+          }
+      }
+    }, {
+      // All features with value of "South" will be red
+      value: "Uinta 2014",
+      label: "Uinta 2014",
+      symbol: {
+        type: "simple-fill",  // autocasts as new SimpleFillSymbol()
+        color: "rgba(77, 175, 74, 0.8)",
+        outline: {  // autocasts as new SimpleLineSymbol()
+            width: "0px"
+          }
+      }
+    }, {
+      // All features with value of "West" will be yellow
+      value: "Weber URAP",
+      label: "Weber URAP",
+      symbol: {
+        type: "simple-fill",  // autocasts as new SimpleFillSymbol()
+        color: "rgba(152, 78, 163, 0.8)",
+        outline: {  // autocasts as new SimpleLineSymbol()
+            width: "0px"
+          }
+        }
+      }, {
+        // All features with value of "South" will be red
+        value: "GSL URAP",
+        label: "Great Salt Lake URAP",
+        symbol: {
+          type: "simple-fill",  // autocasts as new SimpleFillSymbol()
+          color: "rgba(255, 255, 51, 0.9)",
+          outline: {  // autocasts as new SimpleLineSymbol()
+              width: "0px"
+            }
+        }
+      }, {
+        // All features with value of "South" will be red
+        value: "SV URAP",
+        label: "Snake Valley URAP",
+        symbol: {
+          type: "simple-fill",  // autocasts as new SimpleFillSymbol()
+          color: "rgba(240, 2, 127, 0.9)",
+          outline: {  // autocasts as new SimpleLineSymbol()
+              width: "0px"
+            }
+        }
+      }, {
+        // All features with value of "South" will be red
+        value: "Central Basin",
+        label: "Central Basin",
+        symbol: {
+          type: "simple-fill",  // autocasts as new SimpleFillSymbol()
+          color: "rgba(166, 86, 40, 0.6)",
+          outline: {  // autocasts as new SimpleLineSymbol()
+              width: "0px"
+            }
+        }
+      
+    }],
+    // visualVariables: [{
+    //   type: "opacity",
+    //   field: "POPULATION",
+    //   normalizationField: "SQ_KM",
+    //   // features with 30 ppl/sq km or below are assigned the first opacity value
+    //   stops: [{ value: 100, opacity: 0.15 },
+    //           { value: 1000, opacity: 0.90 }]
+    // }]
+  };
+
+
     //define layers
 
     var boundaryLayer = new MapImageLayer({
@@ -908,7 +1007,9 @@ let stressorsRenderer = {
     var assessmentLayer = new FeatureLayer({
         url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Condition/MapServer/0",
         visible: true,
+        renderer: assRenderer,
                 title: "Wetland Assessment Projects",
+                blendMode: "multiply",
                 //opacity: 0.6,
                 popupTemplate: {
                     title: "Wetland Assessment Projects",
