@@ -902,7 +902,7 @@ let assRenderer = {
         label: "Central Basin",
         symbol: {
           type: "simple-fill",  // autocasts as new SimpleFillSymbol()
-          color: "rgba(166, 86, 40, 0.6)",
+          color: "rgba(166, 86, 40, 0.7)",
           outline: {  // autocasts as new SimpleLineSymbol()
               width: "0px"
             }
