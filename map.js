@@ -1147,7 +1147,7 @@ let assRenderer = {
         title: "Wetland Mapping",
         visible: true,
         visibiltyMode: "independent",
-        layers: [wetOutlines, riverine, wetNonRiverine, wetMeta]
+        layers: [riverine, wetNonRiverine, wetMeta]
     })
 
     var conditionsGroup = new GroupLayer({
