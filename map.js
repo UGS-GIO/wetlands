@@ -406,7 +406,6 @@ require([
     }
 
     contentType = function(feature) {
-        console.log(feature.graphic.attributes)
         var contentType = "";
 
 
@@ -1066,8 +1065,11 @@ let assRenderer = {
     })
 
     var riverine = new FeatureLayer({
-        url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Mapping/MapServer/3",
+        url: "https://fwspublicservices.wim.usgs.gov/wetlandsmapservice/rest/services/Wetlands/MapServer/0",
         title: "Riverine",
+        definitionExpression: "agstest.sdeadmin.Wetlands_2.wetland_type = 'Riverine'",
+        //maxScale: 10000,
+        //minScale: 500000,
         visible: false,
                 popupTemplate: {
                     title: "Riverine",
@@ -1080,7 +1082,9 @@ let assRenderer = {
         //url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Mapping/MapServer/2",
         url: "https://fwspublicservices.wim.usgs.gov/wetlandsmapservice/rest/services/Wetlands/MapServer/0",
         title: "Wetlands (non-riverine)",
-        minScale: 500000,
+        definitionExpression: "agstest.sdeadmin.Wetlands_2.wetland_type <> 'Riverine'",
+        //minScale: 500000,
+        //maxScale: 10000,
         labelsVisible: false,
         visible: true,
                 popupTemplate: {
