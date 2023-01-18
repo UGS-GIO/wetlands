@@ -1647,7 +1647,6 @@ console.log("go on and create grid");
                 open: true
             }
             if (item.title === "Wetland Assessment Projects") {
-                console.log("TABLE! Item Layer Title:", item.title);
                 item.actionsSections = [
                     [{
                         title: "Feature Table",
@@ -1664,7 +1663,6 @@ console.log("go on and create grid");
                     }]
                 ];
             } else if (item.title === "Wetland Assessment Study Results") {
-                console.log("TABLE! Item Layer Title:", item.title);
                 item.actionsSections = [
                     [{
                         title: "Feature Table",
