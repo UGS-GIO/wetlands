@@ -1646,21 +1646,53 @@ console.log("go on and create grid");
                 content: "legend",
                 open: true
             }
-            item.actionsSections = [
-                [{
-                    title: "Feature Table",
-                    className: "esri-icon-table",
-                    id: "feature-table"
-                },{
-                    title: "Increase opacity",
-                    className: "esri-icon-up",
-                    id: "increase-opacity"
-                }, {
-                    title: "Decrease opacity",
-                    className: "esri-icon-down",
-                    id: "decrease-opacity"
-                }]
-            ];
+            if (item.title === "Wetland Assessment Projects") {
+                console.log("TABLE! Item Layer Title:", item.title);
+                item.actionsSections = [
+                    [{
+                        title: "Feature Table",
+                        className: "esri-icon-table",
+                        id: "feature-table"
+                    },{
+                        title: "Increase opacity",
+                        className: "esri-icon-up",
+                        id: "increase-opacity"
+                    }, {
+                        title: "Decrease opacity",
+                        className: "esri-icon-down",
+                        id: "decrease-opacity"
+                    }]
+                ];
+            } else if (item.title === "Wetland Assessment Study Results") {
+                console.log("TABLE! Item Layer Title:", item.title);
+                item.actionsSections = [
+                    [{
+                        title: "Feature Table",
+                        className: "esri-icon-table",
+                        id: "feature-table"
+                    },{
+                        title: "Increase opacity",
+                        className: "esri-icon-up",
+                        id: "increase-opacity"
+                    }, {
+                        title: "Decrease opacity",
+                        className: "esri-icon-down",
+                        id: "decrease-opacity"
+                    }]
+                ];
+            } else {
+                item.actionsSections = [
+                    [{
+                        title: "Increase opacity",
+                        className: "esri-icon-up",
+                        id: "increase-opacity"
+                    }, {
+                        title: "Decrease opacity",
+                        className: "esri-icon-down",
+                        id: "decrease-opacity"
+                    }]
+                ];
+            }
         }
     }
     });
