@@ -932,44 +932,6 @@ let assRenderer = {
 
     //define layers
 
-    var boundaryLayer = new MapImageLayer({
-        url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Boundaries/MapServer",
-        sublayers: [{
-                id: 1,
-                title: "River Basins",
-                visible: true,
-                labelsVisible: true,
-                labelingInfo: [{
-                    labelExpression: "[Name]",
-                    labelPlacement: "always-horizontal",
-                    symbol: {
-                        type: "text", // autocasts as new TextSymbol()
-                        color: [0, 92, 230],
-                        haloColor: [255, 255, 255],
-                        haloSize: 1,
-                        font: {
-                            size: 12,
-                            weight: "bold",
-                            style: "italic"
-                        }
-                    },
-                    // minScale: 2400000,
-                    maxScale: 1500001,
-                }]
-            },
-            //maxScale: 1500001,
-            {
-                id: 2,
-                title: "River Sub Basins",
-                visible: true,
-                minScale: 1500000,
-
-            }
-        ],
-        listMode: "hide-children"
-    });
-
-
     var speciesLayer = new FeatureLayer({
         url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Dependent_Species/MapServer/1",
         visible: true,
@@ -1161,7 +1123,6 @@ let assRenderer = {
     mapView.map.add(landscapeGroup);
     mapView.map.add(hydricSoils);
     mapView.map.add(wetlandGroup);
-    mapView.map.add(boundaryLayer);
       
 
 
@@ -2484,10 +2445,6 @@ console.log(event);
             layer = ripData;
         } else if (title === "Riparian Metadata") {
             layer = ripMeta;
-        } else if (title === "River Sub Basins") {
-            layer = boundaryLayer;
-        } else if (title === "River Basins") {
-            layer = boundaryLayer;
         } else if (title === "Wetland Mapping") {
             layer = wetGroup;
         } else if (title === "Watershed (HUC12)") {
