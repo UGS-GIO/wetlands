@@ -1008,9 +1008,9 @@ let assRenderer = {
     var ripMeta = new FeatureLayer({
         url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Riparian/MapServer/0",
         visible: false,
-        title: "Riparian Metadata",
+        title: "Riparian Project Information",
         popupTemplate: {
-                title: "Riparian Metadata",
+                title: "Riparian Project Information",
                 content: contentRipMeta,
                 outFields: ["*"]
         },
@@ -1059,10 +1059,10 @@ let assRenderer = {
 
     var wetMeta = new FeatureLayer({
         url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Mapping/MapServer/1",
-        title: "Wetland Metadata",
+        title: "Wetland Project Information",
         visible: false,
                 popupTemplate: {
-                    title: "Wetland Metadata",
+                    title: "Wetland Project Information",
                     content: contentPro,
                     outFields: ["*"]
                 },
@@ -2443,7 +2443,7 @@ console.log(event);
 
         if (title === "Riparian Mapping") {
             layer = ripData;
-        } else if (title === "Riparian Metadata") {
+        } else if (title === "Riparian Project Information") {
             layer = ripMeta;
         } else if (title === "Wetland Mapping") {
             layer = wetGroup;
@@ -2465,7 +2465,7 @@ console.log(event);
             layer = studyResultsLayer;
         } else if (title === "Wetland Stressors") {
             layer = stressorsLayer;
-        } else if (title === "Wetland Metadata") {
+        } else if (title === "Wetland Project Information") {
             layer = wetMeta;
         }
 
