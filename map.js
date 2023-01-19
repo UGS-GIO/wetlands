@@ -989,7 +989,7 @@ let assRenderer = {
     });
 
     var ownershipLayer = new MapImageLayer({
-        url: "https://gis.trustlands.utah.gov/server/rest/services/Ownership/UT_SITLA_Ownership_LandOwnership_WM/MapServer",
+        url: "https://gis.trustlands.utah.gov/server/rest/services/Ownership/UT_SITLA_Ownership_LandOwnership/MapServer",
         visible: false,
         title: "Land Ownership",
         listMode: "hide-children",
@@ -1649,6 +1649,10 @@ console.log("go on and create grid");
                         title: "Decrease opacity",
                         className: "esri-icon-down",
                         id: "decrease-opacity"
+                    }, {
+                        title: "Layer info",
+                        className: "esri-icon-question",
+                        id: "layer-info"
                     }]
                 ];
             }
@@ -2498,9 +2502,22 @@ console.log(event);
                 modal.style.display = "block";
                 document.getElementsByClassName("modal-content")[0].innerHTML = '<b>No feature table for this layer.</b> <br>';  
             }
-        } 
+        } else if (id === "layer-info") {
+            console.log("Layer Info");
+            query("#panelData").collapse("show");
+            query("#collapseData").collapse("show");
+            //showHideCalcitePanels("#panelData");
+        }
 
     });
+
+    document.getElementById("openData").addEventListener("click", openData);
+
+    function openData() {
+        console.log("Open data");
+        query("#panelData").collapse("show");
+        query("#collapseData").collapse("show");
+    }
 
     
     function doClear() {
