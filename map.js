@@ -1068,6 +1068,25 @@ let assRenderer = {
                 },
     })
 
+    var cacheProjectsArea =  new FeatureLayer({
+        url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/LLWW_Additional_Attributes/MapServer/0",
+        title: "Project Areas",
+        visible: true
+    })
+
+    var llwwMapping =  new FeatureLayer({
+        url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/LLWW_Additional_Attributes/MapServer/1",
+        title: "LLWW Mapping Areas",
+        visible: true
+    })
+
+
+    var additonalGroup = new GroupLayer({
+        title: "Additional Attributes and LLWW Data",
+        visible: false,
+        visibiltyMode: "independent",
+        layers: [cacheProjectsArea, llwwMapping]
+    })
 
     var ripGroup = new GroupLayer({
         title: "Riparian Data",
@@ -1095,7 +1114,7 @@ let assRenderer = {
         title: "Wetland and Riparian Mapping",
         visible: true,
         visibiltyMode: "independent",
-        layers: [ripGroup, wetGroup]
+        layers: [ripGroup, wetGroup, additonalGroup]
     })
 
     var landscapeGroup = new GroupLayer({
