@@ -585,6 +585,40 @@ require([
 
     }
 
+    contentLLWWAreas = function(feature) {
+        console.log(feature)
+        var content = "";
+
+        if (feature.graphic.attributes.CowAttribute) {
+            content += "<span class='bold' title='Name of project'><b>Project Name: </b></span>{projectname}<br/>";
+        }
+        if (feature.graphic.attributes.years) {
+            content += "<span class='bold' title='Years when field work was conducted'><b>Years: </b></span>{years}<br/>";
+        }
+
+        if (feature.graphic.attributes.ProjectReport) {
+            content += "<span class='bold' title='Link to final project report'><b>Report: </b></span>" + "<a href='{ProjectReport}' target='_blank'>Opens in new tab</a><br/>";
+        } else {
+            content += "<span class='bold'><b>Report: </b></span>Currently not available.<br/>";
+        }
+        if (feature.graphic.attributes.target_population) {
+            content += "<span class='bold' title='Group of wetlands targeted for study by the project'><b>Target population: </b></span>{target_population}<br/>";
+        }
+        if (feature.graphic.attributes.target_population_comparison) {
+            content += "<span class='bold' title='How target population compares to target in other UGS surveys'><b>Target population comparison: </b></span>{target_population_comparison}<br/>";
+        }
+        if (feature.graphic.attributes.sample_frame) {
+            content += "<span class='bold' title='Spatial data used to select survey sites'><b>Sample frame: </b></span>{sample_frame}<br/>";
+        }
+        if (feature.graphic.attributes.site_selection) {
+            content += "<span class='bold' title='Method used for selecting sites'><b>Site selection: </b></span>{site_selection}<br/>";
+        }
+
+
+        return content;
+
+    }
+
 
     contentSpecies = function(feature) {
         var contentSpecies = "";
@@ -831,6 +865,145 @@ let stressorsRenderer = {
     // }]
   };
 
+
+  // llww mapping renderer
+
+const sym0 = {
+    type: 'simple-fill',
+    color: "#002673",
+    style: 'solid',
+    outline: { color: 'gray', width: 0.3}
+};
+
+const sym1 = {
+    type: 'simple-fill',
+    color: "#00c3ff",
+    style: 'solid',
+    outline: { color: 'gray', width: 0.3}
+};
+
+const sym2 = {
+    type: 'simple-fill',
+    color: "#00a884",
+    style: 'solid',
+    outline: { color: 'gray', width: 0.3}
+};
+
+const sym3 = {
+    type: 'simple-fill',
+    color: "#de73ff",
+    style: 'solid',
+    outline: { color: 'gray', width: 0.3}
+};
+
+const sym4 = {
+    type: 'simple-fill',
+    color: "#ffff73",
+    style: 'solid',
+    outline: { color: 'gray', width: 0.3}
+};
+
+const sym5 = {
+    type: 'simple-fill',
+    color: "#e69900",
+    style: 'solid',
+    outline: { color: 'gray', width: 0.3}
+};
+
+const sym6 = {
+    type: 'simple-fill',
+    style: 'backward-diagonal',
+    color: "#000000",
+    outline: { color: 'gray', width: 0.3}
+};
+
+const sym7 = {
+    type: 'simple-fill',
+    style: 'solid',
+    color: "#ffecbe",
+    outline: { color: 'gray', width: 0.3}
+};
+
+
+
+const lName = "$feature.landform_waterbody";
+//console.log(${lName});
+const lType = "$feature.hgm_class";
+//console.log(${lType});
+const llwwRenderer = {
+    type: "unique-value",
+    valueExpression: `When(${lName} == 'RV1', 0, ${lName} == 'ST2', 0, ${lName} == 'ST3', 0, ${lName} == 'ST4', 0, ${lName} == 'ST5', 0, ${lName} == 'PD', 1, ${lName} == 'LK', 1, ${lName} == 'BA' && ${lType} == 'Riverine', 2, ${lName} == 'FP' && ${lType} == 'Riverine', 2, ${lName} == 'FR' && ${lType} == 'Riverine', 2, ${lName} == 'BA' && ${lType} == 'Lacustrine Fringe', 3, ${lName} == 'FP' && ${lType} == 'Lacustrine Fringe', 3, ${lName} == 'FR' && ${lType} == 'Lacustrine Fringe', 3, ${lName} == 'SL' && ${lType} == 'Slope', 4, ${lName} == 'BA' && ${lType} == 'Depressional', 5, ${lName} == 'FR' && ${lType} == 'Depressional', 5, ${lName} == 'FL' && ${lType} == 'Flats', 7, 6)`,
+  
+    uniqueValueInfos: [
+    {
+        value: "0",
+        label: "Rivers, Streams, Canals",
+        symbol: sym0  
+    }, {
+        value: "1",
+        label: "Lakes and Ponds",
+        symbol: sym1 
+    },{
+        value: "2",
+        label: "Riverine Wetland",
+        symbol: sym2 
+    }, {
+        value: "3",
+        label: "Lacustrine Fringe Wetland",
+        symbol: sym3 
+    }, {
+        value: "4",
+        label: "Slope Wetland",
+        symbol: sym4
+    }, {
+        value: "5",
+        label: "Depressional Wetland",
+        symbol: sym5
+    }, {
+        value: "6",
+        label: "Riparian",
+        symbol: sym6
+    }, {
+        value: "7",
+        label: "Flats Wetland",
+        symbol: sym7
+    }
+    ] 
+};
+
+
+//   let llwwRenderer = {
+//     type: "unique-value",
+//     field: "hgm_class",
+//     field2: "landform_waterbody",
+//     legendOptions: {
+//         title: "HGM Class"
+//     },
+//     uniqueValueInfos: [{
+//         value: "RV1, ST2, ST3, ST4, ST5",
+//         label: "Rivers, Streams, Canals",
+//         symbol: {
+//           type: "simple-fill",  // autocasts as new SimpleFillSymbol()
+//           color: "#002673",
+//           outline: {  // autocasts as new SimpleLineSymbol()
+//               width: "0px"
+//             }
+//         }
+//       }, {
+//         value: "PD, LK",
+//         label: "Lakes and Ponds",
+//         symbol: {
+//           type: "simple-fill",  // autocasts as new SimpleFillSymbol()
+//           color: "#0070FF",
+//           outline: {  // autocasts as new SimpleLineSymbol()
+//               width: "0px"
+//             }
+//         }
+//       },
+
+//     ]
+//   }
+
   // wetland assessment projects renderer
 
 let assRenderer = {
@@ -1068,21 +1241,27 @@ let assRenderer = {
                 },
     })
 
-    var cacheProjectsArea =  new FeatureLayer({
+    var llwwMapping =  new FeatureLayer({
         url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/LLWW_Additional_Attributes/MapServer/0",
-        title: "Project Areas",
-        visible: true
+        title: "LLWW Descriptions",
+        visible: true,
+        renderer: llwwRenderer
     })
 
-    var llwwMapping =  new FeatureLayer({
+    var cacheProjectsArea =  new FeatureLayer({
         url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/LLWW_Additional_Attributes/MapServer/1",
         title: "LLWW Mapping Areas",
-        visible: true
+        visible: true,
+        popupTemplate: {
+            title: "LLWW Mapping Area",
+            content: contentLLWWAreas,
+            outFields: ["*"]
+        }
     })
 
 
     var additonalGroup = new GroupLayer({
-        title: "Additional Attributes and LLWW Data",
+        title: "Additional Attributes",
         visible: false,
         visibiltyMode: "independent",
         layers: [cacheProjectsArea, llwwMapping]
@@ -1114,7 +1293,7 @@ let assRenderer = {
         title: "Wetland and Riparian Mapping",
         visible: true,
         visibiltyMode: "independent",
-        layers: [ripGroup, wetGroup, additonalGroup]
+        layers: [additonalGroup, ripGroup, wetGroup]
     })
 
     var landscapeGroup = new GroupLayer({
