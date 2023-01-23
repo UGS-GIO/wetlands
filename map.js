@@ -1621,6 +1621,10 @@ console.log("go on and create grid");
                         title: "Decrease opacity",
                         className: "esri-icon-down",
                         id: "decrease-opacity"
+                    }, {
+                        title: "Layer info",
+                        className: "esri-icon-question",
+                        id: "layer-info"
                     }]
                 ];
             } else if (item.title === "Wetland Assessment Study Results") {
@@ -1637,6 +1641,10 @@ console.log("go on and create grid");
                         title: "Decrease opacity",
                         className: "esri-icon-down",
                         id: "decrease-opacity"
+                    },{
+                        title: "Layer info",
+                        className: "esri-icon-question",
+                        id: "layer-info"
                     }]
                 ];
             } else {
@@ -2506,7 +2514,6 @@ console.log(event);
             console.log("Layer Info");
             query("#panelData").collapse("show");
             query("#collapseData").collapse("show");
-            //showHideCalcitePanels("#panelData");
         }
 
     });
