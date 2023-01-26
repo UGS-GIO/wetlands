@@ -585,7 +585,7 @@ require([
 
     }
 
-    contentLLWWAreas = function(feature) {
+    contentLLWWDescriptions = function(feature) {
         console.log(feature)
         var content = "";
 
@@ -613,6 +613,29 @@ require([
         }
         if (feature.graphic.attributes.llww_modifiers) {
             content += "<span class='bold' title='Method used for selecting sites'><b>LLWW Modifiers: </b></span>{llww_modifiers}<br/>";
+        }
+
+
+        return content;
+
+    }
+
+    contentLLWWAreas = function(feature) {
+        console.log(feature)
+        var content = "";
+
+        if (feature.graphic.attributes.projectname) {
+            content += "<span class='bold' title='Name of project'><b>Project Name: </b></span>{projectname}<br/>";
+        }
+        if (feature.graphic.attributes.organization) {
+            content += "<span class='bold' title='Years when field work was conducted'><b>Organization: </b></span>{organization}<br/>";
+        }
+
+        if (feature.graphic.attributes.baseimagery) {
+            content += "<span class='bold' title='Years when field work was conducted'><b>Base Imagery: </b></span>{baseimagery}<br/>";
+        } 
+        if (feature.graphic.attributes.report) {
+            content += "<span class='bold' title='Link to supplemental report'><b>Supplemental Report: </b></span>" + "<a href='{report}' target='_blank'>Opens in new tab</a><br/>";
         }
 
 
@@ -1248,8 +1271,8 @@ let assRenderer = {
         visible: true,
         renderer: llwwRenderer,
         popupTemplate: {
-            title: "LLWW Mapping Area",
-            content: contentLLWWAreas,
+            title: "LLWW Descriptions",
+            content: contentLLWWDescriptions,
             outFields: ["*"]
         }
     })
@@ -1258,6 +1281,11 @@ let assRenderer = {
         url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/LLWW_Additional_Attributes/MapServer/1",
         title: "LLWW Mapping Areas",
         visible: true,
+        popupTemplate: {
+            title: "LLWW Mapping Areas",
+            content: contentLLWWAreas,
+            outFields: ["*"]
+        }
 
     })
 
