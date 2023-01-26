@@ -589,29 +589,30 @@ require([
         console.log(feature)
         var content = "";
 
-        if (feature.graphic.attributes.CowAttribute) {
-            content += "<span class='bold' title='Name of project'><b>Project Name: </b></span>{projectname}<br/>";
+        if (feature.graphic.attributes.cowattribute) {
+            content += "<span class='bold' title='Name of project'><b>Cowardin Attirbute: </b></span>{cowattribute}<br/>";
         }
-        if (feature.graphic.attributes.years) {
-            content += "<span class='bold' title='Years when field work was conducted'><b>Years: </b></span>{years}<br/>";
+        if (feature.graphic.attributes.featuretype) {
+            content += "<span class='bold' title='Years when field work was conducted'><b>LLWW Feature Type: </b></span>{featuretype}<br/>";
         }
 
-        if (feature.graphic.attributes.ProjectReport) {
-            content += "<span class='bold' title='Link to final project report'><b>Report: </b></span>" + "<a href='{ProjectReport}' target='_blank'>Opens in new tab</a><br/>";
-        } else {
-            content += "<span class='bold'><b>Report: </b></span>Currently not available.<br/>";
+        if (feature.graphic.attributes.hgm_class) {
+            content += "<span class='bold' title='Years when field work was conducted'><b>HGM Class: </b></span>{hgm_class}<br/>";
+        } 
+        if (feature.graphic.attributes.landscape) {
+            content += "<span class='bold' title='Group of wetlands targeted for study by the project'><b>Landscape: </b></span>{landscape}<br/>";
         }
-        if (feature.graphic.attributes.target_population) {
-            content += "<span class='bold' title='Group of wetlands targeted for study by the project'><b>Target population: </b></span>{target_population}<br/>";
+        if (feature.graphic.attributes.landform_waterbody) {
+            content += "<span class='bold' title='How target population compares to target in other UGS surveys'><b>Landform or Waterbody: </b></span>{landform_waterbody}<br/>";
         }
-        if (feature.graphic.attributes.target_population_comparison) {
-            content += "<span class='bold' title='How target population compares to target in other UGS surveys'><b>Target population comparison: </b></span>{target_population_comparison}<br/>";
+        if (feature.graphic.attributes.flowpath) {
+            content += "<span class='bold' title='Spatial data used to select survey sites'><b>Flowpath: </b></span>{flowpath}<br/>";
         }
-        if (feature.graphic.attributes.sample_frame) {
-            content += "<span class='bold' title='Spatial data used to select survey sites'><b>Sample frame: </b></span>{sample_frame}<br/>";
+        if (feature.graphic.attributes.llww_base) {
+            content += "<span class='bold' title='Method used for selecting sites'><b>LLWW Base Code: </b></span>{llww_base}<br/>";
         }
-        if (feature.graphic.attributes.site_selection) {
-            content += "<span class='bold' title='Method used for selecting sites'><b>Site selection: </b></span>{site_selection}<br/>";
+        if (feature.graphic.attributes.llww_modifiers) {
+            content += "<span class='bold' title='Method used for selecting sites'><b>LLWW Modifiers: </b></span>{llww_modifiers}<br/>";
         }
 
 
@@ -1245,18 +1246,19 @@ let assRenderer = {
         url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/LLWW_Additional_Attributes/MapServer/0",
         title: "LLWW Descriptions",
         visible: true,
-        renderer: llwwRenderer
+        renderer: llwwRenderer,
+        popupTemplate: {
+            title: "LLWW Mapping Area",
+            content: contentLLWWAreas,
+            outFields: ["*"]
+        }
     })
 
     var cacheProjectsArea =  new FeatureLayer({
         url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/LLWW_Additional_Attributes/MapServer/1",
         title: "LLWW Mapping Areas",
         visible: true,
-        popupTemplate: {
-            title: "LLWW Mapping Area",
-            content: contentLLWWAreas,
-            outFields: ["*"]
-        }
+
     })
 
 
