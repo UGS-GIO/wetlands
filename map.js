@@ -635,29 +635,29 @@ require([
         var content = "";
 
         if (feature.graphic.attributes.cowattribute) {
-            content += "<span class='bold' title='Name of project'><b>Cowardin Attribute: </b></span>{cowattribute}<br/>";
+            content += "<span class='bold' title='Cowardin Attribute'><b>Cowardin Attribute: </b></span>{cowattribute}<br/>";
         }
         if (feature.graphic.attributes.featuretype) {
-            content += "<span class='bold' title='Years when field work was conducted'><b>LLWW Feature Type: </b></span>{featuretype}<br/>";
+            content += "<span class='bold' title='LLWW Feature Type'><b>LLWW Feature Type: </b></span>{featuretype}<br/>";
         }
 
         if (feature.graphic.attributes.hgm_class) {
-            content += "<span class='bold' title='Years when field work was conducted'><b>HGM Class: </b></span>{hgm_class}<br/>";
+            content += "<span class='bold' title='HGM Class'><b>HGM Class: </b></span>{hgm_class}<br/>";
         } 
         if (feature.graphic.attributes.landscape) {
-            content += "<span class='bold' title='Group of wetlands targeted for study by the project'><b>Landscape: </b></span>{landscape}<br/>";
+            content += "<span class='bold' title='Landscape'><b>Landscape: </b></span>{landscape}<br/>";
         }
         if (feature.graphic.attributes.landform_waterbody) {
-            content += "<span class='bold' title='How target population compares to target in other UGS surveys'><b>Landform or Waterbody: </b></span>{landform_waterbody}<br/>";
+            content += "<span class='bold' title='Landform or Waterbody'><b>Landform or Waterbody: </b></span>{landform_waterbody}<br/>";
         }
         if (feature.graphic.attributes.flowpath) {
-            content += "<span class='bold' title='Spatial data used to select survey sites'><b>Flowpath: </b></span>{flowpath}<br/>";
+            content += "<span class='bold' title='Flowpath'><b>Flowpath: </b></span>{flowpath}<br/>";
         }
         if (feature.graphic.attributes.llww_base) {
-            content += "<span class='bold' title='Method used for selecting sites'><b>LLWW Base Code: </b></span>{llww_base}<br/>";
+            content += "<span class='bold' title='LLWW Base Code'><b>LLWW Base Code: </b></span>{llww_base}<br/>";
         }
         if (feature.graphic.attributes.llww_modifiers) {
-            content += "<span class='bold' title='Method used for selecting sites'><b>LLWW Modifiers: </b></span>{llww_modifiers}<br/>";
+            content += "<span class='bold' title='LLWW Modifiers'><b>LLWW Modifiers: </b></span>{llww_modifiers}<br/>";
         }
 
 
@@ -673,11 +673,11 @@ require([
             content += "<span class='bold' title='Name of project'><b>Project Name: </b></span>{projectname}<br/>";
         }
         if (feature.graphic.attributes.organization) {
-            content += "<span class='bold' title='Years when field work was conducted'><b>Organization: </b></span>{organization}<br/>";
+            content += "<span class='bold' title='Organization'><b>Organization: </b></span>{organization}<br/>";
         }
 
         if (feature.graphic.attributes.baseimagery) {
-            content += "<span class='bold' title='Years when field work was conducted'><b>Base Imagery: </b></span>{baseimagery}<br/>";
+            content += "<span class='bold' title='Base imagery'><b>Base Imagery: </b></span>{baseimagery}<br/>";
         } 
         if (feature.graphic.attributes.report) {
             content += "<span class='bold' title='Link to supplemental report'><b>Supplemental Report: </b></span>" + "<a href='{report}' target='_blank'>Opens in new tab</a><br/>";
@@ -1365,7 +1365,7 @@ let assRenderer = {
 
 
     var additonalGroup = new GroupLayer({
-        title: "Additional Attributes",
+        title: "Additional Attributes (LLWW)",
         visible: false,
         visibiltyMode: "independent",
         layers: [cacheProjectsArea, llwwMapping]
@@ -1420,7 +1420,7 @@ let assRenderer = {
 
 
     mapView.map.add(ownershipLayer);
-    mapView.map.add(speciesGroup);
+    //mapView.map.add(speciesGroup);
     mapView.map.add(conditionsGroup);
     mapView.map.add(landscapeGroup);
     mapView.map.add(hydricSoils);
@@ -2781,6 +2781,10 @@ console.log(event);
             layer = stressorsLayer;
         } else if (title === "Wetland Project Information") {
             layer = wetMeta;
+        } else if (title === "LLWW Mapping Areas") {
+            layer = cacheProjectsArea;
+        } else if (title === "LLWW Descriptions") {
+            layer = llwwMapping;
         }
 
 
