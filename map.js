@@ -635,7 +635,7 @@ require([
         var content = "";
 
         if (feature.graphic.attributes.cowattribute) {
-            content += "<span class='bold' title='Cowardin Attribute'><b>Cowardin Attribute: </b></span>{cowattribute}<br/>";
+            content += "<span class='bold' title='NWI Attribute'><b>Cowardin Attribute: </b></span>{cowattribute}<br/>";
         }
         if (feature.graphic.attributes.featuretype) {
             content += "<span class='bold' title='LLWW Feature Type'><b>LLWW Feature Type: </b></span>{featuretype}<br/>";
@@ -645,13 +645,13 @@ require([
             content += "<span class='bold' title='HGM Class'><b>HGM Class: </b></span>{hgm_class}<br/>";
         } 
         if (feature.graphic.attributes.landscape) {
-            content += "<span class='bold' title='Landscape'><b>Landscape: </b></span>{landscape}<br/>";
+            content += "<span class='bold' title='Landscape Position'><b>Landscape: </b></span>{landscape}<br/>";
         }
         if (feature.graphic.attributes.landform_waterbody) {
-            content += "<span class='bold' title='Landform or Waterbody'><b>Landform or Waterbody: </b></span>{landform_waterbody}<br/>";
+            content += "<span class='bold' title='Wetland Landform or Waterbody Type'><b>Landform or Waterbody: </b></span>{landform_waterbody}<br/>";
         }
         if (feature.graphic.attributes.flowpath) {
-            content += "<span class='bold' title='Flowpath'><b>Flowpath: </b></span>{flowpath}<br/>";
+            content += "<span class='bold' title='Water Flowpath'><b>Flowpath: </b></span>{flowpath}<br/>";
         }
         if (feature.graphic.attributes.llww_base) {
             content += "<span class='bold' title='LLWW Base Code'><b>LLWW Base Code: </b></span>{llww_base}<br/>";
@@ -670,17 +670,17 @@ require([
         var content = "";
 
         if (feature.graphic.attributes.projectname) {
-            content += "<span class='bold' title='Name of project'><b>Project Name: </b></span>{projectname}<br/>";
+            content += "<span class='bold' title='Mapping Area'><b>Project Name: </b></span>{projectname}<br/>";
         }
         if (feature.graphic.attributes.organization) {
-            content += "<span class='bold' title='Organization'><b>Organization: </b></span>{organization}<br/>";
+            content += "<span class='bold' title='Mapped By'><b>Organization: </b></span>{organization}<br/>";
         }
 
         if (feature.graphic.attributes.baseimagery) {
-            content += "<span class='bold' title='Base imagery'><b>Base Imagery: </b></span>{baseimagery}<br/>";
+            content += "<span class='bold' title='Source Imagery and Date'><b>Base Imagery: </b></span>{baseimagery}<br/>";
         } 
         if (feature.graphic.attributes.report) {
-            content += "<span class='bold' title='Link to supplemental report'><b>Supplemental Report: </b></span>" + "<a href='{report}' target='_blank'>Opens in new tab</a><br/>";
+            content += "<span class='bold' title='Additional Information'><b>Supplemental Report: </b></span>" + "<a href='{report}' target='_blank'>Opens in new tab</a><br/>";
         }
 
 
