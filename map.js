@@ -409,45 +409,90 @@ require([
         var contentType = "";
 
 
-        if (feature.graphic.attributes['agstest.sdeadmin.Wetlands_2.attribute']) {
-            contentType += "<span class='bold' title='NWI Code'><b>Attribute: </b></span>" + feature.graphic.attributes['agstest.sdeadmin.Wetlands_2.attribute'] + "<br/>";
+        if (feature.graphic.attributes.ATTRIBUTE) {
+            contentType += "<span class='bold' title='NWI Code'><b>Attribute: </b></span>{ATTRIBUTE}<br/>";
         }
 
 
-        if (feature.graphic.attributes['agstest.sdeadmin.Wetlands_2.wetland_type']) {
-            contentType += "<span class='bold' title='Utah Type'><b>Wetland Type: </b></span>" + feature.graphic.attributes['agstest.sdeadmin.Wetlands_2.wetland_type'] + "<br/>";
+        if (feature.graphic.attributes.WETLAND_TYPE) {
+            contentType += "<span class='bold' title='Utah Type'><b>Wetland Type: </b></span>{WETLAND_TYPE}<br/>";
         }
 
 
-        if (feature.graphic.attributes['agstest.sdeadmin.Wetlands_2.acres']) {
-            var acOG = feature.graphic.attributes['agstest.sdeadmin.Wetlands_2.acres'];
-            var acresShort = acOG.toFixed(2);
+        if (feature.graphic.attributes.ACRES) {
+            var acresShort = feature.graphic.attributes.ACRES.toFixed(2);
             contentType += "<span class='bold' title='Acres'><b>Acres: </b></span>" + acresShort + "<br/>";
         }
 
 
-        if (feature.graphic.attributes['agstest.sdeadmin.NWI_Wetland_Codes.system_name']) {
-            contentType += "<span class='bold' title='Utah Modification'><b>System: </b></span>" + feature.graphic.attributes['agstest.sdeadmin.NWI_Wetland_Codes.system_name'] + "<br/>";
+        if (feature.graphic.attributes.System) {
+            contentType += "<span class='bold' title='Utah Modification'><b>System: </b></span>{System}<br/>";
         }
 
 
-        if (feature.graphic.attributes['agstest.sdeadmin.NWI_Wetland_Codes.class_name']) {
-            contentType += "<span class='bold' title='Utah Use'><b>Class: </b></span>" + feature.graphic.attributes['agstest.sdeadmin.NWI_Wetland_Codes.class_name'] + "<br/>";
+        if (feature.graphic.attributes.Class) {
+            contentType += "<span class='bold' title='Utah Use'><b>Class: </b></span>{Class}<br/>";
         }
 
 
-        if (feature.graphic.attributes['agstest.sdeadmin.NWI_Wetland_Codes.water_regime_name']) {
-            contentType += "<span class='bold' title='Utah Use'><b>Regime: </b></span>" + feature.graphic.attributes['agstest.sdeadmin.NWI_Wetland_Codes.water_regime_name'] + "<br/>";
+        if (feature.graphic.attributes.Regime) {
+            contentType += "<span class='bold' title='Utah Use'><b>Regime: </b></span>{Regime}<br/>";
         }
 
 
-        if (feature.graphic.attributes['agstest.sdeadmin.NWI_Wetland_Codes.modifier1_name']) {
-            contentType += "<span class='bold' title='Utah Use'><b>Modifier: </b></span>" + feature.graphic.attributes['agstest.sdeadmin.NWI_Wetland_Codes.modifier1_name'] + "<br/>";
+        if (feature.graphic.attributes.Modifier) {
+            contentType += "<span class='bold' title='Utah Use'><b>Modifier: </b></span>{Modifier}<br/>";
         }
 
         return contentType;
 
     }
+
+
+//////////////////////////////////////////////////FOR USGS DATA///////////////////////////////////////////////////////////
+    // contentType = function(feature) {
+    //     var contentType = "";
+
+
+    //     if (feature.graphic.attributes['agstest.sdeadmin.Wetlands_2.attribute']) {
+    //         contentType += "<span class='bold' title='NWI Code'><b>Attribute: </b></span>" + feature.graphic.attributes['agstest.sdeadmin.Wetlands_2.attribute'] + "<br/>";
+    //     }
+
+
+    //     if (feature.graphic.attributes['agstest.sdeadmin.Wetlands_2.wetland_type']) {
+    //         contentType += "<span class='bold' title='Utah Type'><b>Wetland Type: </b></span>" + feature.graphic.attributes['agstest.sdeadmin.Wetlands_2.wetland_type'] + "<br/>";
+    //     }
+
+
+    //     if (feature.graphic.attributes['agstest.sdeadmin.Wetlands_2.acres']) {
+    //         var acOG = feature.graphic.attributes['agstest.sdeadmin.Wetlands_2.acres'];
+    //         var acresShort = acOG.toFixed(2);
+    //         contentType += "<span class='bold' title='Acres'><b>Acres: </b></span>" + acresShort + "<br/>";
+    //     }
+
+
+    //     if (feature.graphic.attributes['agstest.sdeadmin.NWI_Wetland_Codes.system_name']) {
+    //         contentType += "<span class='bold' title='Utah Modification'><b>System: </b></span>" + feature.graphic.attributes['agstest.sdeadmin.NWI_Wetland_Codes.system_name'] + "<br/>";
+    //     }
+
+
+    //     if (feature.graphic.attributes['agstest.sdeadmin.NWI_Wetland_Codes.class_name']) {
+    //         contentType += "<span class='bold' title='Utah Use'><b>Class: </b></span>" + feature.graphic.attributes['agstest.sdeadmin.NWI_Wetland_Codes.class_name'] + "<br/>";
+    //     }
+
+
+    //     if (feature.graphic.attributes['agstest.sdeadmin.NWI_Wetland_Codes.water_regime_name']) {
+    //         contentType += "<span class='bold' title='Utah Use'><b>Regime: </b></span>" + feature.graphic.attributes['agstest.sdeadmin.NWI_Wetland_Codes.water_regime_name'] + "<br/>";
+    //     }
+
+
+    //     if (feature.graphic.attributes['agstest.sdeadmin.NWI_Wetland_Codes.modifier1_name']) {
+    //         contentType += "<span class='bold' title='Utah Use'><b>Modifier: </b></span>" + feature.graphic.attributes['agstest.sdeadmin.NWI_Wetland_Codes.modifier1_name'] + "<br/>";
+    //     }
+
+    //     return contentType;
+
+    // }
 
     contentRipType = function(feature) {
         console.log(feature);
@@ -582,6 +627,64 @@ require([
 
 
         return contentStudyResults;
+
+    }
+
+    contentLLWWDescriptions = function(feature) {
+        console.log(feature)
+        var content = "";
+
+        if (feature.graphic.attributes.cowattribute) {
+            content += "<span class='bold' title='NWI Attribute'><b>Cowardin Attribute: </b></span>{cowattribute}<br/>";
+        }
+        if (feature.graphic.attributes.featuretype) {
+            content += "<span class='bold' title='LLWW Feature Type'><b>LLWW Feature Type: </b></span>{featuretype}<br/>";
+        }
+
+        if (feature.graphic.attributes.hgm_class) {
+            content += "<span class='bold' title='HGM Class'><b>HGM Class: </b></span>{hgm_class}<br/>";
+        } 
+        if (feature.graphic.attributes.landscape) {
+            content += "<span class='bold' title='Landscape Position'><b>Landscape: </b></span>{landscape}<br/>";
+        }
+        if (feature.graphic.attributes.landform_waterbody) {
+            content += "<span class='bold' title='Wetland Landform or Waterbody Type'><b>Landform or Waterbody: </b></span>{landform_waterbody}<br/>";
+        }
+        if (feature.graphic.attributes.flowpath) {
+            content += "<span class='bold' title='Water Flowpath'><b>Flowpath: </b></span>{flowpath}<br/>";
+        }
+        if (feature.graphic.attributes.llww_base) {
+            content += "<span class='bold' title='LLWW Base Code'><b>LLWW Base Code: </b></span>{llww_base}<br/>";
+        }
+        if (feature.graphic.attributes.llww_modifiers) {
+            content += "<span class='bold' title='LLWW Modifiers'><b>LLWW Modifiers: </b></span>{llww_modifiers}<br/>";
+        }
+
+
+        return content;
+
+    }
+
+    contentLLWWAreas = function(feature) {
+        console.log(feature)
+        var content = "";
+
+        if (feature.graphic.attributes.projectname) {
+            content += "<span class='bold' title='Mapping Area'><b>Project Name: </b></span>{projectname}<br/>";
+        }
+        if (feature.graphic.attributes.organization) {
+            content += "<span class='bold' title='Mapped By'><b>Organization: </b></span>{organization}<br/>";
+        }
+
+        if (feature.graphic.attributes.baseimagery) {
+            content += "<span class='bold' title='Source Imagery and Date'><b>Base Imagery: </b></span>{baseimagery}<br/>";
+        } 
+        if (feature.graphic.attributes.report) {
+            content += "<span class='bold' title='Additional Information'><b>Supplemental Report: </b></span>" + "<a href='{report}' target='_blank'>Opens in new tab</a><br/>";
+        }
+
+
+        return content;
 
     }
 
@@ -831,6 +934,145 @@ let stressorsRenderer = {
     // }]
   };
 
+
+  // llww mapping renderer
+
+const sym0 = {
+    type: 'simple-fill',
+    color: "#002673",
+    style: 'solid',
+    outline: { color: 'gray', width: 0.3}
+};
+
+const sym1 = {
+    type: 'simple-fill',
+    color: "#00c3ff",
+    style: 'solid',
+    outline: { color: 'gray', width: 0.3}
+};
+
+const sym2 = {
+    type: 'simple-fill',
+    color: "#00a884",
+    style: 'solid',
+    outline: { color: 'gray', width: 0.3}
+};
+
+const sym3 = {
+    type: 'simple-fill',
+    color: "#de73ff",
+    style: 'solid',
+    outline: { color: 'gray', width: 0.3}
+};
+
+const sym4 = {
+    type: 'simple-fill',
+    color: "#ffff73",
+    style: 'solid',
+    outline: { color: 'gray', width: 0.3}
+};
+
+const sym5 = {
+    type: 'simple-fill',
+    color: "#e69900",
+    style: 'solid',
+    outline: { color: 'gray', width: 0.3}
+};
+
+const sym6 = {
+    type: 'simple-fill',
+    style: 'backward-diagonal',
+    color: "#000000",
+    outline: { color: 'gray', width: 0.3}
+};
+
+const sym7 = {
+    type: 'simple-fill',
+    style: 'solid',
+    color: "#ffecbe",
+    outline: { color: 'gray', width: 0.3}
+};
+
+
+
+const lName = "$feature.landform_waterbody";
+//console.log(${lName});
+const lType = "$feature.hgm_class";
+//console.log(${lType});
+const llwwRenderer = {
+    type: "unique-value",
+    valueExpression: `When(${lName} == 'RV1', 0, ${lName} == 'ST2', 0, ${lName} == 'ST3', 0, ${lName} == 'ST4', 0, ${lName} == 'ST5', 0, ${lName} == 'PD', 1, ${lName} == 'LK', 1, ${lName} == 'BA' && ${lType} == 'Riverine', 2, ${lName} == 'FP' && ${lType} == 'Riverine', 2, ${lName} == 'FR' && ${lType} == 'Riverine', 2, ${lName} == 'BA' && ${lType} == 'Lacustrine Fringe', 3, ${lName} == 'FP' && ${lType} == 'Lacustrine Fringe', 3, ${lName} == 'FR' && ${lType} == 'Lacustrine Fringe', 3, ${lName} == 'SL' && ${lType} == 'Slope', 4, ${lName} == 'BA' && ${lType} == 'Depressional', 5, ${lName} == 'FR' && ${lType} == 'Depressional', 5, ${lName} == 'FL' && ${lType} == 'Flats', 7, 6)`,
+  
+    uniqueValueInfos: [
+    {
+        value: "0",
+        label: "Rivers, Streams, Canals",
+        symbol: sym0  
+    }, {
+        value: "1",
+        label: "Lakes and Ponds",
+        symbol: sym1 
+    },{
+        value: "2",
+        label: "Riverine Wetland",
+        symbol: sym2 
+    }, {
+        value: "3",
+        label: "Lacustrine Fringe Wetland",
+        symbol: sym3 
+    }, {
+        value: "4",
+        label: "Slope Wetland",
+        symbol: sym4
+    }, {
+        value: "5",
+        label: "Depressional Wetland",
+        symbol: sym5
+    }, {
+        value: "6",
+        label: "Riparian",
+        symbol: sym6
+    }, {
+        value: "7",
+        label: "Flats Wetland",
+        symbol: sym7
+    }
+    ] 
+};
+
+
+//   let llwwRenderer = {
+//     type: "unique-value",
+//     field: "hgm_class",
+//     field2: "landform_waterbody",
+//     legendOptions: {
+//         title: "HGM Class"
+//     },
+//     uniqueValueInfos: [{
+//         value: "RV1, ST2, ST3, ST4, ST5",
+//         label: "Rivers, Streams, Canals",
+//         symbol: {
+//           type: "simple-fill",  // autocasts as new SimpleFillSymbol()
+//           color: "#002673",
+//           outline: {  // autocasts as new SimpleLineSymbol()
+//               width: "0px"
+//             }
+//         }
+//       }, {
+//         value: "PD, LK",
+//         label: "Lakes and Ponds",
+//         symbol: {
+//           type: "simple-fill",  // autocasts as new SimpleFillSymbol()
+//           color: "#0070FF",
+//           outline: {  // autocasts as new SimpleLineSymbol()
+//               width: "0px"
+//             }
+//         }
+//       },
+
+//     ]
+//   }
+
   // wetland assessment projects renderer
 
 let assRenderer = {
@@ -932,44 +1174,6 @@ let assRenderer = {
 
     //define layers
 
-    var boundaryLayer = new MapImageLayer({
-        url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Boundaries/MapServer",
-        sublayers: [{
-                id: 1,
-                title: "River Basins",
-                visible: true,
-                labelsVisible: true,
-                labelingInfo: [{
-                    labelExpression: "[Name]",
-                    labelPlacement: "always-horizontal",
-                    symbol: {
-                        type: "text", // autocasts as new TextSymbol()
-                        color: [0, 92, 230],
-                        haloColor: [255, 255, 255],
-                        haloSize: 1,
-                        font: {
-                            size: 12,
-                            weight: "bold",
-                            style: "italic"
-                        }
-                    },
-                    // minScale: 2400000,
-                    maxScale: 1500001,
-                }]
-            },
-            //maxScale: 1500001,
-            {
-                id: 2,
-                title: "River Sub Basins",
-                visible: true,
-                minScale: 1500000,
-
-            }
-        ],
-        listMode: "hide-children"
-    });
-
-
     var speciesLayer = new FeatureLayer({
         url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Dependent_Species/MapServer/1",
         visible: true,
@@ -1027,7 +1231,7 @@ let assRenderer = {
     });
 
     var ownershipLayer = new MapImageLayer({
-        url: "https://gis.trustlands.utah.gov/server/rest/services/Ownership/UT_SITLA_Ownership_LandOwnership_WM/MapServer",
+        url: "https://gis.trustlands.utah.gov/server/rest/services/Ownership/UT_SITLA_Ownership_LandOwnership/MapServer",
         visible: false,
         title: "Land Ownership",
         listMode: "hide-children",
@@ -1046,9 +1250,9 @@ let assRenderer = {
     var ripMeta = new FeatureLayer({
         url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Riparian/MapServer/0",
         visible: false,
-        title: "Riparian Metadata",
+        title: "Riparian Project Information",
         popupTemplate: {
-                title: "Riparian Metadata",
+                title: "Riparian Project Information",
                 content: contentRipMeta,
                 outFields: ["*"]
         },
@@ -1065,11 +1269,8 @@ let assRenderer = {
     })
 
     var riverine = new FeatureLayer({
-        url: "https://fwspublicservices.wim.usgs.gov/wetlandsmapservice/rest/services/Wetlands/MapServer/0",
+        url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Mapping/MapServer/3",
         title: "Riverine",
-        definitionExpression: "agstest.sdeadmin.Wetlands_2.wetland_type = 'Riverine'",
-        //maxScale: 10000,
-        //minScale: 500000,
         visible: false,
                 popupTemplate: {
                     title: "Riverine",
@@ -1078,34 +1279,97 @@ let assRenderer = {
                 },
     })
 
-    var wetNonRiverine = new FeatureLayer({
-        //url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Mapping/MapServer/2",
-        url: "https://fwspublicservices.wim.usgs.gov/wetlandsmapservice/rest/services/Wetlands/MapServer/0",
+    var wetNonRiverine = new MapImageLayer({
+        url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Mapping/MapServer",
+        sublayers: [
+            {
+        id: 2,
         title: "Wetlands (non-riverine)",
-        definitionExpression: "agstest.sdeadmin.Wetlands_2.wetland_type <> 'Riverine'",
-        //minScale: 500000,
-        //maxScale: 10000,
-        labelsVisible: false,
+        listMode: "hide",
         visible: true,
                 popupTemplate: {
                     title: "Wetlands (non-riverine)",
                     content: contentType,
                     outFields: ["*"]
                 }
-
+            }
+        ]
     })
+
+////////////////////////////////////////////////USGS DATA??????????????/////////////////////////////////////////////////////////
+    // var riverine = new FeatureLayer({
+    //     url: "https://fwspublicservices.wim.usgs.gov/wetlandsmapservice/rest/services/Wetlands/MapServer/0",
+    //     title: "Riverine",
+    //     definitionExpression: "agstest.sdeadmin.Wetlands_2.wetland_type = 'Riverine'",
+    //     //maxScale: 10000,
+    //     //minScale: 500000,
+    //     visible: false,
+    //             popupTemplate: {
+    //                 title: "Riverine",
+    //                 content: contentType,
+    //                 outFields: ["*"]
+    //             },
+    // })
+
+    // var wetNonRiverine = new FeatureLayer({
+    //     //url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Mapping/MapServer/2",
+    //     url: "https://fwspublicservices.wim.usgs.gov/wetlandsmapservice/rest/services/Wetlands/MapServer/0",
+    //     title: "Wetlands (non-riverine)",
+    //     definitionExpression: "agstest.sdeadmin.Wetlands_2.wetland_type <> 'Riverine'",
+    //     //minScale: 500000,
+    //     //maxScale: 10000,
+    //     labelsVisible: false,
+    //     visible: true,
+    //             popupTemplate: {
+    //                 title: "Wetlands (non-riverine)",
+    //                 content: contentType,
+    //                 outFields: ["*"]
+    //             }
+
+    // })
 
     var wetMeta = new FeatureLayer({
         url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Mapping/MapServer/1",
-        title: "Wetland Metadata",
+        title: "Wetland Project Information",
         visible: false,
                 popupTemplate: {
-                    title: "Wetland Metadata",
+                    title: "Wetland Project Information",
                     content: contentPro,
                     outFields: ["*"]
                 },
     })
 
+    var llwwMapping =  new FeatureLayer({
+        url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/LLWW_Additional_Attributes/MapServer/0",
+        title: "LLWW Descriptions",
+        visible: true,
+        renderer: llwwRenderer,
+        popupTemplate: {
+            title: "LLWW Descriptions",
+            content: contentLLWWDescriptions,
+            outFields: ["*"]
+        }
+    })
+
+    var cacheProjectsArea =  new FeatureLayer({
+        url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/LLWW_Additional_Attributes/MapServer/1",
+        title: "LLWW Mapping Areas",
+        visible: true,
+        popupTemplate: {
+            title: "LLWW Mapping Areas",
+            content: contentLLWWAreas,
+            outFields: ["*"]
+        }
+
+    })
+
+
+    var additonalGroup = new GroupLayer({
+        title: "Additional Attributes (LLWW)",
+        visible: false,
+        visibiltyMode: "independent",
+        layers: [cacheProjectsArea, llwwMapping]
+    })
 
     var ripGroup = new GroupLayer({
         title: "Riparian Data",
@@ -1133,7 +1397,7 @@ let assRenderer = {
         title: "Wetland and Riparian Mapping",
         visible: true,
         visibiltyMode: "independent",
-        layers: [ripGroup, wetGroup]
+        layers: [additonalGroup, ripGroup, wetGroup]
     })
 
     var landscapeGroup = new GroupLayer({
@@ -1156,12 +1420,11 @@ let assRenderer = {
 
 
     mapView.map.add(ownershipLayer);
-    mapView.map.add(speciesGroup);
+    //mapView.map.add(speciesGroup);
     mapView.map.add(conditionsGroup);
     mapView.map.add(landscapeGroup);
     mapView.map.add(hydricSoils);
     mapView.map.add(wetlandGroup);
-    mapView.map.add(boundaryLayer);
       
 
 
@@ -1660,6 +1923,10 @@ console.log("go on and create grid");
                         title: "Decrease opacity",
                         className: "esri-icon-down",
                         id: "decrease-opacity"
+                    }, {
+                        title: "Layer info",
+                        className: "esri-icon-question",
+                        id: "layer-info"
                     }]
                 ];
             } else if (item.title === "Wetland Assessment Study Results") {
@@ -1676,6 +1943,10 @@ console.log("go on and create grid");
                         title: "Decrease opacity",
                         className: "esri-icon-down",
                         id: "decrease-opacity"
+                    },{
+                        title: "Layer info",
+                        className: "esri-icon-question",
+                        id: "layer-info"
                     }]
                 ];
             } else {
@@ -1688,6 +1959,10 @@ console.log("go on and create grid");
                         title: "Decrease opacity",
                         className: "esri-icon-down",
                         id: "decrease-opacity"
+                    }, {
+                        title: "Layer info",
+                        className: "esri-icon-question",
+                        id: "layer-info"
                     }]
                 ];
             }
@@ -2482,12 +2757,8 @@ console.log(event);
 
         if (title === "Riparian Mapping") {
             layer = ripData;
-        } else if (title === "Riparian Metadata") {
+        } else if (title === "Riparian Project Information") {
             layer = ripMeta;
-        } else if (title === "River Sub Basins") {
-            layer = boundaryLayer;
-        } else if (title === "River Basins") {
-            layer = boundaryLayer;
         } else if (title === "Wetland Mapping") {
             layer = wetGroup;
         } else if (title === "Watershed (HUC12)") {
@@ -2508,8 +2779,12 @@ console.log(event);
             layer = studyResultsLayer;
         } else if (title === "Wetland Stressors") {
             layer = stressorsLayer;
-        } else if (title === "Wetland Metadata") {
+        } else if (title === "Wetland Project Information") {
             layer = wetMeta;
+        } else if (title === "LLWW Mapping Areas") {
+            layer = cacheProjectsArea;
+        } else if (title === "LLWW Descriptions") {
+            layer = llwwMapping;
         }
 
 
@@ -2541,9 +2816,21 @@ console.log(event);
                 modal.style.display = "block";
                 document.getElementsByClassName("modal-content")[0].innerHTML = '<b>No feature table for this layer.</b> <br>';  
             }
-        } 
+        } else if (id === "layer-info") {
+            console.log("Layer Info");
+            query("#panelData").collapse("show");
+            query("#collapseData").collapse("show");
+        }
 
     });
+
+    document.getElementById("openData").addEventListener("click", openData);
+
+    function openData() {
+        console.log("Open data");
+        query("#panelData").collapse("show");
+        query("#collapseData").collapse("show");
+    }
 
     
     function doClear() {
