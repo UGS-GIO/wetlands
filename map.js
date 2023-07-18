@@ -338,27 +338,27 @@ require([
 
 
         if (feature.graphic.attributes.IMAGE_YR) {
-            contentPro += "<span class='bold' title='Image Year'><b>Image Year: </b></span>{IMAGE_YR}<br/>";
+            contentPro += "<span class='bold' title='Year of imagery used in mapping'><b>Image Year: </b></span>{IMAGE_YR}<br/>";
         }
 
 
         if (feature.graphic.attributes.IMAGE_DATE) {
-            contentPro += "<span class='bold' title='Image Year'><b>Image Date: </b></span>{IMAGE_DATE}<br/>";
+            contentPro += "<span class='bold' title='Date of imagery used in mapping'><b>Image Date: </b></span>{IMAGE_DATE}<br/>";
         }
 
 
-        if (feature.graphic.attributes.Decade) {
-            contentPro += "<span class='bold' title='Image Year'><b>Decade: </b></span>{Decade}<br/>";
+        if (feature.graphic.attributes.DECADE) {
+            contentPro += "<span class='bold' title='Decade of imagery used in mapping'><b>Image Decade: </b></span>{DECADE}<br/>";
         }
 
 
-        if (feature.graphic.attributes.IMAGE_SCALE) {
-            contentPro += "<span class='bold' title='Image Year'><b>Image Scale: </b></span>{IMAGE_SCALE}<br/>";
+        if (feature.graphic.attributes.ALL_SCALES) {
+            contentPro += "<span class='bold' title='Scale of imagery using in mapping'><b>Image Scale: </b></span>{ALL_SCALES}<br/>";
         }
 
 
-        if (feature.graphic.attributes.Modifier) {
-            contentPro += "<span class='bold' title='Image Year'><b>Data Category: </b></span>{DATA_CAT}<br/>";
+        if (feature.graphic.attributes.DATA_SOURCE) {
+            contentPro += "<span class='bold' title='Mapping organization'><b>Data Source: </b></span>{DATA_SOURCE}<br/>";
         }
 
 
@@ -376,30 +376,36 @@ require([
         var contentPro = "";
 
 
+
         if (feature.graphic.attributes.IMAGE_YR) {
-            contentPro += "<span class='bold' title='Image Year'><b>Image Year: </b></span>{IMAGE_YR}<br/>";
+            contentPro += "<span class='bold' title='Year of imagery used in mapping'><b>Image Year: </b></span>{IMAGE_YR}<br/>";
         }
 
 
         if (feature.graphic.attributes.IMAGE_DATE) {
-            contentPro += "<span class='bold' title='Image Year'><b>Image Date: </b></span>{IMAGE_DATE}<br/>";
+            contentPro += "<span class='bold' title='Date of imagery used in mapping'><b>Image Date: </b></span>{IMAGE_DATE}<br/>";
         }
 
 
-        if (feature.graphic.attributes.Decade) {
-            contentPro += "<span class='bold' title='Image Year'><b>Decade: </b></span>{Decade}<br/>";
+        if (feature.graphic.attributes.DECADE) {
+            contentPro += "<span class='bold' title='Decade of imagery used in mapping'><b>Image Decade: </b></span>{DECADE}<br/>";
         }
+
+
+        if (feature.graphic.attributes.ALL_SCALES) {
+            contentPro += "<span class='bold' title='Scale of imagery using in mapping'><b>Image Scale: </b></span>{ALL_SCALES}<br/>";
+        }
+
 
         if (feature.graphic.attributes.DATA_SOURCE) {
-            contentPro += "<span class='bold' title='Image Year'><b>Data Source: </b></span>{DATA_SOURCE}<br/>";
+            contentPro += "<span class='bold' title='Mapping organization'><b>Data Source: </b></span>{DATA_SOURCE}<br/>";
         }
 
 
-
-        if (feature.graphic.attributes.SUPPMAPINFO) {
-            contentPro += "<span class='bold'><b>Supplemental Map Info: </b></span>" + "<a href='{SUPPMAPINFO}' target='_blank'>Opens in new tab</a>";
-        } else {
+        if (feature.graphic.attributes.SUPPMAPINFO == "None") {
             contentPro += "<span class='bold'><b>Supplemental Map Info: </b></span>Supplemental Map Info not currently available.";
+        }   else {
+            contentPro += "<span class='bold'><b>Supplemental Map Info: </b></span>" + "<a href='{SUPPMAPINFO}' target='_blank'>Opens in new tab</a>";
         }
 
         return contentPro;
@@ -410,39 +416,50 @@ require([
 
 
         if (feature.graphic.attributes.ATTRIBUTE) {
-            contentType += "<span class='bold' title='NWI Code'><b>Attribute: </b></span>{ATTRIBUTE}<br/>";
+            contentType += "<span class='bold' title='Coded value describing wetland with Cowardin system'><b>Cowardin Attribute: </b></span>" + feature.graphic.attributes.ATTRIBUTE + "<br/>";
         }
 
 
         if (feature.graphic.attributes.WETLAND_TYPE) {
-            contentType += "<span class='bold' title='Utah Type'><b>Wetland Type: </b></span>{WETLAND_TYPE}<br/>";
+            contentType += "<span class='bold' title='Wetland Type'><b>Wetland Type: </b></span>" + feature.graphic.attributes.WETLAND_TYPE + "<br/>";
         }
 
 
         if (feature.graphic.attributes.ACRES) {
-            var acresShort = feature.graphic.attributes.ACRES.toFixed(2);
+            var acOG = feature.graphic.attributes.ACRES;
+            var acresShort = acOG.toFixed(2);
             contentType += "<span class='bold' title='Acres'><b>Acres: </b></span>" + acresShort + "<br/>";
         }
 
-
-        if (feature.graphic.attributes.System) {
-            contentType += "<span class='bold' title='Utah Modification'><b>System: </b></span>{System}<br/>";
+        if (feature.graphic.attributes.IMAGE_YR) {
+            contentType += "<span class='bold' title='Image of imagery used in mapping'><b>Image Year: </b></span>" + feature.graphic.attributes.IMAGE_YR + "<br/>";
         }
 
-
-        if (feature.graphic.attributes.Class) {
-            contentType += "<span class='bold' title='Utah Use'><b>Class: </b></span>{Class}<br/>";
+        if (feature.graphic.attributes.LLWW) {
+            contentType += "<span class='bold' title='If yes, turn on the Additional Attributes layer to view the LLWW attributes'><b>Additional Attributes Available: </b></span>" + feature.graphic.attributes.IMAGE_YR + "<br/>";
         }
 
-
-        if (feature.graphic.attributes.Regime) {
-            contentType += "<span class='bold' title='Utah Use'><b>Regime: </b></span>{Regime}<br/>";
-        }
+        contentType += "<br><span>Visit the <a href='https://fwsprimary.wim.usgs.gov/decoders/wetlands.aspx' target='_blank'>Wetlands Code Interpreter</a> for help interpreting the Cowardin Attribute Code.</span>";
 
 
-        if (feature.graphic.attributes.Modifier) {
-            contentType += "<span class='bold' title='Utah Use'><b>Modifier: </b></span>{Modifier}<br/>";
-        }
+        // if (feature.graphic.attributes['agstest.sdeadmin.NWI_Wetland_Codes.system_name']) {
+        //     contentType += "<span class='bold' title='Utah Modification'><b>System: </b></span>" + feature.graphic.attributes['agstest.sdeadmin.NWI_Wetland_Codes.system_name'] + "<br/>";
+        // }
+
+
+        // if (feature.graphic.attributes['agstest.sdeadmin.NWI_Wetland_Codes.class_name']) {
+        //     contentType += "<span class='bold' title='Utah Use'><b>Class: </b></span>" + feature.graphic.attributes['agstest.sdeadmin.NWI_Wetland_Codes.class_name'] + "<br/>";
+        // }
+
+
+        // if (feature.graphic.attributes['agstest.sdeadmin.NWI_Wetland_Codes.water_regime_name']) {
+        //     contentType += "<span class='bold' title='Utah Use'><b>Regime: </b></span>" + feature.graphic.attributes['agstest.sdeadmin.NWI_Wetland_Codes.water_regime_name'] + "<br/>";
+        // }
+
+
+        // if (feature.graphic.attributes['agstest.sdeadmin.NWI_Wetland_Codes.modifier1_name']) {
+        //     contentType += "<span class='bold' title='Utah Use'><b>Modifier: </b></span>" + feature.graphic.attributes['agstest.sdeadmin.NWI_Wetland_Codes.modifier1_name'] + "<br/>";
+        // }
 
         return contentType;
 
@@ -1247,30 +1264,37 @@ let assRenderer = {
         title: "Hydric Soils Classes",
         visible: false
     })
-    var ripMeta = new FeatureLayer({
-        url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Riparian/MapServer/0",
+var ripMeta = new FeatureLayer({
+        //url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Riparian/MapServer/0",
+        url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/RiparianMappingtest27June23/MapServer/0",
         visible: false,
-        title: "Riparian Project Information",
+        title: "Riparian Metadata",
         popupTemplate: {
-                title: "Riparian Project Information",
+                title: "Riparian Metadata",
                 content: contentRipMeta,
                 outFields: ["*"]
         },
     })    
     var ripData = new FeatureLayer({
-        url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Riparian/MapServer/1",
+        //url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Riparian/MapServer/1",
+        url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/RiparianMappingtest27June23/MapServer/1",
         title: "Riparian Mapping",
         visible: true,
         popupTemplate: {
                 title: "Riparian Mapping",
+                //content: contentRipType,
                 content: contentRipType,
                 outFields: ["*"]
         },
     })
 
     var riverine = new FeatureLayer({
-        url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Mapping/MapServer/3",
+        //url: "https://fwspublicservices.wim.usgs.gov/wetlandsmapservice/rest/services/Wetlands/MapServer/0",
+        url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/WetlandMappingTest27June23/MapServer/3",
         title: "Riverine",
+        //definitionExpression: "agstest.sdeadmin.Wetlands_2.wetland_type = 'Riverine'",
+        //maxScale: 10000,
+        //minScale: 500000,
         visible: false,
                 popupTemplate: {
                     title: "Riverine",
@@ -1279,22 +1303,36 @@ let assRenderer = {
                 },
     })
 
-    var wetNonRiverine = new MapImageLayer({
-        url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Mapping/MapServer",
-        sublayers: [
-            {
-        id: 2,
+    var wetNonRiverine = new FeatureLayer({
+        //url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Mapping/MapServer/2",
+        //url: "https://fwspublicservices.wim.usgs.gov/wetlandsmapservice/rest/services/Wetlands/MapServer/0",
+        url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/WetlandMappingTest27June23/MapServer/2",
         title: "Wetlands (non-riverine)",
-        listMode: "hide",
+        //definitionExpression: "agstest.sdeadmin.Wetlands_2.wetland_type <> 'Riverine'",
+        //minScale: 500000,
+        //maxScale: 10000,
+        labelsVisible: false,
         visible: true,
                 popupTemplate: {
                     title: "Wetlands (non-riverine)",
                     content: contentType,
                     outFields: ["*"]
                 }
-            }
-        ]
+
     })
+
+    var wetMeta = new FeatureLayer({
+        //url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Mapping/MapServer/1",
+        url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/WetlandMappingTest27June23/MapServer/1",
+        title: "Wetland Metadata",
+        visible: false,
+                popupTemplate: {
+                    title: "Wetland Metadata",
+                    content: contentPro,
+                    outFields: ["*"]
+                },
+    })
+
 
 ////////////////////////////////////////////////USGS DATA??????????????/////////////////////////////////////////////////////////
     // var riverine = new FeatureLayer({
@@ -1328,16 +1366,7 @@ let assRenderer = {
 
     // })
 
-    var wetMeta = new FeatureLayer({
-        url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Mapping/MapServer/1",
-        title: "Wetland Project Information",
-        visible: false,
-                popupTemplate: {
-                    title: "Wetland Project Information",
-                    content: contentPro,
-                    outFields: ["*"]
-                },
-    })
+
 
     var llwwMapping =  new FeatureLayer({
         url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/LLWW_Additional_Attributes/MapServer/0",
