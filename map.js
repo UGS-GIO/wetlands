@@ -334,17 +334,18 @@ require([
     contentPro = function(feature) {
 
         var contentPro = "";
+        console.log(feature);
 
 
 
-        if (feature.graphic.attributes.IMAGE_YR) {
-            contentPro += "<span class='bold' title='Year of imagery used in mapping'><b>Image Year: </b></span>{IMAGE_YR}<br/>";
-        }
+        // if (feature.graphic.attributes.IMAGE_YR) {
+        //     contentPro += "<span class='bold' title='Year of imagery used in mapping'><b>Image Year: </b></span>{IMAGE_YR}<br/>";
+        // }
 
 
-        if (feature.graphic.attributes.IMAGE_DATE) {
-            contentPro += "<span class='bold' title='Date of imagery used in mapping'><b>Image Date: </b></span>{IMAGE_DATE}<br/>";
-        }
+        // if (feature.graphic.attributes.IMAGE_DATE) {
+        //     contentPro += "<span class='bold' title='Date of imagery used in mapping'><b>Image Date: </b></span>{IMAGE_DATE}<br/>";
+        // }
 
 
         if (feature.graphic.attributes.DECADE) {
@@ -352,20 +353,20 @@ require([
         }
 
 
-        if (feature.graphic.attributes.ALL_SCALES) {
-            contentPro += "<span class='bold' title='Scale of imagery using in mapping'><b>Image Scale: </b></span>{ALL_SCALES}<br/>";
-        }
+        // if (feature.graphic.attributes.ALL_SCALES) {
+        //     contentPro += "<span class='bold' title='Scale of imagery using in mapping'><b>Image Scale: </b></span>{ALL_SCALES}<br/>";
+        // }
 
 
-        if (feature.graphic.attributes.DATA_SOURCE) {
-            contentPro += "<span class='bold' title='Mapping organization'><b>Data Source: </b></span>{DATA_SOURCE}<br/>";
-        }
+        // if (feature.graphic.attributes.DATA_SOURCE) {
+        //     contentPro += "<span class='bold' title='Mapping organization'><b>Data Source: </b></span>{DATA_SOURCE}<br/>";
+        // }
 
 
         if (feature.graphic.attributes.SUPPMAPINFO == "None") {
-            contentPro += "<span class='bold'><b>Supplemental Map Info: </b></span>Supplemental Map Info not currently available.";
+            contentPro += "<span class='bold' title='Link to supplemental mapping report'><b>Supplemental Map Info: </b></span>Supplemental Map Info not currently available.";
         }   else {
-            contentPro += "<span class='bold'><b>Supplemental Map Info: </b></span>" + "<a href='{SUPPMAPINFO}' target='_blank'>Opens in new tab</a>";
+            contentPro += "<span class='bold' title='Link to supplemental mapping report'><b>Supplemental Map Info: </b></span>" + "<a href='{SUPPMAPINFO}' target='_blank'>Opens in new tab</a>";
         }
 
         return contentPro;
@@ -403,9 +404,9 @@ require([
 
 
         if (feature.graphic.attributes.SUPPMAPINFO == "None") {
-            contentPro += "<span class='bold'><b>Supplemental Map Info: </b></span>Supplemental Map Info not currently available.";
+            contentPro += "<span class='bold' title='Link to supplemental mapping report'><b>Supplemental Map Info: </b></span>Supplemental Map Info not currently available.";
         }   else {
-            contentPro += "<span class='bold'><b>Supplemental Map Info: </b></span>" + "<a href='{SUPPMAPINFO}' target='_blank'>Opens in new tab</a>";
+            contentPro += "<span class='bold' title='Link to supplemental mapping report'><b>Supplemental Map Info: </b></span>" + "<a href='{SUPPMAPINFO}' target='_blank'>Opens in new tab</a>";
         }
 
         return contentPro;
@@ -421,7 +422,7 @@ require([
 
 
         if (feature.graphic.attributes.WETLAND_TYPE) {
-            contentType += "<span class='bold' title='Wetland Type'><b>Wetland Type: </b></span>" + feature.graphic.attributes.WETLAND_TYPE + "<br/>";
+            contentType += "<span class='bold' title='Wetland type'><b>Wetland Type: </b></span>" + feature.graphic.attributes.WETLAND_TYPE + "<br/>";
         }
 
 
@@ -432,14 +433,14 @@ require([
         }
 
         if (feature.graphic.attributes.IMAGE_YR) {
-            contentType += "<span class='bold' title='Image of imagery used in mapping'><b>Image Year: </b></span>" + feature.graphic.attributes.IMAGE_YR + "<br/>";
+            contentType += "<span class='bold' title='Year of imagery used in mapping'><b>Image Year: </b></span>" + feature.graphic.attributes.IMAGE_YR + "<br/>";
         }
 
         if (feature.graphic.attributes.LLWW) {
-            contentType += "<span class='bold' title='If yes, turn on the Additional Attributes layer to view the LLWW attributes'><b>Additional Attributes Available: </b></span>" + feature.graphic.attributes.IMAGE_YR + "<br/>";
+            contentType += "<span class='bold' title='If yes, turn on the Additional Attributes layer to view the LLWW attributes'><b>Additional Attributes Available: </b></span>" + feature.graphic.attributes.LLWW + "<br/>";
         }
 
-        contentType += "<br><span>Visit the <a href='https://fwsprimary.wim.usgs.gov/decoders/wetlands.aspx' target='_blank'>Wetlands Code Interpreter</a> for help interpreting the Cowardin Attribute Code.</span>";
+        //contentType += "<br><span>Visit the <a href='https://fwsprimary.wim.usgs.gov/decoders/wetlands.aspx' target='_blank'>Wetlands Code Interpreter</a> for help interpreting the Cowardin Attribute Code.</span>";
 
 
         // if (feature.graphic.attributes['agstest.sdeadmin.NWI_Wetland_Codes.system_name']) {
@@ -522,7 +523,7 @@ require([
 
 
         if (feature.graphic.attributes.WETLAND_TYPE) {
-            contentType += "<span class='bold' title='Utah Type'><b>Riparian Type: </b></span>{WETLAND_TYPE}<br/>";
+            contentType += "<span class='bold' title='Riparian Type'><b>Riparian Type: </b></span>{WETLAND_TYPE}<br/>";
         }
 
 
@@ -531,6 +532,9 @@ require([
             contentType += "<span class='bold' title='Acres'><b>Acres: </b></span>" + acresShort + "<br/>";
         }
 
+        if (feature.graphic.attributes.IMAGE_YR) {
+            contentType += "<span class='bold' title='Year of imagery used in mapping'><b>Image Year: </b></span>" + feature.graphic.attributes.IMAGE_YR + "<br/>";
+        }
 
         if (feature.graphic.attributes.Description) {
             contentType += "<span class='bold' title='Utah Modification'><b>Description: </b></span>{Description}<br/>";
@@ -1268,9 +1272,9 @@ var ripMeta = new FeatureLayer({
         //url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Riparian/MapServer/0",
         url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/RiparianMappingtest27June23/MapServer/0",
         visible: false,
-        title: "Riparian Metadata",
+        title: "Riparian Project Information",
         popupTemplate: {
-                title: "Riparian Metadata",
+                title: "Riparian Project Information",
                 content: contentRipMeta,
                 outFields: ["*"]
         },
@@ -1324,10 +1328,10 @@ var ripMeta = new FeatureLayer({
     var wetMeta = new FeatureLayer({
         //url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Mapping/MapServer/1",
         url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/WetlandMappingTest27June23/MapServer/1",
-        title: "Wetland Metadata",
+        title: "Wetland Project Information",
         visible: false,
                 popupTemplate: {
-                    title: "Wetland Metadata",
+                    title: "Wetland Project Information",
                     content: contentPro,
                     outFields: ["*"]
                 },
