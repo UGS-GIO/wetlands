@@ -890,6 +890,70 @@ function selectFeatureFromGrid(event) {
 
 }
 
+// stressors renderer
+
+let nonRiverineRenderer = {
+    type: "unique-value",  // autocasts as new UniqueValueRenderer()
+    field: "WETLAND_TYPE",
+    //defaultSymbol: { type: "simple-fill" },  // autocasts as new SimpleFillSymbol()
+    legendOptions: {
+        title: "Wetland Type"
+      },
+    uniqueValueInfos: [{
+      // All features with value of "North" will be blue
+      value: "Freshwater Emergent Wetland",
+      label: "Freshwater Emergent Wetland",
+      symbol: {
+        type: "simple-fill",  // autocasts as new SimpleFillSymbol()
+        color: "rgba(180, 215, 158, 255)",
+        outline: {  // autocasts as new SimpleLineSymbol()
+            width: "0px"
+          }
+      }
+    }, {
+      // All features with value of "East" will be green
+      value: "Freshwater Forested/Shrub Wetland",
+      label: "Freshwater Forested/Shrub Wetland",
+      symbol: {
+        type: "simple-fill",  // autocasts as new SimpleFillSymbol()
+        color: "rgba(255, 211, 127, 255)",
+        outline: {  // autocasts as new SimpleLineSymbol()
+            width: "0px"
+          }
+      }
+    }, {
+      // All features with value of "South" will be red
+      value: "Freshwater Pond",
+      label: "Freshwater Pond",
+      symbol: {
+        type: "simple-fill",  // autocasts as new SimpleFillSymbol()
+        color: "rgba(190, 232, 255, 255)",
+        outline: {  // autocasts as new SimpleLineSymbol()
+            width: "0px"
+          }
+      }
+    }, {
+      // All features with value of "West" will be yellow
+      value: "Lake",
+      label: "Lake",
+      symbol: {
+        type: "simple-fill",  // autocasts as new SimpleFillSymbol()
+        color: "rgba(115, 178, 255, 255)",
+        outline: {  // autocasts as new SimpleLineSymbol()
+            width: "0px"
+          }
+      }
+    }],
+    // visualVariables: [{
+    //   type: "opacity",
+    //   field: "POPULATION",
+    //   normalizationField: "SQ_KM",
+    //   // features with 30 ppl/sq km or below are assigned the first opacity value
+    //   stops: [{ value: 100, opacity: 0.15 },
+    //           { value: 1000, opacity: 0.90 }]
+    // }]
+  };
+
 
 // stressors renderer
 
@@ -1312,6 +1376,7 @@ var ripMeta = new FeatureLayer({
         //url: "https://fwspublicservices.wim.usgs.gov/wetlandsmapservice/rest/services/Wetlands/MapServer/0",
         url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/WetlandMappingTest27June23/MapServer/2",
         title: "Wetlands (non-riverine)",
+        renderer: nonRiverineRenderer,
         //definitionExpression: "agstest.sdeadmin.Wetlands_2.wetland_type <> 'Riverine'",
         //minScale: 500000,
         //maxScale: 10000,
