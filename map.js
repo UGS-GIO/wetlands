@@ -890,7 +890,72 @@ function selectFeatureFromGrid(event) {
 
 }
 
-// stressors renderer
+// wetlands renderer
+
+let wetMetaRenderer = {
+    type: "unique-value",  // autocasts as new UniqueValueRenderer()
+    field: "DECADE",
+    defaultLabel: "Unknown",
+    defaultSymbol: {
+          type: "simple-fill",  // autocasts as new SimpleFillSymbol()
+          color: "rgba(204, 204, 204, 255)",
+          outline: {  // autocasts as new SimpleLineSymbol()
+              width: "0px"
+            }
+        },
+    //defaultSymbol: { type: "simple-fill" },  // autocasts as new SimpleFillSymbol()
+    legendOptions: {
+        title: "Decade"
+      },
+    uniqueValueInfos: [{
+
+      value: "1980s",
+      label: "1980s",
+      symbol: {
+        type: "simple-fill",  // autocasts as new SimpleFillSymbol()
+        color: "rgba(194, 82, 60, 255)",
+        outline: {  // autocasts as new SimpleLineSymbol()
+            width: "0px"
+          }
+      }
+    }, {
+
+      value: "1990s",
+      label: "1990s",
+      symbol: {
+        type: "simple-fill",  // autocasts as new SimpleFillSymbol()
+        color: "rgba(247, 219, 7, 255)",
+        outline: {  // autocasts as new SimpleLineSymbol()
+            width: "0px"
+          }
+      }
+    }, {
+      // All features with value of "South" will be red
+      value: "2000s",
+      label: "2000s",
+      symbol: {
+        type: "simple-fill",  // autocasts as new SimpleFillSymbol()
+        color: "rgba(14, 196, 69, 255)",
+        outline: {  // autocasts as new SimpleLineSymbol()
+            width: "0px"
+          }
+      }
+    }, {
+
+      value: "2010s",
+      label: "2010s",
+      symbol: {
+        type: "simple-fill",  // autocasts as new SimpleFillSymbol()
+        color: "rgba(11, 44, 122, 255)",
+        outline: {  // autocasts as new SimpleLineSymbol()
+            width: "0px"
+          }
+      }
+      }],
+
+  };
+
+// wetlands renderer
 
 let nonRiverineRenderer = {
     type: "unique-value",  // autocasts as new UniqueValueRenderer()
@@ -1394,6 +1459,7 @@ var ripMeta = new FeatureLayer({
         //url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Mapping/MapServer/1",
         url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/WetlandMappingTest27June23/MapServer/1",
         title: "Wetland Project Information",
+        renderer: wetMetaRenderer,
         visible: false,
                 popupTemplate: {
                     title: "Wetland Project Information",
