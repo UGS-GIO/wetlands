@@ -338,14 +338,14 @@ require([
 
 
 
-        // if (feature.graphic.attributes.IMAGE_YR) {
-        //     contentPro += "<span class='bold' title='Year of imagery used in mapping'><b>Image Year: </b></span>{IMAGE_YR}<br/>";
-        // }
+        if (feature.graphic.attributes.IMAGE_YR) {
+            contentPro += "<span class='bold' title='Year of imagery used in mapping'><b>Image Year: </b></span>{IMAGE_YR}<br/>";
+        }
 
 
-        // if (feature.graphic.attributes.IMAGE_DATE) {
-        //     contentPro += "<span class='bold' title='Date of imagery used in mapping'><b>Image Date: </b></span>{IMAGE_DATE}<br/>";
-        // }
+        if (feature.graphic.attributes.IMAGE_DATE && feature.graphic.attributes.IMAGE_DATE != "<Null>") {
+            contentPro += "<span class='bold' title='Date of imagery used in mapping'><b>Image Date: </b></span>{IMAGE_DATE}<br/>";
+        }
 
 
         if (feature.graphic.attributes.DECADE) {
@@ -353,14 +353,14 @@ require([
         }
 
 
-        // if (feature.graphic.attributes.ALL_SCALES) {
-        //     contentPro += "<span class='bold' title='Scale of imagery using in mapping'><b>Image Scale: </b></span>{ALL_SCALES}<br/>";
-        // }
+        if (feature.graphic.attributes.ALL_SCALES && feature.graphic.attributes.ALL_SCALES != "<Null>") {
+            contentPro += "<span class='bold' title='Scale of imagery using in mapping'><b>Image Scale: </b></span>{ALL_SCALES}<br/>";
+        }
 
 
-        // if (feature.graphic.attributes.DATA_SOURCE) {
-        //     contentPro += "<span class='bold' title='Mapping organization'><b>Data Source: </b></span>{DATA_SOURCE}<br/>";
-        // }
+        if (feature.graphic.attributes.DATA_SOURCE) {
+            contentPro += "<span class='bold' title='Mapping organization'><b>Data Source: </b></span>{DATA_SOURCE}<br/>";
+        }
 
 
         if (feature.graphic.attributes.SUPPMAPINFO == "None") {
