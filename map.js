@@ -890,7 +890,25 @@ function selectFeatureFromGrid(event) {
 
 }
 
-// wetlands renderer
+// riparian renderer
+
+let ripRenderer = {
+    type: "simple",  
+    //defaultSymbol: { type: "simple-fill" },  // autocasts as new SimpleFillSymbol()
+    // legendOptions: {
+    //     title: "Wetland Type"
+    //   },
+      symbol: {
+        type: "simple-fill",  // autocasts as new SimpleFillSymbol()
+        color: "rgba(245, 40, 145, 0.8)",
+        outline: {  // autocasts as new SimpleLineSymbol()
+            width: "0px"
+          }
+      }
+
+  };
+
+// wetlands metadata renderer
 
 let wetMetaRenderer = {
     type: "unique-value",  // autocasts as new UniqueValueRenderer()
@@ -951,6 +969,71 @@ let wetMetaRenderer = {
             width: "0px"
           }
       }
+      },{
+
+        value: "2020s",
+        label: "2020s",
+        symbol: {
+          type: "simple-fill",  // autocasts as new SimpleFillSymbol()
+          color: "rgba(153, 0, 255, 255)",
+          outline: {  // autocasts as new SimpleLineSymbol()
+              width: "0px"
+            }
+        }
+      }],
+
+  };
+
+  // riparian metadata renderer
+
+let ripMetaRenderer = {
+    type: "unique-value",  // autocasts as new UniqueValueRenderer()
+    field: "DECADE",
+    defaultLabel: "Unknown",
+    defaultSymbol: {
+          type: "simple-fill",  // autocasts as new SimpleFillSymbol()
+          color: "rgba(204, 204, 204, 255)",
+          outline: {  // autocasts as new SimpleLineSymbol()
+              width: "0px"
+            }
+        },
+    //defaultSymbol: { type: "simple-fill" },  // autocasts as new SimpleFillSymbol()
+    legendOptions: {
+        title: "Decade"
+      },
+    uniqueValueInfos: [ {
+      // All features with value of "South" will be red
+      value: "2000s",
+      label: "2000s",
+      symbol: {
+        type: "simple-fill",  // autocasts as new SimpleFillSymbol()
+        color: "rgba(14, 196, 69, 255)",
+        outline: {  // autocasts as new SimpleLineSymbol()
+            width: "0px"
+          }
+      }
+    }, {
+
+      value: "2010s",
+      label: "2010s",
+      symbol: {
+        type: "simple-fill",  // autocasts as new SimpleFillSymbol()
+        color: "rgba(11, 44, 122, 255)",
+        outline: {  // autocasts as new SimpleLineSymbol()
+            width: "0px"
+          }
+      }
+      },{
+
+        value: "2020s",
+        label: "2020s",
+        symbol: {
+          type: "simple-fill",  // autocasts as new SimpleFillSymbol()
+          color: "rgba(153, 0, 255, 255)",
+          outline: {  // autocasts as new SimpleLineSymbol()
+              width: "0px"
+            }
+        }
       }],
 
   };
@@ -1402,6 +1485,7 @@ var ripMeta = new FeatureLayer({
         url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/RiparianMappingtest27June23/MapServer/0",
         visible: false,
         title: "Riparian Project Information",
+        renderer: ripMetaRenderer,
         popupTemplate: {
                 title: "Riparian Project Information",
                 content: contentRipMeta,
@@ -1413,6 +1497,7 @@ var ripMeta = new FeatureLayer({
         url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/RiparianMappingtest27June23/MapServer/1",
         title: "Riparian Mapping",
         visible: true,
+        renderer: ripRenderer,
         popupTemplate: {
                 title: "Riparian Mapping",
                 //content: contentRipType,
