@@ -1476,7 +1476,7 @@ let assRenderer = {
     });
 
     var hydricSoils = new ImageryLayer({
-        url: "https://landscape11.arcgis.com/arcgis/rest/services/USA_Soils_Hydric_Class/ImageServer",
+        url: "https://utility.arcgis.com/usrsvcs/servers/771b11ef2a574ce9a3a2351b758498fa/rest/services/USA_Soils_Hydric_Class/ImageServer",
         title: "Hydric Soils Classes",
         visible: false
     })
