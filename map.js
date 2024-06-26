@@ -417,24 +417,18 @@ require([
 
 
         if (feature.graphic.attributes.ATTRIBUTE) {
-
             contentType += "<span class='bold' title='Coded value describing wetland with Cowardin system'><b>Cowardin Attribute: </b></span>" + feature.graphic.attributes.ATTRIBUTE + "<br/>";
-
         }
 
 
         if (feature.graphic.attributes.WETLAND_TYPE) {
-
             contentType += "<span class='bold' title='Wetland type'><b>Wetland Type: </b></span>" + feature.graphic.attributes.WETLAND_TYPE + "<br/>";
-
         }
 
 
         if (feature.graphic.attributes.ACRES) {
-
             var acOG = feature.graphic.attributes.ACRES;
             var acresShort = acOG.toFixed(2);
-
             contentType += "<span class='bold' title='Acres'><b>Acres: </b></span>" + acresShort + "<br/>";
         }
 
@@ -442,14 +436,11 @@ require([
             contentType += "<span class='bold' title='Year of imagery used in mapping'><b>Image Year: </b></span>" + feature.graphic.attributes.IMAGE_YR + "<br/>";
         }
 
-
         if (feature.graphic.attributes.LLWW) {
             contentType += "<span class='bold' title='If yes, turn on the Additional Attributes layer to view the LLWW attributes'><b>Additional Attributes Available: </b></span>" + feature.graphic.attributes.LLWW + "<br/>";
-
         }
 
         //contentType += "<br><span>Visit the <a href='https://fwsprimary.wim.usgs.gov/decoders/wetlands.aspx' target='_blank'>Wetlands Code Interpreter</a> for help interpreting the Cowardin Attribute Code.</span>";
-
 
 
         // if (feature.graphic.attributes['agstest.sdeadmin.NWI_Wetland_Codes.system_name']) {
@@ -470,7 +461,6 @@ require([
         // if (feature.graphic.attributes['agstest.sdeadmin.NWI_Wetland_Codes.modifier1_name']) {
         //     contentType += "<span class='bold' title='Utah Use'><b>Modifier: </b></span>" + feature.graphic.attributes['agstest.sdeadmin.NWI_Wetland_Codes.modifier1_name'] + "<br/>";
         // }
-
 
         return contentType;
 
@@ -1474,7 +1464,7 @@ let assRenderer = {
     });
 
     var ownershipLayer = new MapImageLayer({
-        url: "https://gis.trustlands.utah.gov/server/rest/services/Ownership/UT_SITLA_Ownership_LandOwnership/MapServer",
+        url: "https://gis.trustlands.utah.gov/mapping/rest/services/Land_Ownership_WM/MapServer",
         visible: false,
         title: "Land Ownership",
         listMode: "hide-children",
@@ -1486,7 +1476,7 @@ let assRenderer = {
     });
 
     var hydricSoils = new ImageryLayer({
-        url: "https://utility.arcgis.com/usrsvcs/servers/1d5e9da46b4b4d9195cdd173586c5eb7/rest/services/USA_Soils_Hydric_Class/ImageServer",
+        url: "https://landscape11.arcgis.com/arcgis/rest/services/USA_Soils_Hydric_Class/ImageServer",
         title: "Hydric Soils Classes",
         visible: false
     })
@@ -1495,7 +1485,6 @@ var ripMeta = new FeatureLayer({
         url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/RiparianMappingtest27June23/MapServer/0",
         visible: false,
         title: "Riparian Project Information",
-
         renderer: ripMetaRenderer,
         popupTemplate: {
                 title: "Riparian Project Information",
@@ -1518,14 +1507,12 @@ var ripMeta = new FeatureLayer({
     })
 
     var riverine = new FeatureLayer({
-
         //url: "https://fwspublicservices.wim.usgs.gov/wetlandsmapservice/rest/services/Wetlands/MapServer/0",
         url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/WetlandMappingTest27June23/MapServer/3",
         title: "Riverine",
         //definitionExpression: "agstest.sdeadmin.Wetlands_2.wetland_type = 'Riverine'",
         //maxScale: 10000,
         //minScale: 500000,
-
         visible: false,
                 popupTemplate: {
                     title: "Riverine",
@@ -1533,7 +1520,6 @@ var ripMeta = new FeatureLayer({
                     outFields: ["*"]
                 },
     })
-
 
     var wetNonRiverine = new FeatureLayer({
         //url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Mapping/MapServer/2",
@@ -1545,55 +1531,20 @@ var ripMeta = new FeatureLayer({
         //minScale: 500000,
         //maxScale: 10000,
         labelsVisible: false,
-
         visible: true,
                 popupTemplate: {
                     title: "Wetlands (non-riverine)",
                     content: contentType,
                     outFields: ["*"]
                 }
-            }
-        ]
+
     })
-
-////////////////////////////////////////////////USGS DATA??????????????/////////////////////////////////////////////////////////
-    // var riverine = new FeatureLayer({
-    //     url: "https://fwspublicservices.wim.usgs.gov/wetlandsmapservice/rest/services/Wetlands/MapServer/0",
-    //     title: "Riverine",
-    //     definitionExpression: "agstest.sdeadmin.Wetlands_2.wetland_type = 'Riverine'",
-    //     //maxScale: 10000,
-    //     //minScale: 500000,
-    //     visible: false,
-    //             popupTemplate: {
-    //                 title: "Riverine",
-    //                 content: contentType,
-    //                 outFields: ["*"]
-    //             },
-    // })
-
-    // var wetNonRiverine = new FeatureLayer({
-    //     //url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Mapping/MapServer/2",
-    //     url: "https://fwspublicservices.wim.usgs.gov/wetlandsmapservice/rest/services/Wetlands/MapServer/0",
-    //     title: "Wetlands (non-riverine)",
-    //     definitionExpression: "agstest.sdeadmin.Wetlands_2.wetland_type <> 'Riverine'",
-    //     //minScale: 500000,
-    //     //maxScale: 10000,
-    //     labelsVisible: false,
-    //     visible: true,
-    //             popupTemplate: {
-    //                 title: "Wetlands (non-riverine)",
-    //                 content: contentType,
-    //                 outFields: ["*"]
-    //             }
-
-    // })
 
     var wetMeta = new FeatureLayer({
         //url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Mapping/MapServer/1",
         url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/WetlandMappingTest27June23/MapServer/1",
         title: "Wetland Project Information",
         renderer: wetMetaRenderer,
-
         visible: false,
                 popupTemplate: {
                     title: "Wetland Project Information",
@@ -1602,37 +1553,6 @@ var ripMeta = new FeatureLayer({
                 },
     })
 
-    var llwwMapping =  new FeatureLayer({
-        url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/LLWW_Additional_Attributes/MapServer/0",
-        title: "LLWW Descriptions",
-        visible: true,
-        renderer: llwwRenderer,
-        popupTemplate: {
-            title: "LLWW Descriptions",
-            content: contentLLWWDescriptions,
-            outFields: ["*"]
-        }
-    })
-
-    var cacheProjectsArea =  new FeatureLayer({
-        url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/LLWW_Additional_Attributes/MapServer/1",
-        title: "LLWW Mapping Areas",
-        visible: true,
-        popupTemplate: {
-            title: "LLWW Mapping Areas",
-            content: contentLLWWAreas,
-            outFields: ["*"]
-        }
-
-    })
-
-
-    var additonalGroup = new GroupLayer({
-        title: "Additional Attributes (LLWW)",
-        visible: false,
-        visibiltyMode: "independent",
-        layers: [cacheProjectsArea, llwwMapping]
-    })
 
 ////////////////////////////////////////////////USGS DATA??????????????/////////////////////////////////////////////////////////
     // var riverine = new FeatureLayer({
