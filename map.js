@@ -143,8 +143,11 @@ require([
         className: "esri-icon-table"
     };
 
-    // Application authentication for utahdnr.maps.arcgis.com
-    // Suppress the IdentityManager sign-in dialog — we handle auth ourselves
+    /* Removed: ArcGIS Online org authentication. This registered a hardcoded
+       (and now expired) token for https://utahdnr.maps.arcgis.com to feed the
+       secured usrsvcs layers (NAIP basemap + Hydric Soils), both of which are
+       removed below. With no authenticated layers, no token is needed; the
+       expired token here was itself triggering the ArcGIS sign-in dialog.
     IdentityManager.on("credential-create", function(event) {
         event.preventDefault();
     });
@@ -156,6 +159,7 @@ require([
         ssl: true,
         expires: new Date(Date.now() + 7200 * 1000)
     });
+    */
 
     // Map
     var map = new Map({
