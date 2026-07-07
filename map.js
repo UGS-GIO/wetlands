@@ -94,6 +94,11 @@ require([
     //custom basemap layer of false color IR
 
 
+    /* Removed: NAIP false-color/infrared basemap. This is premium ArcGIS Online
+       content proxied through the utahdnr org (utility.arcgis.com/usrsvcs/...),
+       which requires an authenticated org token and triggers the ArcGIS sign-in
+       dialog. Removed to drop the auth dependency. To restore, re-add the layer
+       and register an ArcGIS token for https://utahdnr.maps.arcgis.com.
     var serviceRFT = new RasterFunction({
         functionName: "FalseColorComposite",
         variableName: "Raster"
@@ -110,9 +115,10 @@ require([
         id: "irBase",
         thumbnailUrl: "https://geology.utah.gov/apps/jay/irThumb.PNG"
     });
+    */
 
     let baseSource = new LocalBasemapsSource({
-        basemaps: [Basemap.fromId("hybrid"), Basemap.fromId("streets-vector"), Basemap.fromId("gray-vector"), irBase]
+        basemaps: [Basemap.fromId("hybrid"), Basemap.fromId("streets-vector"), Basemap.fromId("gray-vector")] // irBase removed (authenticated content)
     });
 
     //grid vars
@@ -137,8 +143,11 @@ require([
         className: "esri-icon-table"
     };
 
-    // Application authentication for utahdnr.maps.arcgis.com
-    // Suppress the IdentityManager sign-in dialog — we handle auth ourselves
+    /* Removed: ArcGIS Online org authentication. This registered a hardcoded
+       (and now expired) token for https://utahdnr.maps.arcgis.com to feed the
+       secured usrsvcs layers (NAIP basemap + Hydric Soils), both of which are
+       removed below. With no authenticated layers, no token is needed; the
+       expired token here was itself triggering the ArcGIS sign-in dialog.
     IdentityManager.on("credential-create", function(event) {
         event.preventDefault();
     });
@@ -150,6 +159,7 @@ require([
         ssl: true,
         expires: new Date(Date.now() + 7200 * 1000)
     });
+    */
 
     // Map
     var map = new Map({
@@ -1490,11 +1500,17 @@ let assRenderer = {
         //opacity: 0.6,
     });
 
+    /* Removed: Hydric Soils Classes. Premium ArcGIS Online content proxied through
+       the utahdnr org (utility.arcgis.com/usrsvcs/...); loading it requires an
+       authenticated org token and triggers the ArcGIS sign-in dialog on page load
+       (its metadata loads even though visible:false). Removed to drop the auth
+       dependency. To restore, re-add and register a token for utahdnr.maps.arcgis.com.
     var hydricSoils = new ImageryLayer({
         url: "https://utility.arcgis.com/usrsvcs/servers/771b11ef2a574ce9a3a2351b758498fa/rest/services/USA_Soils_Hydric_Class/ImageServer",
         title: "Hydric Soils Classes",
         visible: false
     })
+    */
 var ripMeta = new FeatureLayer({
         //url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/Wetland_Riparian/MapServer/0",
         url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/RiparianMappingtest27June23/MapServer/0",
@@ -1687,13 +1703,13 @@ var ripMeta = new FeatureLayer({
     //mapView.map.add(speciesGroup);
     mapView.map.add(conditionsGroup);
     mapView.map.add(landscapeGroup);
-    mapView.map.add(hydricSoils);
+    // mapView.map.add(hydricSoils); // removed (authenticated content)
     mapView.map.add(wetlandGroup);
       
 
 
     ownershipLayer.opacity = .6;
-    hydricSoils.opacity = .7;
+    // hydricSoils.opacity = .7; // removed (authenticated content)
 
 
 
@@ -2480,11 +2496,9 @@ span.onclick = function() {
     // Basemap events
     query("#selectBasemapPanel").on("change", function(e) {
         console.log("base mapping");
-        if (e.target.value == "Infrared") {
-
-            mapView.map.basemap = irBase;
-            // if mapview use basemaps defined in the value-vector=, but if mapview use value=
-        } else if (map.mview == "map") {
+        // Infrared/NAIP basemap removed (authenticated ArcGIS Online content):
+        // if (e.target.value == "Infrared") { mapView.map.basemap = irBase; }
+        if (map.mview == "map") {
             mapView.map.basemap = e.target.options[e.target.selectedIndex].dataset.vector;
         } else { // =="scene"
             mapView.map.basemap = e.target.value;
