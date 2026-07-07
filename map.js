@@ -143,24 +143,13 @@ require([
         event.preventDefault();
     });
 
-    fetch("/api/getToken", { method: "POST" })
-        .then(function(r) { return r.json(); })
-        .then(function(response) {
-            if (response.access_token) {
-                IdentityManager.registerToken({
-                    server: "https://utahdnr.maps.arcgis.com",
-                    token: response.access_token,
-                    userId: "app_GGkPYIo6xMJJUCvM",
-                    ssl: true,
-                    expires: new Date(Date.now() + response.expires_in * 1000)
-                });
-            } else {
-                console.error("Auth token error:", response);
-            }
-        })
-        .catch(function(err) {
-            console.error("Auth token proxy failed:", err);
-        });
+    IdentityManager.registerToken({
+        server: "https://utahdnr.maps.arcgis.com",
+        token: "al_0q5M52-9p2c4ryjT4lUQ..pCaxfaUqNPz8aWd5-C3qaWI3iQnZu2luUycsLTiHwfwCyE8vn-FlRBwzOaHZYJMtiufjnfBUXuxltx2hWLdsJgws-q5m8K0NdZltb4bm2YVNCmxcpM1Nb13ClL88mwNazAgLInsRhVetUok.",
+        userId: "app_GGkPYIo6xMJJUCvM",
+        ssl: true,
+        expires: new Date(Date.now() + 7200 * 1000)
+    });
 
     // Map
     var map = new Map({
