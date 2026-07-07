@@ -39,6 +39,7 @@ require([
     "esri/core/reactiveUtils",
     "esri/rest/support/RelationshipQuery",
     "esri/popup/content/AttachmentsContent",
+    "esri/identity/IdentityManager",
 
     // Bootstrap
     "bootstrap/Collapse",
@@ -72,7 +73,7 @@ require([
     "dojo/dom-class",
     "dojo/dom-construct",
     "dojo/domReady!"
-], function(Map, MapView, SimpleMarkerSymbol, SimpleFillSymbol, GraphicsLayer, ImageryLayer, RasterFunction, Basemap, BasemapGallery, LocalBasemapsSource, SketchViewModel, Sketch, Graphic, GroupLayer, geoprocessor, FeatureSet, colorRendererCreator, histogram, ClassedColorSlider, FeatureLayer, MapImageLayer, Query, QueryTask, Home, ScaleBar, Zoom, Compass, Search, Locate, Legend, Expand, LayerList, BasemapToggle, reactiveUtils, RelationshipQuery, AttachmentsContent, Collapse, Dropdown, query, Memory, ObjectStore, ItemFileReadStore, DataGrid, OnDemandGrid, ColumnHider, Selection, StoreAdapter, List, declare, parser, aspect, request, mouse, CalciteMaps, CalciteMapArcGISSupport, on, arrayUtils, dom, domClass, domConstruct) {
+], function(Map, MapView, SimpleMarkerSymbol, SimpleFillSymbol, GraphicsLayer, ImageryLayer, RasterFunction, Basemap, BasemapGallery, LocalBasemapsSource, SketchViewModel, Sketch, Graphic, GroupLayer, geoprocessor, FeatureSet, colorRendererCreator, histogram, ClassedColorSlider, FeatureLayer, MapImageLayer, Query, QueryTask, Home, ScaleBar, Zoom, Compass, Search, Locate, Legend, Expand, LayerList, BasemapToggle, reactiveUtils, RelationshipQuery, AttachmentsContent, IdentityManager, Collapse, Dropdown, query, Memory, ObjectStore, ItemFileReadStore, DataGrid, OnDemandGrid, ColumnHider, Selection, StoreAdapter, List, declare, parser, aspect, request, mouse, CalciteMaps, CalciteMapArcGISSupport, on, arrayUtils, dom, domClass, domConstruct) {
 
     var gpUrl ="https://webmaps.geology.utah.gov/arcgis/rest/services/Wetlands/WetlandsDownload/GPServer/ExtractWetlandsData";
     var tempGraphic = null;          
@@ -135,6 +136,31 @@ require([
         id: "project-table",
         className: "esri-icon-table"
     };
+
+    // Application authentication for utahdnr.maps.arcgis.com
+    var tokenUrl = "https://utahdnr.maps.arcgis.com/sharing/rest/oauth2/token";
+    request(tokenUrl, {
+        method: "POST",
+        data: {
+            client_id: "GGkPYIo6xMJJUCvM",
+            client_secret: "400a1fafd2714c39a22f386153d3e6af",
+            grant_type: "client_credentials",
+            f: "json"
+        },
+        handleAs: "json"
+    }).then(function(response) {
+        if (response.access_token) {
+            IdentityManager.registerToken({
+                server: "utahdnr.maps.arcgis.com",
+                token: response.access_token,
+                userId: "app_GGkPYIo6xMJJUCvM",
+                ssl: true,
+                expires: new Date(Date.now() + response.expires_in * 1000)
+            });
+        }
+    }, function(err) {
+        console.error("Auth token fetch failed:", err);
+    });
 
     // Map
     var map = new Map({
