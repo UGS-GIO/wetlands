@@ -138,29 +138,29 @@ require([
     };
 
     // Application authentication for utahdnr.maps.arcgis.com
-    var tokenUrl = "https://utahdnr.maps.arcgis.com/sharing/rest/oauth2/token";
-    request(tokenUrl, {
-        method: "POST",
-        data: {
-            client_id: "GGkPYIo6xMJJUCvM",
-            client_secret: "400a1fafd2714c39a22f386153d3e6af",
-            grant_type: "client_credentials",
-            f: "json"
-        },
-        handleAs: "json"
-    }).then(function(response) {
-        if (response.access_token) {
-            IdentityManager.registerToken({
-                server: "utahdnr.maps.arcgis.com",
-                token: response.access_token,
-                userId: "app_GGkPYIo6xMJJUCvM",
-                ssl: true,
-                expires: new Date(Date.now() + response.expires_in * 1000)
-            });
-        }
-    }, function(err) {
-        console.error("Auth token fetch failed:", err);
+    // Suppress the IdentityManager sign-in dialog — we handle auth ourselves
+    IdentityManager.on("credential-create", function(event) {
+        event.preventDefault();
     });
+
+    fetch("/api/getToken", { method: "POST" })
+        .then(function(r) { return r.json(); })
+        .then(function(response) {
+            if (response.access_token) {
+                IdentityManager.registerToken({
+                    server: "https://utahdnr.maps.arcgis.com",
+                    token: response.access_token,
+                    userId: "app_GGkPYIo6xMJJUCvM",
+                    ssl: true,
+                    expires: new Date(Date.now() + response.expires_in * 1000)
+                });
+            } else {
+                console.error("Auth token error:", response);
+            }
+        })
+        .catch(function(err) {
+            console.error("Auth token proxy failed:", err);
+        });
 
     // Map
     var map = new Map({
