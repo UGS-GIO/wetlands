@@ -21,3 +21,7 @@ refactors — no rewrites on retiring code.
 
 ## Data ownership
 - Wetlands/NWI data changes route to the data owner (Nate) — flag data/schema edits for his sign-off.
+
+## Review scope & severity
+- Skip (don't post findings): nothing to skip — ArcGIS and other libs load from the CDN; no vendored bundles, minified files, or lockfiles are committed.
+- Blocking here (not a nit): merge to `master` auto-deploys hosting to prod; no server-side SQL surface (the Cloud Function only mints ArcGIS tokens), so a committed credential / API key / token is the blocker.
